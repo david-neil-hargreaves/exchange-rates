@@ -1,0 +1,7 @@
+# Ignore all the target build files.
+target
+
+# Ignore all files specific to an individual Eclipse I.D.E.
+.project
+.settings
+.classpath

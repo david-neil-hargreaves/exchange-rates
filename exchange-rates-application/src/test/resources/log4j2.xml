@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ERROR">
+
+	<!-- For how to configure Log4j2 for logging see https://logging.apache.org/log4j/2.x/manual/configuration.html. -->
+
+	<Properties>
+		<Property name="LOG_DIR">${sys:user.home}/logs/</Property>
+		<Property name="LOG_FILE_NAME_PREFIX">exchange-rates-unit-tests</Property>
+		<Property name="LOG_FILE_NAME_SUFFIX">.log</Property>
+		<Property name="PATTERN">%-5level | %d{DATE} | %tid | %logger{36}.%M()
+			| %msg%n</Property>
+	</Properties>
+
+	<Appenders>
+		<RollingFile name="file"
+			fileName="${LOG_DIR}/${LOG_FILE_NAME_PREFIX}${LOG_FILE_NAME_SUFFIX}"
+			filePattern="${LOG_DIR}/${LOG_FILE_NAME_PREFIX}_%d{yyyy-MM-dd}${LOG_FILE_NAME_SUFFIX}">
+			<PatternLayout pattern="${PATTERN}" />
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+		</RollingFile>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${PATTERN}" />
+		</Console>
+		<TestAppender name="testAppender">
+			<PatternLayout
+				pattern="%-5level | %d{DATE} | [%tid] | %logger{36}.%M() | %msg%n" />
+		</TestAppender>
+	</Appenders>
+
+	<Loggers>
+		<!-- The Root logger sets the log level for any loggers that are not specifically 
+			configured below. -->
+		<Root level="INFO" additivity="false">
+			<AppenderRef ref="file" />
+		</Root>
+		<!-- A given Logger name should not be specified more than once. If there 
+			are multiple entries for the same Logger name the last one lexically will 
+			be used. -->
+		<Logger name="hsbc" level="TRACE" additivity="false">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="testAppender" />
+		</Logger>
+	</Loggers>
+
+</Configuration>

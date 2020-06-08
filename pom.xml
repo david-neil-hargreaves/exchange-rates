@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>hsbc</groupId>
+	<artifactId>exchange-rates</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- Testing -->
+		<maven-surefire-plugin-version>2.22.2</maven-surefire-plugin-version>
+		<!-- Automated code review tools -->
+		<!-- Checkstyle, code formatting check. -->
+		<maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
+		<maven.sevntu.checkstyle.plugin.version>1.27.0</maven.sevntu.checkstyle.plugin.version>
+		<maven.sevntu-checkstyle-check.checkstyle.version>8.32</maven.sevntu-checkstyle-check.checkstyle.version>
+	</properties>
+
+	<modules>
+		<module>exchange-rates-utilities</module>
+		<module>exchange-rates-model</module>
+		<module>exchange-rates-services</module>
+		<module>exchange-rates-web</module>
+		<module>exchange-rates-application</module>
+		<module>coverage</module>
+	</modules>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin-version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.surefire</groupId>
+						<artifactId>surefire-junit47</artifactId>
+						<version>${maven-surefire-plugin-version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven.checkstyle.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.github.sevntu-checkstyle</groupId>
+						<artifactId>sevntu-checkstyle-maven-plugin</artifactId>
+						<version>${maven.sevntu.checkstyle.plugin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${maven.sevntu-checkstyle-check.checkstyle.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<failOnViolation>true</failOnViolation>
+					<violationSeverity>warning</violationSeverity>
+					<!-- google_checks.xml is a built-in Maven Checkstyle configuration. -->
+					<configLocation>google_checks.xml</configLocation>
+					<suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+					<sourceDirectories>
+						<sourceDirectory>exchange-rates-utilities/src/main/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-model/src/main/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-services/src/main/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-web/src/main/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-application/src/main/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-utilities/src/test/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-model/src/test/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-services/src/test/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-web/src/test/java</sourceDirectory>
+						<sourceDirectory>exchange-rates-application/src/test/java</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+				<executions>
+					<execution>
+						<id>verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+</project>
