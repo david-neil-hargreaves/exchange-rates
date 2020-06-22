@@ -17,9 +17,9 @@ public class ValidationException extends Exception {
       "Selling currency code cannot be the same as the buying currency code.";
 
   /**
-   * Constructs a validation code exception with the given message.
+   * Constructs a validation exception with the given message.
    * 
-   * @param message The message.
+   * @param message the message for the validation exception.
    */
   public ValidationException(String message) {
     super(message);

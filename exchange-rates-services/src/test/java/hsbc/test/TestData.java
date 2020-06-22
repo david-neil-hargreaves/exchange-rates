@@ -6,7 +6,6 @@ import hsbc.model.ExchangeRate;
 import hsbc.model.ExchangeRateHistory;
 import hsbc.model.Period;
 import hsbc.model.PeriodType;
-import hsbc.model.view.ExchangeRatesBuyingCurrencyView;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -19,6 +18,11 @@ import lombok.Data;
 
 public class TestData {
 
+  public static final Long CURRENCY_ID_INVALID = 666L;
+  public static final Long CURRENCY_ID_EUROS = 1L;
+  public static final Long CURRENCY_ID_POUNDS_STERLING = 2L;
+  public static final Long CURRENCY_ID_US_DOLLARS = 3L;
+  public static final Long CURRENCY_ID_HONG_KONG_DOLLARS = 4L;
   public static final String CURRENCY_CODE_EUROS = "EUR";
   public static final String CURRENCY_CODE_POUNDS_STERLING = "GBP";
   public static final String CURRENCY_CODE_US_DOLLARS = "USD";
@@ -102,6 +106,7 @@ public class TestData {
 
   public static Currency createEuro() {
     Currency currency = new Currency();
+    currency.setId(CURRENCY_ID_EUROS);
     currency.setCode(CURRENCY_CODE_EUROS);
     currency.setDescription(CURRENCY_DESCRIPTION_EUROS);
     currency.setSortOrderNumber(CURRENCY_SORT_ORDER_EUROS);
@@ -110,6 +115,7 @@ public class TestData {
 
   public static Currency createPoundsSterling() {
     Currency currency = new Currency();
+    currency.setId(CURRENCY_ID_POUNDS_STERLING);
     currency.setCode(CURRENCY_CODE_POUNDS_STERLING);
     currency.setDescription(CURRENCY_DESCRIPTION_POUNDS_STERLING);
     currency.setSortOrderNumber(CURRENCY_SORT_ORDER_POUNDS_STERLING);
@@ -118,6 +124,7 @@ public class TestData {
 
   public static Currency createUsDollars() {
     Currency currency = new Currency();
+    currency.setId(CURRENCY_ID_US_DOLLARS);
     currency.setCode(CURRENCY_CODE_US_DOLLARS);
     currency.setDescription(CURRENCY_DESCRIPTION_US_DOLLARS);
     currency.setSortOrderNumber(CURRENCY_SORT_ORDER_US_DOLLARS);
@@ -126,6 +133,7 @@ public class TestData {
 
   public static Currency createHongKongDollars() {
     Currency currency = new Currency();
+    currency.setId(CURRENCY_ID_HONG_KONG_DOLLARS);
     currency.setCode(CURRENCY_CODE_HONG_KONG_DOLLARS);
     currency.setDescription(CURRENCY_DESCRIPTION_HONG_KONG_DOLLARS);
     currency.setSortOrderNumber(CURRENCY_SORT_ORDER_HONG_KONG_DOLLARS);
@@ -273,6 +281,13 @@ public class TestData {
     currencies.add(createEuro());
     return currencies;
   }
+  
+  public static List<Long> getCurrencyIds() {
+    List<Long> currencyIds = new ArrayList<>();
+    currencyIds.add(CURRENCY_ID_POUNDS_STERLING);
+    currencyIds.add(CURRENCY_ID_EUROS);
+    return currencyIds;
+  }
 
   public static List<String> getCurrencyCodes() {
     List<String> currencyCodes = new ArrayList<>();
@@ -342,36 +357,6 @@ public class TestData {
     exchangeRateHistory.setStartDateTime(DATE_20200224);
     exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_20200224);
     return exchangeRateHistory;
-  }
-
-  public static ExchangeRatesBuyingCurrencyView createExchangeRatesBuyingCurrencyView() {
-    Currency euro = createEuro();
-    List<Currency> sellingCurrencies = new ArrayList<>();
-    Currency poundsSterling = createPoundsSterling();
-    sellingCurrencies.add(poundsSterling);
-    Currency hongKongDollars = createHongKongDollars();
-    sellingCurrencies.add(hongKongDollars);
-    List<Period> periods = createPeriods(PeriodType.CALENDAR_MONTH);
-    ExchangeRatesBuyingCurrencyView exchangeRatesBuyingCurrencyView =
-        new ExchangeRatesBuyingCurrencyView(euro, sellingCurrencies, periods);
-    ExchangeRate euroPoundsSterling = createEuroPoundsSterling();
-    Optional<BigDecimal> euroPoundsSterlingRate = Optional.of(euroPoundsSterling.getRate());
-    exchangeRatesBuyingCurrencyView.setCurrentExchangeRate(poundsSterling, euroPoundsSterlingRate);
-    ExchangeRate euroHongKongDollars = createEuroHongKongDollars();
-    Optional<BigDecimal> euroHongKongDollarsRate = Optional.of(euroHongKongDollars.getRate());
-    exchangeRatesBuyingCurrencyView.setCurrentExchangeRate(hongKongDollars,
-        euroHongKongDollarsRate);
-    Period december = createDecember();
-    Period january = createJanuary();
-    exchangeRatesBuyingCurrencyView.setHistoricalExchangeRate(poundsSterling, december,
-        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_END_DEC));
-    exchangeRatesBuyingCurrencyView.setHistoricalExchangeRate(poundsSterling, january,
-        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN));
-    exchangeRatesBuyingCurrencyView.setHistoricalExchangeRate(hongKongDollars, december,
-        Optional.empty());
-    exchangeRatesBuyingCurrencyView.setHistoricalExchangeRate(hongKongDollars, january,
-        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS));
-    return exchangeRatesBuyingCurrencyView;
   }
 
   public static Period createCurrentPeriod(PeriodType periodType) {

@@ -1,6 +1,7 @@
 
 package hsbc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Currency implements Comparable<Currency> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Exclude
+  @JsonIgnore
   private Long id;
 
   @Column
@@ -33,7 +35,16 @@ public class Currency implements Comparable<Currency> {
   private String description;
 
   @Column
+  @JsonIgnore
   private Integer sortOrderNumber;
+  
+  @Column
+  @JsonIgnore
+  private boolean defaultSubjectCurrency;
+  
+  @Column
+  @JsonIgnore
+  private boolean defaultOtherCurrency;
 
   /**
    * Compares two currencies for use when sorting currencies in a logical sort order. Popular

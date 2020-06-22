@@ -30,24 +30,24 @@
 	<Loggers>
 		<!-- The Root logger sets the log level for any loggers that are not specifically 
 			configured below. -->
-		<Root level="INFO" additivity="false">
+		<Root level="WARN" additivity="false">
 			<AppenderRef ref="file" />
 		</Root>
 		<!-- A given Logger name should not be specified more than once. If there 
 			are multiple entries for the same Logger name the last one lexically will 
 			be used. -->
-		<Logger name="hsbc" level="TRACE" additivity="false">
+		<Logger name="hsbc" level="DEBUG" additivity="false">
 			<AppenderRef ref="file" />
 		</Logger>
 		<Logger name="org.springframework.data.jpa.repository"
-			level="TRACE" additivity="false">
+			level="WARN" additivity="false">
 			<AppenderRef ref="file" />
 		</Logger>
-		<Logger name="org.springframework" level="TRACE"
+		<Logger name="org.springframework" level="WARN"
 			additivity="false">
 			<AppenderRef ref="file" />
 		</Logger>
-		<Logger name="org.hibernate" level="TRACE" additivity="false">
+		<Logger name="org.hibernate" level="WARN" additivity="false">
 			<AppenderRef ref="file" />
 		</Logger>
 	</Loggers>

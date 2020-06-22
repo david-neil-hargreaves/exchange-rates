@@ -21,7 +21,7 @@ public class ServiceException extends Exception {
   /**
    * Constructs a service exception with the given message.
    * 
-   * @param message the detailed message for the service exception.
+   * @param message the message for the service exception.
    */
   public ServiceException(String message) {
     super(message);
@@ -30,7 +30,7 @@ public class ServiceException extends Exception {
   /**
    * Constructs a service exception with the given message and exception cause.
    * 
-   * @param message the detailed message for the service exception.
+   * @param message the message for the service exception.
    * @param cause the cause of the service exception.
    */
   public ServiceException(String message, Exception cause) {

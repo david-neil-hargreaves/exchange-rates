@@ -8,6 +8,7 @@ import java.util.Date;
 public class TestData {
 
   public static final String CURRENCY_CODE_INVALID = "GRO";
+  public static final Long CURRENCY_ID_INVALID = 666L;
 
   public static final Date DATE_TIME_20200124_000000 = getDate("2020-01-24T00:00:00Z");
   public static final Date DATE_TIME_20200224_000000 = getDate("2020-02-24T00:00:00Z");

@@ -16,6 +16,7 @@ import lombok.Setter;
  * Represents exchange rates from a buying currency to multiple selling currencies.
  */
 @Data
+@Deprecated
 public class ExchangeRatesBuyingCurrencyView {
 
   private Currency buyingCurrency;

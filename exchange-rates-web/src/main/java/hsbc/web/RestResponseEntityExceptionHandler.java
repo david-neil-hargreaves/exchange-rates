@@ -77,6 +77,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
   @ExceptionHandler(value = {Exception.class})
   public ResponseEntity<Object> handleSystemError(Exception exception, WebRequest request) {
     LOGGER.traceEntry();
+    LOGGER.error(exception.getMessage(), exception);
     List<String> errors = new ArrayList<String>();
     ErrorResponse errorResponse =
         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, MESSAGE_FOR_END_USER, errors);
