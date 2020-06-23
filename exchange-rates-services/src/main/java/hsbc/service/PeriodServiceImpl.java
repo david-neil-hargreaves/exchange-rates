@@ -5,6 +5,7 @@ package hsbc.service;
 import hsbc.model.Period;
 import hsbc.model.PeriodType;
 import hsbc.model.repository.PeriodRepository;
+import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.ServiceException;
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +26,12 @@ public class PeriodServiceImpl implements PeriodService {
 
   @Override
   public List<Period> getLatestHistoricalPeriods(PeriodType type, int numberOfPeriods)
-      throws ServiceException {
+      throws InvalidConfigurationException {
     LOGGER.traceEntry();
     Optional<Period> optionalCurrentPeriod = periodRepository.findCurrentPeriod(type);
     if (!(optionalCurrentPeriod.isPresent())) {
       String message = String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, type.getDescription());
-      throw new ServiceException(message);
+      throw new InvalidConfigurationException(message);
     }
     Period currentPeriod = optionalCurrentPeriod.get();
     List<Period> periodsBeforeCurrentPeriod =

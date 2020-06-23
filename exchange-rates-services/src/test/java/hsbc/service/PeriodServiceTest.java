@@ -13,6 +13,7 @@ import hsbc.model.Period;
 import hsbc.model.PeriodType;
 import hsbc.model.repository.PeriodRepository;
 import hsbc.test.AbstractTest;
+import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.ServiceException;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,9 +81,9 @@ public class PeriodServiceTest extends AbstractTest {
     when(mockPeriodRepository.findCurrentPeriod(periodType)).thenReturn(Optional.empty());
     String message =
         String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, periodType.getDescription());
-    ServiceException serviceException = new ServiceException(message);
-    expectedException.expect(serviceException.getClass());
-    expectedException.expectMessage(serviceException.getMessage());
+    InvalidConfigurationException invalidConfigurationException = new InvalidConfigurationException(message);
+    expectedException.expect(invalidConfigurationException.getClass());
+    expectedException.expectMessage(invalidConfigurationException.getMessage());
     expectedException.expectCause(IsEqual.equalTo(null));
     int numberOfPeriods = 2;
     periodService.getLatestHistoricalPeriods(periodType, numberOfPeriods);

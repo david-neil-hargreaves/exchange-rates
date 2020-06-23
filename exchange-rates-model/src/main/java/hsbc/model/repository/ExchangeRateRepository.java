@@ -15,13 +15,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
 
-  public List<ExchangeRate> findByBuyingCurrencyAndSellingCurrencyIn(
+  /*public List<ExchangeRate> findByBuyingCurrencyAndSellingCurrencyIn(
       @Param(value = "buyingCurrency") Currency buyingCurrency,
       @Param(value = "sellingCurrencies") List<Currency> sellingCurrencies);
   
   public List<ExchangeRate> findBySellingCurrencyAndBuyingCurrencyIn(
       @Param(value = "sellingCurrency") Currency sellingCurrency,
-      @Param(value = "buyingCurrencies") List<Currency> buyingCurrencies);
+      @Param(value = "buyingCurrencies") List<Currency> buyingCurrencies);*/
 
   public Optional<ExchangeRate> findByBuyingCurrencyAndSellingCurrency(
       @Param(value = "buyingCurrency") Currency buyingCurrency,

@@ -18,6 +18,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import hsbc.model.Currency;
 import hsbc.model.repository.CurrencyRepository;
 import hsbc.test.AbstractTest;
+import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.ServiceException;
 import hsbc.util.exception.UnsupportedCurrencyException;
 import java.util.ArrayList;
@@ -174,10 +175,10 @@ public class CurrencyServiceTest extends AbstractTest {
   public void testFindDefaultSubjectCurrencyNoneSetUp() throws ServiceException {
     List<Currency> currencies = new ArrayList<>();
     when(mockCurrencyRepository.findByDefaultSubjectCurrencyTrue()).thenReturn(currencies);
-    ServiceException serviceException =
-        new ServiceException(MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY);
-    expectedException.expect(serviceException.getClass());
-    expectedException.expectMessage(serviceException.getMessage());
+    InvalidConfigurationException invalidConfigurationException =
+        new InvalidConfigurationException(MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY);
+    expectedException.expect(invalidConfigurationException.getClass());
+    expectedException.expectMessage(invalidConfigurationException.getMessage());
     expectedException.expectCause(IsEqual.equalTo(null));
     currencyService.findDefaultSubjectCurrency();
   }
@@ -187,10 +188,10 @@ public class CurrencyServiceTest extends AbstractTest {
     List<Currency> currencies = createCurrencies();
     when(mockCurrencyRepository.findByDefaultSubjectCurrencyTrue()).thenReturn(currencies);
     String message = String.format(MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES, currencies.size());
-    ServiceException serviceException =
-        new ServiceException(message);
-    expectedException.expect(serviceException.getClass());
-    expectedException.expectMessage(serviceException.getMessage());
+    InvalidConfigurationException invalidConfigurationException =
+        new InvalidConfigurationException(message);
+    expectedException.expect(invalidConfigurationException.getClass());
+    expectedException.expectMessage(invalidConfigurationException.getMessage());
     expectedException.expectCause(IsEqual.equalTo(null));
     currencyService.findDefaultSubjectCurrency();
   }

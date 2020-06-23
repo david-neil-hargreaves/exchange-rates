@@ -1,6 +1,6 @@
 package hsbc.util.exception;
 
-public class InvalidConfigurationException extends Exception {
+public class InvalidConfigurationException extends ServiceException {
 
   private static final long serialVersionUID = 1L;
 

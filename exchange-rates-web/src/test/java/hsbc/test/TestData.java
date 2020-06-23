@@ -2,7 +2,6 @@ package hsbc.test;
 
 import hsbc.model.Currency;
 import hsbc.model.Period;
-import hsbc.model.view.ExchangeRatesBuyingCurrencyView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +46,6 @@ public class TestData {
     currencyCodes.add(CURRENCY_CODE_POUNDS_STERLING_LOWER_CASE);
     currencyCodes.add(CURRENCY_CODE_HONG_KONG_DOLLARS_LOWER_CASE);
     return currencyCodes;
-  }
-
-  public static ExchangeRatesBuyingCurrencyView createExchangeRatesBuyingCurrencyView() {
-    Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createSellingCurrencies();
-    List<Period> periods = new ArrayList<>();
-    ExchangeRatesBuyingCurrencyView exchangeRatesBuyingCurrencyView =
-        new ExchangeRatesBuyingCurrencyView(buyingCurrency, sellingCurrencies, periods);
-    return exchangeRatesBuyingCurrencyView;
   }
 
   public static Currency createEuro() {

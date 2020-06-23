@@ -2,6 +2,7 @@ package hsbc.service;
 
 import hsbc.model.Currency;
 import hsbc.model.repository.CurrencyRepository;
+import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.ServiceException;
 import hsbc.util.exception.UnsupportedCurrencyException;
 import java.util.ArrayList;
@@ -72,13 +73,13 @@ public class CurrencyServiceImpl implements CurrencyService {
   }
 
   @Override
-  public Currency findDefaultSubjectCurrency() throws ServiceException {
+  public Currency findDefaultSubjectCurrency() throws InvalidConfigurationException {
     List<Currency> currencies = currencyRepository.findByDefaultSubjectCurrencyTrue();
     if (currencies.size() == 0) {
-      throw new ServiceException(MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY);
+      throw new InvalidConfigurationException(MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY);
     } else if (currencies.size() > 1) {
       String message = String.format(MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES, currencies.size());
-      throw new ServiceException(message);
+      throw new InvalidConfigurationException(message);
     }
     return currencies.get(0);
   }
