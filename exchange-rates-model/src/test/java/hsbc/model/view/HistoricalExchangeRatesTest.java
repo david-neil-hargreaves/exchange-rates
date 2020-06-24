@@ -11,6 +11,7 @@ import static hsbc.test.TestData.createPoundsSterling;
 import static hsbc.test.TestData.createSellingCurrencies;
 import static hsbc.test.TestData.createUsDollars;
 import static org.junit.Assert.assertEquals;
+
 import hsbc.model.Currency;
 import hsbc.model.Period;
 import hsbc.model.PeriodType;
@@ -47,26 +48,24 @@ public class HistoricalExchangeRatesTest {
     assertEquals(ATTRIBUTE_OTHER_CURRENCIES, sellingCurrencies,
         historicalExchangeRates.getOtherCurrencies());
     assertEquals(ATTRIBUTE_PERIODS, periods, historicalExchangeRates.getPeriods());
-    Currency hongKongDollars = createHongKongDollars();
     assertEquals(ATTRIBUTE_RATE, Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS_DECEMBER),
         historicalExchangeRates.getExchangeRate(usDollars, december));
     assertEquals(ATTRIBUTE_RATE, Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_JANUARY),
         historicalExchangeRates.getExchangeRate(poundsSterling, january));
     assertEquals(ATTRIBUTE_RATE, Optional.empty(),
         historicalExchangeRates.getExchangeRate(usDollars, january));
+    Currency hongKongDollars = createHongKongDollars();
     List<HistoricalExchangeRate> expectedHistoricalExchangeRates = new ArrayList<>();
     HistoricalExchangeRate hongKongDollarsExchangeRates =
         new HistoricalExchangeRate(hongKongDollars);
     expectedHistoricalExchangeRates.add(hongKongDollarsExchangeRates);
     hongKongDollarsExchangeRates.addRate(Optional.empty());
     hongKongDollarsExchangeRates.addRate(Optional.empty());
-    HistoricalExchangeRate usDollarsExchangeRates =
-        new HistoricalExchangeRate(usDollars);
+    HistoricalExchangeRate usDollarsExchangeRates = new HistoricalExchangeRate(usDollars);
     expectedHistoricalExchangeRates.add(usDollarsExchangeRates);
     usDollarsExchangeRates.addRate(Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS_DECEMBER));
     usDollarsExchangeRates.addRate(Optional.empty());
-    HistoricalExchangeRate poundsSterlingExchangeRates =
-        new HistoricalExchangeRate(poundsSterling);
+    HistoricalExchangeRate poundsSterlingExchangeRates = new HistoricalExchangeRate(poundsSterling);
     expectedHistoricalExchangeRates.add(poundsSterlingExchangeRates);
     poundsSterlingExchangeRates.addRate(Optional.empty());
     poundsSterlingExchangeRates

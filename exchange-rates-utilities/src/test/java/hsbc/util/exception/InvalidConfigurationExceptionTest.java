@@ -2,6 +2,7 @@
 package hsbc.util.exception;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 public class InvalidConfigurationExceptionTest {

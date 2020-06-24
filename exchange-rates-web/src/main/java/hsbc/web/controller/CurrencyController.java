@@ -2,6 +2,7 @@ package hsbc.web.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import hsbc.model.Currency;
 import hsbc.service.CurrencyService;
 import hsbc.util.exception.ServiceException;
@@ -42,10 +43,11 @@ public class CurrencyController {
     List<Currency> currencies = currencyService.findAll();
     return LOGGER.traceExit(new ResponseEntity<>(currencies, OK));
   }
-  
+
   /**
    * Returns the default subject currency.
-   * @throws ServiceException 
+   * 
+   * @throws ServiceException
    * 
    */
   @GetMapping(value = "/defaultSubjectCurrency")
@@ -54,7 +56,7 @@ public class CurrencyController {
     Currency currency = currencyService.findDefaultSubjectCurrency();
     return LOGGER.traceExit(new ResponseEntity<>(currency, OK));
   }
-  
+
   /**
    * Returns all default other currencies.
    * 

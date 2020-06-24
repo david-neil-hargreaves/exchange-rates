@@ -209,7 +209,7 @@ public class TestData {
     currencies.add(createHongKongDollars());
     return currencies;
   }
-  
+
   public static List<Currency> createSellingCurrencies() {
     List<Currency> currencies = new ArrayList<>();
     currencies.add(createHongKongDollars());

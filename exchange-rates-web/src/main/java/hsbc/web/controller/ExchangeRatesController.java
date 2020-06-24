@@ -2,6 +2,7 @@ package hsbc.web.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import hsbc.model.view.CurrentExchangeRates;
 import hsbc.model.view.HistoricalExchangeRates;
 import hsbc.service.ExchangeRateService;
@@ -61,7 +62,7 @@ public class ExchangeRatesController {
     LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
-  
+
   /**
    * Returns current buying exchange rates from the given buying currency to the given selling
    * currencies.
@@ -87,74 +88,24 @@ public class ExchangeRatesController {
     LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
-  
+
+  /**
+   * Returns current buying exchange rates from a default buying currency to the default selling
+   * currencies.
+   * 
+   * @return exchange rates.
+   * @throws ServiceException service exception.
+   * @throws ValidationException validation exception.
+   */
   @GetMapping(value = "/buy/current")
   public ResponseEntity<CurrentExchangeRates> getCurrentBuyingExchangeRates()
       throws ServiceException, ValidationException, ConstraintViolationException {
-    CurrentExchangeRates currentExchangeRates =
-        exchangeRateService.getCurrentBuyingExchangeRates();
+    CurrentExchangeRates currentExchangeRates = exchangeRateService.getCurrentBuyingExchangeRates();
     LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
-  
-  /**
-   * Returns historical buying exchange rates from the given buying currency to the given selling
-   * currencies.
-   * 
-   * @param buyingCurrencyId The buying currency i.d.
-   * @param sellingCurrencyIds The selling currency i.d.s.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
-   */
-  @GetMapping(value = "/buy/history/{buyingCurrencyId}")
-  public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates(
-      @PathVariable(name = "buyingCurrencyId") Long buyingCurrencyId,
-      @RequestParam List<Long> sellingCurrencyIds)
-      throws ServiceException, ValidationException, ConstraintViolationException {
-    LOGGER.traceEntry();
-    HistoricalExchangeRates historicalExchangeRates =
-        exchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyId, sellingCurrencyIds);
-    LOGGER.debug(historicalExchangeRates);
-    return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
-  }
-  
-  /**
-   * Returns historical buying exchange rates from the given buying currency to the given selling
-   * currencies.
-   * 
-   * @param buyingCurrencyCode The buying currency code.
-   * @param sellingCurrencyCodes The selling currency codes.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
-   */
-  @GetMapping(value = "/buy/history/code/{buyingCurrencyCode}")
-  public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates(
-      @PathVariable(name = "buyingCurrencyCode") @NotBlank @Size(min = 3, max = 3,
-          message = "Buying currency code must be 3 characters.") String buyingCurrencyCode,
-      @RequestParam List<@NotBlank @Size(min = 3, max = 3,
-          message = "Selling currency code must be 3 characters.") String> sellingCurrencyCodes)
-      throws ServiceException, ValidationException, ConstraintViolationException {
-    LOGGER.traceEntry(buyingCurrencyCode);
-    buyingCurrencyCode = StringUtil.sanitiseToUpperCase(buyingCurrencyCode);
-    sellingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(sellingCurrencyCodes);
-    HistoricalExchangeRates historicalExchangeRates =
-        exchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyCode, sellingCurrencyCodes);
-    LOGGER.debug(historicalExchangeRates);
-    return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
-  }
-  
-  @GetMapping(value = "/buy/history")
-  public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates()
-      throws ServiceException, ValidationException, ConstraintViolationException {
-    LOGGER.traceEntry();
-    HistoricalExchangeRates historicalExchangeRates =
-        exchangeRateService.getHistoricalBuyingExchangeRates();
-    LOGGER.debug(historicalExchangeRates);
-    return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
-  }
-  
+
+
   /**
    * Returns current selling exchange rates to the given selling currency from the given buying
    * currencies.
@@ -176,7 +127,7 @@ public class ExchangeRatesController {
     LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
-  
+
   /**
    * Returns current selling exchange rates to the given selling currency from the given buying
    * currencies.
@@ -197,12 +148,20 @@ public class ExchangeRatesController {
     LOGGER.traceEntry(sellingCurrencyCode);
     sellingCurrencyCode = StringUtil.sanitiseToUpperCase(sellingCurrencyCode);
     buyingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(buyingCurrencyCodes);
-    CurrentExchangeRates currentExchangeRates =
-        exchangeRateService.getCurrentSellingExchangeRates(sellingCurrencyCode, buyingCurrencyCodes);
+    CurrentExchangeRates currentExchangeRates = exchangeRateService
+        .getCurrentSellingExchangeRates(sellingCurrencyCode, buyingCurrencyCodes);
     LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
-  
+
+  /**
+   * Returns current selling exchange rates from a default selling currency to the default buying
+   * currencies.
+   * 
+   * @return exchange rates.
+   * @throws ServiceException service exception.
+   * @throws ValidationException validation exception.
+   */
   @GetMapping(value = "/sell/current")
   public ResponseEntity<CurrentExchangeRates> getCurrentSellingExchangeRates()
       throws ServiceException, ValidationException, ConstraintViolationException {
@@ -212,7 +171,74 @@ public class ExchangeRatesController {
     LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
-  
+
+  /**
+   * Returns historical buying exchange rates from the given buying currency to the given selling
+   * currencies.
+   * 
+   * @param buyingCurrencyId The buying currency i.d.
+   * @param sellingCurrencyIds The selling currency i.d.s.
+   * @return exchange rates.
+   * @throws ServiceException service exception.
+   * @throws ValidationException validation exception.
+   */
+  @GetMapping(value = "/buy/history/{buyingCurrencyId}")
+  public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates(
+      @PathVariable(name = "buyingCurrencyId") Long buyingCurrencyId,
+      @RequestParam List<Long> sellingCurrencyIds)
+      throws ServiceException, ValidationException, ConstraintViolationException {
+    LOGGER.traceEntry();
+    HistoricalExchangeRates historicalExchangeRates =
+        exchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyId, sellingCurrencyIds);
+    LOGGER.debug(historicalExchangeRates);
+    return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
+  }
+
+  /**
+   * Returns historical buying exchange rates from the given buying currency to the given selling
+   * currencies.
+   * 
+   * @param buyingCurrencyCode The buying currency code.
+   * @param sellingCurrencyCodes The selling currency codes.
+   * @return exchange rates.
+   * @throws ServiceException service exception.
+   * @throws ValidationException validation exception.
+   */
+  @GetMapping(value = "/buy/history/code/{buyingCurrencyCode}")
+  public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates(
+      @PathVariable(name = "buyingCurrencyCode") @NotBlank @Size(min = 3, max = 3,
+          message = "Buying currency code must be 3 characters.") String buyingCurrencyCode,
+      @RequestParam List<@NotBlank @Size(min = 3, max = 3,
+          message = "Selling currency code must be 3 characters.") String> sellingCurrencyCodes)
+      throws ServiceException, ValidationException, ConstraintViolationException {
+    LOGGER.traceEntry(buyingCurrencyCode);
+    buyingCurrencyCode = StringUtil.sanitiseToUpperCase(buyingCurrencyCode);
+    sellingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(sellingCurrencyCodes);
+    HistoricalExchangeRates historicalExchangeRates = exchangeRateService
+        .getHistoricalBuyingExchangeRates(buyingCurrencyCode, sellingCurrencyCodes);
+    LOGGER.debug(historicalExchangeRates);
+    return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
+  }
+
+  /**
+   * Returns historical buying exchange rates from a default buying currency to the default selling
+   * currencies.
+   * 
+   * @return exchange rates.
+   * @throws ServiceException service exception.
+   * @throws ValidationException validation exception.
+   */
+  @GetMapping(value = "/buy/history")
+  public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates()
+      throws ServiceException, ValidationException, ConstraintViolationException {
+    LOGGER.traceEntry();
+    HistoricalExchangeRates historicalExchangeRates =
+        exchangeRateService.getHistoricalBuyingExchangeRates();
+    LOGGER.debug(historicalExchangeRates);
+    return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
+  }
+
+
   /**
    * Returns historical selling exchange rates to the given selling currency from the given buying
    * currencies.
@@ -234,7 +260,7 @@ public class ExchangeRatesController {
     LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
-  
+
   /**
    * Returns historical selling exchange rates to the given selling currency from the given buying
    * currencies.
@@ -255,12 +281,20 @@ public class ExchangeRatesController {
     LOGGER.traceEntry(sellingCurrencyCode);
     sellingCurrencyCode = StringUtil.sanitiseToUpperCase(sellingCurrencyCode);
     buyingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(buyingCurrencyCodes);
-    HistoricalExchangeRates historicalExchangeRates =
-        exchangeRateService.getHistoricalSellingExchangeRates(sellingCurrencyCode, buyingCurrencyCodes);
+    HistoricalExchangeRates historicalExchangeRates = exchangeRateService
+        .getHistoricalSellingExchangeRates(sellingCurrencyCode, buyingCurrencyCodes);
     LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
-  
+
+  /**
+   * Returns historical selling exchange rates from a default selling currency to the default buying
+   * currencies.
+   * 
+   * @return exchange rates.
+   * @throws ServiceException service exception.
+   * @throws ValidationException validation exception.
+   */
   @GetMapping(value = "/sell/history")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalSellingExchangeRates()
       throws ServiceException, ValidationException, ConstraintViolationException {

@@ -114,6 +114,7 @@
 					<excludes>
 						<exclude>hsbc/WebApplication.class</exclude>
 						<exclude>hsbc/configuration/EnvironmentConfiguration.class</exclude>
+						<exclude>hsbc/configuration/SecurityConfiguration.class</exclude>
 						<exclude>hsbc/configuration/SwaggerConfiguration.class</exclude>
 					</excludes>
 				</configuration>

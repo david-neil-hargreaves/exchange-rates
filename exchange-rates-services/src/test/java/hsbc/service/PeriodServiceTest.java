@@ -81,7 +81,8 @@ public class PeriodServiceTest extends AbstractTest {
     when(mockPeriodRepository.findCurrentPeriod(periodType)).thenReturn(Optional.empty());
     String message =
         String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, periodType.getDescription());
-    InvalidConfigurationException invalidConfigurationException = new InvalidConfigurationException(message);
+    InvalidConfigurationException invalidConfigurationException =
+        new InvalidConfigurationException(message);
     expectedException.expect(invalidConfigurationException.getClass());
     expectedException.expectMessage(invalidConfigurationException.getMessage());
     expectedException.expectCause(IsEqual.equalTo(null));

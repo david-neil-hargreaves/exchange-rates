@@ -29,5 +29,5 @@ public class ErrorResponseTest {
     assertEquals(ATTRIBUTE_MESSAGE, MESSAGE, errorResponse.getMessage());
     assertEquals(ATTRIBUTE_ERRORS, ERRORS, errorResponse.getErrors());
   }
-  
+
 }

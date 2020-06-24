@@ -52,7 +52,8 @@ public class TestData {
   public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_HONG_KONG_DOLLARS =
       new BigDecimal("9.54");
   public static final BigDecimal EXCHANGE_RATE_BUY_US_DOLLARS_SELL_EUROS = new BigDecimal("0.91");
-  public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS = new BigDecimal("0.12");
+  public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS =
+      new BigDecimal("0.12");
 
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_20200224 =
       new BigDecimal("0.95");
@@ -146,7 +147,7 @@ public class TestData {
     currency.setSortOrderNumber(CURRENCY_SORT_ORDER_HONG_KONG_DOLLARS);
     return currency;
   }
-  
+
   public static Currency createLira() {
     Currency currency = new Currency();
     currency.setId(CURRENCY_ID_LIRA);
@@ -207,7 +208,7 @@ public class TestData {
     exchangeRate.setRate(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_HONG_KONG_DOLLARS);
     return exchangeRate;
   }
-  
+
   public static ExchangeRate createUsDollarsEuro() {
     ExchangeRate exchangeRate = new ExchangeRate();
     exchangeRate.setBuyingCurrency(createUsDollars());
@@ -216,7 +217,7 @@ public class TestData {
     exchangeRate.setStartDateTime(DATE_20200206_000000);
     return exchangeRate;
   }
-  
+
   public static ExchangeRate createHongKongDollarsEuro() {
     ExchangeRate exchangeRate = new ExchangeRate();
     exchangeRate.setBuyingCurrency(createHongKongDollars());
@@ -318,7 +319,7 @@ public class TestData {
     currencies.add(createEuro());
     return currencies;
   }
-  
+
   public static List<Long> getCurrencyIds() {
     List<Long> currencyIds = new ArrayList<>();
     currencyIds.add(CURRENCY_ID_POUNDS_STERLING);
@@ -436,7 +437,7 @@ public class TestData {
     periods.add(createJanuary());
     return periods;
   }
-  
+
   public static List<Period> createPeriods() {
     return createPeriods(PeriodType.CALENDAR_MONTH);
   }

@@ -19,8 +19,7 @@ public class ServiceExceptionTest {
     ServiceException serviceException = new ServiceException(runtimeException);
     String expectedMessage = String.format(EXCEPTION_MESSAGE_FORMAT,
         runtimeException.getClass().getName(), runtimeException.getMessage());
-    assertEquals(ATTRIBUTE_EXCEPTION_MESSAGE, expectedMessage,
-        serviceException.getMessage());
+    assertEquals(ATTRIBUTE_EXCEPTION_MESSAGE, expectedMessage, serviceException.getMessage());
     assertEquals(ATTRIBUTE_EXCEPTION_CAUSE, runtimeException, serviceException.getCause());
   }
 

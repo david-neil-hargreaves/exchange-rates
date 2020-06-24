@@ -12,7 +12,7 @@ public interface ExchangeRateService {
 
   public CurrentExchangeRates getCurrentBuyingExchangeRates(Currency buyingCurrency,
       List<Currency> sellingCurrencies);
-  
+
   public CurrentExchangeRates getCurrentBuyingExchangeRates(Long buyingCurrencyId,
       List<Long> sellingCurrencyIds) throws ValidationException, ServiceException;
 
@@ -20,10 +20,10 @@ public interface ExchangeRateService {
       List<String> sellingCurrencyCodes) throws ValidationException, ServiceException;
 
   public CurrentExchangeRates getCurrentBuyingExchangeRates() throws ServiceException;
-  
+
   public CurrentExchangeRates getCurrentSellingExchangeRates(Currency sellingCurrency,
       List<Currency> buyingCurrencies);
-  
+
   public CurrentExchangeRates getCurrentSellingExchangeRates(Long sellingCurrencyId,
       List<Long> buyingCurrencyIds) throws ValidationException, ServiceException;
 
@@ -34,7 +34,7 @@ public interface ExchangeRateService {
 
   public HistoricalExchangeRates getHistoricalBuyingExchangeRates(Currency buyingCurrency,
       List<Currency> sellingCurrencies, List<Period> periods);
-  
+
   public HistoricalExchangeRates getHistoricalBuyingExchangeRates(Long buyingCurrencyId,
       List<Long> sellingCurrencyIds, List<Period> periods) throws ValidationException;
 
@@ -48,16 +48,16 @@ public interface ExchangeRateService {
       List<String> sellingCurrencyCodes) throws ValidationException, ServiceException;
 
   public HistoricalExchangeRates getHistoricalBuyingExchangeRates() throws ServiceException;
- 
+
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(Currency sellingCurrency,
       List<Currency> buyingCurrencies, List<Period> periods);
-  
+
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(Long sellingCurrencyId,
       List<Long> buyingCurrencyIds, List<Period> periods) throws ValidationException;
 
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(String sellingCurrencyCode,
       List<String> buyingCurrencyCodes, List<Period> periods) throws ValidationException;
-  
+
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(Long sellingCurrencyId,
       List<Long> buyingCurrencyIds) throws ValidationException, ServiceException;
 

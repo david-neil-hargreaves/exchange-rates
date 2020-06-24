@@ -6,7 +6,6 @@ import hsbc.model.Period;
 import hsbc.model.PeriodType;
 import hsbc.model.repository.PeriodRepository;
 import hsbc.util.exception.InvalidConfigurationException;
-import hsbc.util.exception.ServiceException;
 import java.util.List;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;

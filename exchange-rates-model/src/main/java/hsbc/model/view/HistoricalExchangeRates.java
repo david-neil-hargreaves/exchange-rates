@@ -76,6 +76,11 @@ public class HistoricalExchangeRates {
     }
   }
 
+  /**
+   * Returns the historical exchange rates.
+   * 
+   * @return The historical exchange rates.
+   */
   public List<HistoricalExchangeRate> getHistoricalExchangeRates() {
     List<HistoricalExchangeRate> historicalExchangeRates = new ArrayList<>();
     for (Currency otherCurrency : otherCurrencies) {

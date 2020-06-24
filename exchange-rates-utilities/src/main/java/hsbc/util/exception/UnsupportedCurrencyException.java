@@ -9,7 +9,7 @@ public class UnsupportedCurrencyException extends ValidationException {
   private static final long serialVersionUID = 1L;
 
   public static final String MESSAGE_UNKNOWN_CURRENCY_CODE = "Currency code %s not supported.";
-  
+
   public static final String MESSAGE_UNKNOWN_CURRENCY_ID = "Unknown currency with i.d. %s.";
 
   /**
@@ -20,7 +20,7 @@ public class UnsupportedCurrencyException extends ValidationException {
   public UnsupportedCurrencyException(String currencyCode) {
     super(String.format(MESSAGE_UNKNOWN_CURRENCY_CODE, currencyCode));
   }
-  
+
   /**
    * Constructs a unsupported currency exception with the given currency i.d.
    * 

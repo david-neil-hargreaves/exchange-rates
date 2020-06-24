@@ -1,8 +1,10 @@
 
 package hsbc.util.exception;
 
-import static hsbc.test.TestData.*;
-import static hsbc.util.exception.UnsupportedCurrencyException.*;
+import static hsbc.test.TestData.CURRENCY_CODE_INVALID;
+import static hsbc.test.TestData.CURRENCY_ID_INVALID;
+import static hsbc.util.exception.UnsupportedCurrencyException.MESSAGE_UNKNOWN_CURRENCY_CODE;
+import static hsbc.util.exception.UnsupportedCurrencyException.MESSAGE_UNKNOWN_CURRENCY_ID;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

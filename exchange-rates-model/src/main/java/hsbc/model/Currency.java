@@ -37,11 +37,11 @@ public class Currency implements Comparable<Currency> {
   @Column
   @JsonIgnore
   private Integer sortOrderNumber;
-  
+
   @Column
   @JsonIgnore
   private boolean defaultSubjectCurrency;
-  
+
   @Column
   @JsonIgnore
   private boolean defaultOtherCurrency;

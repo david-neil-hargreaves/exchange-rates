@@ -13,7 +13,7 @@ import org.junit.Test;
 public class PeriodTypeTest extends AbstractTest {
 
   private static final String ATTRIBUTE_DESCRIPTION = "Description";
-  
+
   @Test
   public void testGetDescription() {
     PeriodType periodType = PeriodType.valueOf(VALID_PERIOD_TYPE);

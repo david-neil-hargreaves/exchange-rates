@@ -15,6 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
 import hsbc.model.Currency;
 import hsbc.model.repository.CurrencyRepository;
 import hsbc.test.AbstractTest;
@@ -45,7 +46,7 @@ public class CurrencyServiceTest extends AbstractTest {
   public void setup() {
     initMocks(this);
   }
-  
+
   @Test
   public void testFindById() throws UnsupportedCurrencyException {
     Currency expectedCurrency = createEuro();
@@ -55,7 +56,7 @@ public class CurrencyServiceTest extends AbstractTest {
     assertEquals(ATTRIBUTE_CURRENCY, expectedCurrency, actualCurrency);
     verify(mockCurrencyRepository, times(1)).findById(expectedCurrency.getId());
   }
-  
+
   @Test
   public void testFindByIdUnsupportedCurrency() throws UnsupportedCurrencyException {
     Long currencyId = CURRENCY_ID_INVALID;
@@ -68,7 +69,7 @@ public class CurrencyServiceTest extends AbstractTest {
     expectedException.expectCause(IsEqual.equalTo(null));
     currencyService.findById(currencyId);
   }
-  
+
   @Test
   public void testFindByIds() throws UnsupportedCurrencyException {
     List<Currency> expectedCurrencies = createCurrencies();
@@ -82,7 +83,7 @@ public class CurrencyServiceTest extends AbstractTest {
       verify(mockCurrencyRepository, times(1)).findById(currency.getId());
     }
   }
-  
+
   @Test
   public void testFindByIdsUnsupportedCurrencyCode() throws UnsupportedCurrencyException {
     List<Currency> currencies = createCurrencies();
@@ -107,7 +108,8 @@ public class CurrencyServiceTest extends AbstractTest {
   public void testFindByCode() throws UnsupportedCurrencyException {
     Currency expectedCurrency = createEuro();
     Optional<Currency> optionalCurrency = Optional.of(expectedCurrency);
-    when(mockCurrencyRepository.findByCode(expectedCurrency.getCode())).thenReturn(optionalCurrency);
+    when(mockCurrencyRepository.findByCode(expectedCurrency.getCode()))
+        .thenReturn(optionalCurrency);
     Currency actualCurrency = currencyService.findByCode(expectedCurrency.getCode());
     assertEquals(ATTRIBUTE_CURRENCY, expectedCurrency, actualCurrency);
     verify(mockCurrencyRepository, times(1)).findByCode(expectedCurrency.getCode());
@@ -159,7 +161,7 @@ public class CurrencyServiceTest extends AbstractTest {
     expectedException.expectCause(IsEqual.equalTo(null));
     currencyService.findByCodes(getCurrencyCodes());
   }
-  
+
   @Test
   public void testFindDefaultSubjectCurrency() throws ServiceException {
     List<Currency> currencies = new ArrayList<>();
@@ -170,24 +172,25 @@ public class CurrencyServiceTest extends AbstractTest {
     assertEquals(ATTRIBUTE_CURRENCY, expectedCurrency, actualCurrency);
     verify(mockCurrencyRepository, times(1)).findByDefaultSubjectCurrencyTrue();
   }
-  
+
   @Test
   public void testFindDefaultSubjectCurrencyNoneSetUp() throws ServiceException {
     List<Currency> currencies = new ArrayList<>();
     when(mockCurrencyRepository.findByDefaultSubjectCurrencyTrue()).thenReturn(currencies);
-    InvalidConfigurationException invalidConfigurationException =
-        new InvalidConfigurationException(MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY);
+    InvalidConfigurationException invalidConfigurationException = new InvalidConfigurationException(
+        MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY);
     expectedException.expect(invalidConfigurationException.getClass());
     expectedException.expectMessage(invalidConfigurationException.getMessage());
     expectedException.expectCause(IsEqual.equalTo(null));
     currencyService.findDefaultSubjectCurrency();
   }
-  
+
   @Test
   public void testFindDefaultSubjectCurrencyMultipleSetUp() throws ServiceException {
     List<Currency> currencies = createCurrencies();
     when(mockCurrencyRepository.findByDefaultSubjectCurrencyTrue()).thenReturn(currencies);
-    String message = String.format(MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES, currencies.size());
+    String message = String.format(
+        MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES, currencies.size());
     InvalidConfigurationException invalidConfigurationException =
         new InvalidConfigurationException(message);
     expectedException.expect(invalidConfigurationException.getClass());
@@ -195,7 +198,7 @@ public class CurrencyServiceTest extends AbstractTest {
     expectedException.expectCause(IsEqual.equalTo(null));
     currencyService.findDefaultSubjectCurrency();
   }
-  
+
   @Test
   public void testFindDefaultOtherCurrencies() {
     List<Currency> expectedCurrencies = createCurrencies();
@@ -204,7 +207,7 @@ public class CurrencyServiceTest extends AbstractTest {
     assertEquals(ATTRIBUTE_CURRENCIES, expectedCurrencies, actualCurrencies);
     verify(mockCurrencyRepository, times(1)).findByDefaultOtherCurrencyTrue();
   }
-  
+
   @Test
   public void testFindAll() {
     List<Currency> expectedCurrencies = createCurrencies();

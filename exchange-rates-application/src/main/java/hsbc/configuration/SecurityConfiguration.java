@@ -24,6 +24,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .exceptionHandling().accessDeniedPage("/access-denied");
   }
 
+  /**
+   * Sets up the application CORS (Cross Origin Resource Sharing) configuration.
+   * 
+   * @return application CORS (Cross Origin Resource Sharing) configuration.
+   */
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();

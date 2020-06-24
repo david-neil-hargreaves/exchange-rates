@@ -5,6 +5,7 @@ import static hsbc.test.TestData.createCurrencies;
 import static hsbc.test.TestData.createCurrenciesSorted;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;

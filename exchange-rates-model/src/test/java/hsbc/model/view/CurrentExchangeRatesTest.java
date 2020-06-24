@@ -6,6 +6,7 @@ import static hsbc.test.TestData.createEuroUsDollars;
 import static hsbc.test.TestData.createHongKongDollars;
 import static hsbc.test.TestData.createSellingCurrencies;
 import static org.junit.Assert.assertEquals;
+
 import hsbc.model.Currency;
 import hsbc.model.ExchangeRate;
 import java.util.ArrayList;
@@ -46,13 +47,11 @@ public class CurrentExchangeRatesTest {
     assertEquals(ATTRIBUTE_RATE, Optional.empty(),
         currentExchangeRates.getExchangeRate(hongKongDollars));
     List<CurrentExchangeRate> expectedCurrentExchangeRates = new ArrayList<>();
+    expectedCurrentExchangeRates.add(new CurrentExchangeRate(hongKongDollars, Optional.empty()));
+    expectedCurrentExchangeRates.add(new CurrentExchangeRate(
+        exchangeRateUsDollars.getSellingCurrency(), Optional.of(exchangeRateUsDollars.getRate())));
     expectedCurrentExchangeRates
-        .add(new CurrentExchangeRate(hongKongDollars, Optional.empty()));
-    expectedCurrentExchangeRates
-        .add(new CurrentExchangeRate(exchangeRateUsDollars.getSellingCurrency(),
-            Optional.of(exchangeRateUsDollars.getRate())));
-    expectedCurrentExchangeRates.add(
-        new CurrentExchangeRate(exchangeRatePoundsSterling.getSellingCurrency(),
+        .add(new CurrentExchangeRate(exchangeRatePoundsSterling.getSellingCurrency(),
             Optional.of(exchangeRatePoundsSterling.getRate())));
     List<CurrentExchangeRate> actualCurrentExchangeRates =
         currentExchangeRates.getCurrentExchangeRates();

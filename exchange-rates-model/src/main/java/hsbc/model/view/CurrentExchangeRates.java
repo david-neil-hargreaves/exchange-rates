@@ -62,6 +62,11 @@ public class CurrentExchangeRates {
     }
   }
 
+  /**
+   * Returns the current exchange rates.
+   * 
+   * @return The current exchange rates.
+   */
   public List<CurrentExchangeRate> getCurrentExchangeRates() {
     List<CurrentExchangeRate> currentExchangeRates = new ArrayList<>();
     for (Currency otherCurrency : otherCurrencies) {
