@@ -1,10 +1,14 @@
 package hsbc.service;
 
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES;
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY;
+
 import hsbc.model.Currency;
 import hsbc.model.repository.CurrencyRepository;
 import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.UnsupportedCurrencyException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -16,11 +20,6 @@ import org.springframework.stereotype.Service;
 public class CurrencyServiceImpl implements CurrencyService {
 
   private static final Logger LOGGER = LogManager.getLogger(CurrencyServiceImpl.class);
-
-  public static final String MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY =
-      "Invalid system configuration - no default subject currency set up.";
-  public static final String MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES =
-      "Invalid system configuration - expecting 1 default subject currency but found %s.";
 
   @Autowired
   private CurrencyRepository currencyRepository;
@@ -89,12 +88,16 @@ public class CurrencyServiceImpl implements CurrencyService {
 
   @Override
   public List<Currency> findDefaultOtherCurrencies() {
-    return currencyRepository.findByDefaultOtherCurrencyTrue();
+    List<Currency> currencies = currencyRepository.findByDefaultOtherCurrencyTrue();
+    Collections.sort(currencies);
+    return currencies;
   }
 
   @Override
   public List<Currency> findAll() {
-    return currencyRepository.findAll();
+    List<Currency> currencies = currencyRepository.findAll();
+    Collections.sort(currencies);
+    return currencies;
   }
 
 }

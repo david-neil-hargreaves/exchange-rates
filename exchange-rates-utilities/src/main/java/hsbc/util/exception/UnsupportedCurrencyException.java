@@ -15,7 +15,7 @@ public class UnsupportedCurrencyException extends ValidationException {
   /**
    * Constructs a unsupported currency exception with the given currency code.
    * 
-   * @param currencyCode the currency code.
+   * @param currencyCode The currency code.
    */
   public UnsupportedCurrencyException(String currencyCode) {
     super(String.format(MESSAGE_UNKNOWN_CURRENCY_CODE, currencyCode));
@@ -24,7 +24,7 @@ public class UnsupportedCurrencyException extends ValidationException {
   /**
    * Constructs a unsupported currency exception with the given currency i.d.
    * 
-   * @param currencyId the currency i.d.
+   * @param currencyId The currency i.d.
    */
   public UnsupportedCurrencyException(Long currencyId) {
     super(String.format(MESSAGE_UNKNOWN_CURRENCY_ID, currencyId));

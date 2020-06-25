@@ -75,7 +75,11 @@ public class TestData {
 
   private static final String PERIOD_DESCRIPTION_DEC = "December 2019";
   private static final String PERIOD_DESCRIPTION_JAN = "January 2020";
-
+  
+  public static final String VALID_EXCHANGE_RATE_ROLE = "BUYING";
+  public static final String EXCHANGE_RATE_ROLE_DESCRIPTION = "buying";
+  public static final String EXCHANGE_RATE_ROLE_DESCRIPTION_INITIAL_CAPITAL_LETTER = "Buying";
+ 
   public static Currency createEuro() {
     Currency currency = new Currency();
     currency.setCode(CURRENCY_CODE_EUROS);

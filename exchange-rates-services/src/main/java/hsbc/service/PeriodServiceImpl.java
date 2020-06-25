@@ -1,6 +1,6 @@
-
-
 package hsbc.service;
+
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED;
 
 import hsbc.model.Period;
 import hsbc.model.PeriodType;
@@ -18,23 +18,21 @@ public class PeriodServiceImpl implements PeriodService {
 
   private static final Logger LOGGER = LogManager.getLogger(PeriodServiceImpl.class);
 
-  public static final String MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED = "Current %s not configured.";
-
   @Autowired
   private PeriodRepository periodRepository;
 
   @Override
-  public List<Period> getLatestHistoricalPeriods(PeriodType type, int numberOfPeriods)
+  public List<Period> getLatestHistoricalPeriods(PeriodType periodType, int numberOfPeriods)
       throws InvalidConfigurationException {
     LOGGER.traceEntry();
-    Optional<Period> optionalCurrentPeriod = periodRepository.findCurrentPeriod(type);
+    Optional<Period> optionalCurrentPeriod = periodRepository.findCurrentPeriod(periodType);
     if (!(optionalCurrentPeriod.isPresent())) {
-      String message = String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, type.getDescription());
+      String message = String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, periodType.getDescription());
       throw new InvalidConfigurationException(message);
     }
     Period currentPeriod = optionalCurrentPeriod.get();
     List<Period> periodsBeforeCurrentPeriod =
-        periodRepository.findPeriodsBeforeStartDateTime(type, currentPeriod.getStartDateTime());
+        periodRepository.findPeriodsBeforeStartDateTime(periodType, currentPeriod.getStartDateTime());
     int startIndex = Math.max((periodsBeforeCurrentPeriod.size() - numberOfPeriods), 0);
     return LOGGER.traceExit(
         periodsBeforeCurrentPeriod.subList(startIndex, periodsBeforeCurrentPeriod.size()));

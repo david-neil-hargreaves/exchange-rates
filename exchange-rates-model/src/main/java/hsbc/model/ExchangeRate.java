@@ -27,6 +27,7 @@ public class ExchangeRate implements Comparable<ExchangeRate> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Exclude
+  @NotNull
   private Long id;
 
   @ManyToOne
@@ -51,7 +52,7 @@ public class ExchangeRate implements Comparable<ExchangeRate> {
    * Compares two exchange rates. These are sorted firstly by buying currency and secondly by
    * selling currency.
    * 
-   * @param other the other exchange rate for use in the comparison.
+   * @param other The other exchange rate for use in the comparison.
    * @return
    *         <li>-1 if this exchange rate should appear before the other when sorting.
    *         <li>1 if this exchange rate should appear after the other when sorting.

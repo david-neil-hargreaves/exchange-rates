@@ -16,7 +16,7 @@ public enum PeriodType {
   /**
    * Returns the period type description.
    * 
-   * @return Description.
+   * @return The period type description.
    */
   public String getDescription() {
     return description;

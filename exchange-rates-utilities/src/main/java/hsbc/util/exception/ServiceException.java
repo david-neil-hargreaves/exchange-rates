@@ -1,7 +1,9 @@
 
 package hsbc.util.exception;
 
-/** Represents a service exception. */
+/** 
+ * Represents a service exception. 
+ */
 public class ServiceException extends Exception {
 
   private static final long serialVersionUID = 1L;
@@ -12,7 +14,7 @@ public class ServiceException extends Exception {
   /**
    * Constructs a service exception with the exception cause.
    * 
-   * @param cause the cause of the service exception.
+   * @param cause The cause of the service exception.
    */
   public ServiceException(Exception cause) {
     super(cause);
@@ -21,7 +23,7 @@ public class ServiceException extends Exception {
   /**
    * Constructs a service exception with the given message.
    * 
-   * @param message the message for the service exception.
+   * @param message The message for the service exception.
    */
   public ServiceException(String message) {
     super(message);
@@ -30,8 +32,8 @@ public class ServiceException extends Exception {
   /**
    * Constructs a service exception with the given message and exception cause.
    * 
-   * @param message the message for the service exception.
-   * @param cause the cause of the service exception.
+   * @param message The message for the service exception.
+   * @param cause The cause of the service exception.
    */
   public ServiceException(String message, Exception cause) {
     super(message, cause);

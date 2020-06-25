@@ -1,18 +1,21 @@
 package hsbc.service;
 
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY;
+
 import hsbc.model.Currency;
 import hsbc.model.ExchangeRate;
 import hsbc.model.ExchangeRateHistory;
 import hsbc.model.ExchangeRatePeriodMatchType;
+import hsbc.model.ExchangeRateRole;
 import hsbc.model.Period;
 import hsbc.model.PeriodType;
 import hsbc.model.repository.ExchangeRateHistoryRepository;
 import hsbc.model.repository.ExchangeRateRepository;
 import hsbc.model.view.CurrentExchangeRates;
 import hsbc.model.view.HistoricalExchangeRates;
+import hsbc.service.validation.ExchangeRateServiceValidator;
 import hsbc.util.DateUtil;
 import hsbc.util.exception.InvalidConfigurationException;
-import hsbc.util.exception.ServiceException;
 import hsbc.util.exception.ValidationException;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -32,9 +35,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   private static final Logger LOGGER = LogManager.getLogger(ExchangeRateServiceImpl.class);
 
-  public static final String MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY =
-      "Invalid system configuration - only one currency set up.";
-
   @Autowired
   private ExchangeRateRepository exchangeRateRepository;
 
@@ -46,6 +46,9 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Autowired
   private PeriodService periodService;
+
+  @Autowired
+  private ExchangeRateServiceValidator exchangeRateServiceValidator;
 
   @Value("${exchange.rates.report.default.period.type}")
   private PeriodType defaultPeriodType;
@@ -66,8 +69,10 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public CurrentExchangeRates getCurrentBuyingExchangeRates(Currency buyingCurrency,
-      List<Currency> sellingCurrencies) {
+      List<Currency> sellingCurrencies) throws ValidationException {
     LOGGER.traceEntry();
+    exchangeRateServiceValidator.validate(buyingCurrency, sellingCurrencies,
+        ExchangeRateRole.BUYING, ExchangeRateRole.SELLING);
     CurrentExchangeRates currenctExchangeRates =
         new CurrentExchangeRates(buyingCurrency, sellingCurrencies);
     for (Currency sellingCurrency : sellingCurrencies) {
@@ -81,7 +86,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public CurrentExchangeRates getCurrentBuyingExchangeRates(Long buyingCurrencyId,
-      List<Long> sellingCurrencyIds) throws ValidationException, ServiceException {
+      List<Long> sellingCurrencyIds) throws ValidationException {
     LOGGER.traceEntry();
     Currency buyingCurrency = currencyService.findById(buyingCurrencyId);
     List<Currency> sellingCurrencies = currencyService.findByIds(sellingCurrencyIds);
@@ -90,7 +95,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public CurrentExchangeRates getCurrentBuyingExchangeRates(String buyingCurrencyCode,
-      List<String> sellingCurrencyCodes) throws ValidationException, ServiceException {
+      List<String> sellingCurrencyCodes) throws ValidationException {
     LOGGER.traceEntry();
     Currency buyingCurrency = currencyService.findByCode(buyingCurrencyCode);
     List<Currency> sellingCurrencies = currencyService.findByCodes(sellingCurrencyCodes);
@@ -98,7 +103,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   }
 
   @Override
-  public CurrentExchangeRates getCurrentBuyingExchangeRates() throws ServiceException {
+  public CurrentExchangeRates getCurrentBuyingExchangeRates()
+      throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency buyingCurrency = currencyService.findDefaultSubjectCurrency();
     List<Currency> sellingCurrencies = getOtherCurrencies(buyingCurrency);
@@ -107,8 +113,10 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public CurrentExchangeRates getCurrentSellingExchangeRates(Currency sellingCurrency,
-      List<Currency> buyingCurrencies) {
+      List<Currency> buyingCurrencies) throws ValidationException {
     LOGGER.traceEntry();
+    exchangeRateServiceValidator.validate(sellingCurrency, buyingCurrencies,
+        ExchangeRateRole.SELLING, ExchangeRateRole.BUYING);
     CurrentExchangeRates currentExchangeRates =
         new CurrentExchangeRates(sellingCurrency, buyingCurrencies);
     for (Currency buyingCurrency : buyingCurrencies) {
@@ -122,7 +130,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public CurrentExchangeRates getCurrentSellingExchangeRates(Long sellingCurrencyId,
-      List<Long> buyingCurrencyIds) throws ValidationException, ServiceException {
+      List<Long> buyingCurrencyIds) throws ValidationException {
     LOGGER.traceEntry();
     Currency sellingCurrency = currencyService.findById(sellingCurrencyId);
     List<Currency> buyingCurrencies = currencyService.findByIds(buyingCurrencyIds);
@@ -131,7 +139,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public CurrentExchangeRates getCurrentSellingExchangeRates(String sellingCurrencyCode,
-      List<String> buyingCurrencyCodes) throws ValidationException, ServiceException {
+      List<String> buyingCurrencyCodes) throws ValidationException {
     LOGGER.traceEntry();
     Currency sellingCurrency = currencyService.findByCode(sellingCurrencyCode);
     List<Currency> buyingCurrencies = currencyService.findByCodes(buyingCurrencyCodes);
@@ -139,7 +147,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   }
 
   @Override
-  public CurrentExchangeRates getCurrentSellingExchangeRates() throws ServiceException {
+  public CurrentExchangeRates getCurrentSellingExchangeRates()
+      throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency sellingCurrency = currencyService.findDefaultSubjectCurrency();
     List<Currency> buyingCurrencies = getOtherCurrencies(sellingCurrency);
@@ -148,8 +157,10 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public HistoricalExchangeRates getHistoricalBuyingExchangeRates(Currency buyingCurrency,
-      List<Currency> sellingCurrencies, List<Period> periods) {
+      List<Currency> sellingCurrencies, List<Period> periods) throws ValidationException {
     LOGGER.traceEntry();
+    exchangeRateServiceValidator.validate(buyingCurrency, sellingCurrencies, periods,
+        ExchangeRateRole.BUYING, ExchangeRateRole.SELLING);
     HistoricalExchangeRates historicalExchangeRates =
         new HistoricalExchangeRates(buyingCurrency, sellingCurrencies, periods);
     populateBuyingExchangeRateHistories(historicalExchangeRates, buyingCurrency, sellingCurrencies,
@@ -179,7 +190,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public HistoricalExchangeRates getHistoricalBuyingExchangeRates(Long buyingCurrencyId,
-      List<Long> sellingCurrencyIds) throws ValidationException, ServiceException {
+      List<Long> sellingCurrencyIds) throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     List<Period> periods =
         periodService.getLatestHistoricalPeriods(defaultPeriodType, defaultNumberHistoricalPeriods);
@@ -189,7 +200,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public HistoricalExchangeRates getHistoricalBuyingExchangeRates(String buyingCurrencyCode,
-      List<String> sellingCurrencyCodes) throws ValidationException, ServiceException {
+      List<String> sellingCurrencyCodes) throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     List<Period> periods =
         periodService.getLatestHistoricalPeriods(defaultPeriodType, defaultNumberHistoricalPeriods);
@@ -198,7 +209,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   }
 
   @Override
-  public HistoricalExchangeRates getHistoricalBuyingExchangeRates() throws ServiceException {
+  public HistoricalExchangeRates getHistoricalBuyingExchangeRates()
+      throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency buyingCurrency = currencyService.findDefaultSubjectCurrency();
     List<Currency> sellingCurrencies = getOtherCurrencies(buyingCurrency);
@@ -210,8 +222,10 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(Currency sellingCurrency,
-      List<Currency> buyingCurrencies, List<Period> periods) {
+      List<Currency> buyingCurrencies, List<Period> periods) throws ValidationException {
     LOGGER.traceEntry();
+    exchangeRateServiceValidator.validate(sellingCurrency, buyingCurrencies, periods,
+        ExchangeRateRole.SELLING, ExchangeRateRole.BUYING);
     HistoricalExchangeRates historicalExchangeRates =
         new HistoricalExchangeRates(sellingCurrency, buyingCurrencies, periods);
     populateSellingExchangeRateHistories(historicalExchangeRates, sellingCurrency, buyingCurrencies,
@@ -241,7 +255,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(Long sellingCurrencyId,
-      List<Long> buyingCurrencyIds) throws ValidationException, ServiceException {
+      List<Long> buyingCurrencyIds) throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     List<Period> periods =
         periodService.getLatestHistoricalPeriods(defaultPeriodType, defaultNumberHistoricalPeriods);
@@ -251,7 +265,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   @Override
   public HistoricalExchangeRates getHistoricalSellingExchangeRates(String sellingCurrencyCode,
-      List<String> buyingCurrencyCodes) throws ValidationException, ServiceException {
+      List<String> buyingCurrencyCodes) throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     List<Period> periods =
         periodService.getLatestHistoricalPeriods(defaultPeriodType, defaultNumberHistoricalPeriods);
@@ -260,7 +274,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   }
 
   @Override
-  public HistoricalExchangeRates getHistoricalSellingExchangeRates() throws ServiceException {
+  public HistoricalExchangeRates getHistoricalSellingExchangeRates()
+      throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency sellingCurrency = currencyService.findDefaultSubjectCurrency();
     List<Currency> buyingCurrencies = getOtherCurrencies(sellingCurrency);

@@ -17,7 +17,7 @@ public final class DateUtil {
    * @param dateTime Date / time.
    * @param startDateTime Start date / time.
    * @param endDateTime End date / time.
-   * @return True if the date / time is between (inclusive) the start and end date / times;
+   * @return true if the date / time is between (inclusive) the start and end date / times;
    *         otherwise returns false.
    */
   public static final boolean isBetween(Date dateTime, Date startDateTime, Date endDateTime) {
@@ -49,10 +49,24 @@ public final class DateUtil {
     }
   }
 
+  /**
+   * Returns the earlier of two date / times.
+   * 
+   * @param oneDateTime One date / time.
+   * @param otherDateTime Other date / time.
+   * @return The earlier date / time.
+   */
   public static final Date getEarlierDate(Date oneDateTime, Date otherDateTime) {
     return oneDateTime.before(otherDateTime) ? oneDateTime : otherDateTime;
   }
 
+  /**
+   * Returns the later of two date / times.
+   * 
+   * @param oneDateTime One date / time.
+   * @param otherDateTime Other date / time.
+   * @return The later date / time.
+   */
   public static final Date getLaterDate(Date oneDateTime, Date otherDateTime) {
     return oneDateTime.after(otherDateTime) ? oneDateTime : otherDateTime;
   }

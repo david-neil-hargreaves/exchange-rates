@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,30 +27,36 @@ public class ExchangeRateHistory implements Comparable<ExchangeRateHistory> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Exclude
+  @NotNull
   private Long id;
 
   @ManyToOne
   @JoinColumn(name = "BUYING_CURRENCY_ID")
+  @NotNull
   private Currency buyingCurrency;
 
   @ManyToOne
   @JoinColumn(name = "SELLING_CURRENCY_ID")
+  @NotNull
   private Currency sellingCurrency;
 
   @Column(name = "START_DATE_TIME")
+  @NotNull
   private Date startDateTime;
 
   @Column(name = "END_DATE_TIME")
+  @NotNull
   private Date endDateTime;
 
   @Column
+  @NotNull
   private BigDecimal rate;
 
   /**
    * Compares two exchange rate histories. These are sorted firstly by buying currency, secondly by
    * selling currency and lastly by start date / time.
    * 
-   * @param other the other exchange rate history for use in the comparison.
+   * @param other The other exchange rate history for use in the comparison.
    * @return
    *         <li>-1 if this exchange rate history should appear before the other when sorting.
    *         <li>1 if this exchange rate history should appear after the other when sorting.

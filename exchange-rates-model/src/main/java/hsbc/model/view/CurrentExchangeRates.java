@@ -3,6 +3,7 @@ package hsbc.model.view;
 import hsbc.model.Currency;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -77,6 +78,7 @@ public class CurrentExchangeRates {
         currentExchangeRates.add(new CurrentExchangeRate(otherCurrency, Optional.empty()));
       }
     }
+    Collections.sort(currentExchangeRates);
     return currentExchangeRates;
   }
 

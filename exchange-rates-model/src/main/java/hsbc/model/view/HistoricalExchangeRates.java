@@ -4,6 +4,7 @@ import hsbc.model.Currency;
 import hsbc.model.Period;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,7 +38,6 @@ public class HistoricalExchangeRates {
    * 
    * @param subjectCurrency The subject currency.
    * @param otherCurrencies The other currencies.
-   * 
    * @param periods The periods.
    */
   public HistoricalExchangeRates(Currency subjectCurrency, List<Currency> otherCurrencies,
@@ -81,21 +81,23 @@ public class HistoricalExchangeRates {
    * 
    * @return The historical exchange rates.
    */
-  public List<HistoricalExchangeRate> getHistoricalExchangeRates() {
-    List<HistoricalExchangeRate> historicalExchangeRates = new ArrayList<>();
+  public List<HistoricalExchangeRatesCurrency> getHistoricalExchangeRates() {
+    List<HistoricalExchangeRatesCurrency> historicalExchangeRatesCurrencies = new ArrayList<>();
     for (Currency otherCurrency : otherCurrencies) {
-      HistoricalExchangeRate historicalExchangeRate = new HistoricalExchangeRate(otherCurrency);
-      historicalExchangeRates.add(historicalExchangeRate);
+      HistoricalExchangeRatesCurrency historicalExchangeRatesCurrency =
+          new HistoricalExchangeRatesCurrency(otherCurrency);
+      historicalExchangeRatesCurrencies.add(historicalExchangeRatesCurrency);
       for (Period period : periods) {
         OtherCurrencyPeriod otherCurrencyPeriod = new OtherCurrencyPeriod(otherCurrency, period);
         if (exchangeRates.containsKey(otherCurrencyPeriod)) {
-          historicalExchangeRate.addRate(exchangeRates.get(otherCurrencyPeriod));
+          historicalExchangeRatesCurrency.addRate(exchangeRates.get(otherCurrencyPeriod));
         } else {
-          historicalExchangeRate.addRate(Optional.empty());
+          historicalExchangeRatesCurrency.addRate(Optional.empty());
         }
       }
     }
-    return historicalExchangeRates;
+    Collections.sort(historicalExchangeRatesCurrencies);
+    return historicalExchangeRatesCurrencies;
   }
 
   @Data

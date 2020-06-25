@@ -71,9 +71,9 @@ INSERT INTO currency (code, description, sort_order_number, default_subject_curr
   ('HKD', 'Hong Kong Dollars', 40, false, true),
   ('GBP', 'Pounds Sterling', 20, false, true),
   ('USD', 'US Dollars', 30, false, true),
-  ('HUF', 'Forints', 50, false, false),
-  ('RSD', 'Serbian Dinars', 60, false, false),
-  ('FRF', 'French Francs', 70, false, false)
+  ('HUF', 'Forints', 99, false, false),
+  ('RSD', 'Serbian Dinars', 99, false, false),
+  ('ITL', 'Lira', 99, false, false)
   ;
   
 INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)

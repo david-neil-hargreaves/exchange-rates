@@ -1,6 +1,5 @@
 package hsbc.service;
 
-import static hsbc.service.ExchangeRateServiceImpl.MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_END_DEC;
@@ -23,6 +22,7 @@ import static hsbc.test.TestData.createPoundsSterling;
 import static hsbc.test.TestData.createPoundsSterlingEuro;
 import static hsbc.test.TestData.createUsDollars;
 import static hsbc.test.TestData.createUsDollarsEuro;
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -39,6 +39,7 @@ import hsbc.model.repository.ExchangeRateHistoryRepository;
 import hsbc.model.repository.ExchangeRateRepository;
 import hsbc.model.view.CurrentExchangeRates;
 import hsbc.model.view.HistoricalExchangeRates;
+import hsbc.service.validation.ExchangeRateServiceValidator;
 import hsbc.test.AbstractTest;
 import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.ServiceException;
@@ -77,6 +78,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
   @Mock
   private PeriodService mockPeriodService;
 
+  @Mock
+  private ExchangeRateServiceValidator mockExchangeRateServiceValidator;
 
   @InjectMocks
   private ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();

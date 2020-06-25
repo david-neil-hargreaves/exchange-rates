@@ -47,12 +47,12 @@ public class CurrentExchangeRatesTest {
     assertEquals(ATTRIBUTE_RATE, Optional.empty(),
         currentExchangeRates.getExchangeRate(hongKongDollars));
     List<CurrentExchangeRate> expectedCurrentExchangeRates = new ArrayList<>();
-    expectedCurrentExchangeRates.add(new CurrentExchangeRate(hongKongDollars, Optional.empty()));
-    expectedCurrentExchangeRates.add(new CurrentExchangeRate(
-        exchangeRateUsDollars.getSellingCurrency(), Optional.of(exchangeRateUsDollars.getRate())));
     expectedCurrentExchangeRates
         .add(new CurrentExchangeRate(exchangeRatePoundsSterling.getSellingCurrency(),
             Optional.of(exchangeRatePoundsSterling.getRate())));
+    expectedCurrentExchangeRates.add(new CurrentExchangeRate(
+        exchangeRateUsDollars.getSellingCurrency(), Optional.of(exchangeRateUsDollars.getRate())));
+    expectedCurrentExchangeRates.add(new CurrentExchangeRate(hongKongDollars, Optional.empty()));
     List<CurrentExchangeRate> actualCurrentExchangeRates =
         currentExchangeRates.getCurrentExchangeRates();
     assertEquals(ATTRIBUTE_CURRENT_EXCHANGE_RATES, expectedCurrentExchangeRates,

@@ -1,7 +1,5 @@
 package hsbc.service;
 
-import static hsbc.service.CurrencyServiceImpl.MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES;
-import static hsbc.service.CurrencyServiceImpl.MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY;
 import static hsbc.test.TestData.CURRENCY_CODE_EUROS;
 import static hsbc.test.TestData.CURRENCY_CODE_INVALID;
 import static hsbc.test.TestData.CURRENCY_ID_EUROS;
@@ -10,6 +8,8 @@ import static hsbc.test.TestData.createCurrencies;
 import static hsbc.test.TestData.createEuro;
 import static hsbc.test.TestData.getCurrencyCodes;
 import static hsbc.test.TestData.getCurrencyIds;
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_MULTIPLE_DEFAULT_SUBJECT_CURRENCIES;
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_NO_DEFAULT_SUBJECT_CURRENCY;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

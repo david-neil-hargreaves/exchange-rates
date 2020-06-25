@@ -16,7 +16,7 @@ public class StringUtil {
    * Determines whether or not a string is blank i.e. is null or is empty when trimmed of whitespace
    * characters.
    * 
-   * @param string the string.
+   * @param string The string.
    * @return true if the string is null or is empty when trimmed of whitespace characters, otherwise
    *         returns false.
    */

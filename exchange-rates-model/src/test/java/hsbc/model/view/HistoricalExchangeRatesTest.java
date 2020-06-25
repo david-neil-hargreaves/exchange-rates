@@ -55,22 +55,22 @@ public class HistoricalExchangeRatesTest {
     assertEquals(ATTRIBUTE_RATE, Optional.empty(),
         historicalExchangeRates.getExchangeRate(usDollars, january));
     Currency hongKongDollars = createHongKongDollars();
-    List<HistoricalExchangeRate> expectedHistoricalExchangeRates = new ArrayList<>();
-    HistoricalExchangeRate hongKongDollarsExchangeRates =
-        new HistoricalExchangeRate(hongKongDollars);
-    expectedHistoricalExchangeRates.add(hongKongDollarsExchangeRates);
-    hongKongDollarsExchangeRates.addRate(Optional.empty());
-    hongKongDollarsExchangeRates.addRate(Optional.empty());
-    HistoricalExchangeRate usDollarsExchangeRates = new HistoricalExchangeRate(usDollars);
-    expectedHistoricalExchangeRates.add(usDollarsExchangeRates);
-    usDollarsExchangeRates.addRate(Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS_DECEMBER));
-    usDollarsExchangeRates.addRate(Optional.empty());
-    HistoricalExchangeRate poundsSterlingExchangeRates = new HistoricalExchangeRate(poundsSterling);
+    List<HistoricalExchangeRatesCurrency> expectedHistoricalExchangeRates = new ArrayList<>();
+    HistoricalExchangeRatesCurrency poundsSterlingExchangeRates = new HistoricalExchangeRatesCurrency(poundsSterling);
     expectedHistoricalExchangeRates.add(poundsSterlingExchangeRates);
     poundsSterlingExchangeRates.addRate(Optional.empty());
     poundsSterlingExchangeRates
         .addRate(Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_JANUARY));
-    List<HistoricalExchangeRate> actualHistoricalExchangeRates =
+    HistoricalExchangeRatesCurrency usDollarsExchangeRates = new HistoricalExchangeRatesCurrency(usDollars);
+    expectedHistoricalExchangeRates.add(usDollarsExchangeRates);
+    usDollarsExchangeRates.addRate(Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS_DECEMBER));
+    usDollarsExchangeRates.addRate(Optional.empty());
+    HistoricalExchangeRatesCurrency hongKongDollarsExchangeRates =
+        new HistoricalExchangeRatesCurrency(hongKongDollars);
+    expectedHistoricalExchangeRates.add(hongKongDollarsExchangeRates);
+    hongKongDollarsExchangeRates.addRate(Optional.empty());
+    hongKongDollarsExchangeRates.addRate(Optional.empty());
+    List<HistoricalExchangeRatesCurrency> actualHistoricalExchangeRates =
         historicalExchangeRates.getHistoricalExchangeRates();
     assertEquals(ATTRIBUTE_HISTORICAL_EXCHANGE_RATES, expectedHistoricalExchangeRates,
         actualHistoricalExchangeRates);

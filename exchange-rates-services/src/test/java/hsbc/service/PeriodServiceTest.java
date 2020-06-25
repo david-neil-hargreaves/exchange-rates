@@ -1,6 +1,6 @@
 package hsbc.service;
 
-import static hsbc.service.PeriodServiceImpl.MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED;
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED;
 import static hsbc.test.TestData.createCurrentPeriod;
 import static hsbc.test.TestData.createPeriods;
 import static org.junit.Assert.assertEquals;
