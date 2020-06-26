@@ -60,7 +60,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     CurrentExchangeRates currentExchangeRates =
         exchangeRateService.getCurrentBuyingExchangeRates(buyingCurrencyId, sellingCurrencyIds);
-    LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
 
@@ -87,7 +86,6 @@ public class ExchangeRatesController {
     sellingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(sellingCurrencyCodes);
     CurrentExchangeRates currentExchangeRates =
         exchangeRateService.getCurrentBuyingExchangeRates(buyingCurrencyCode, sellingCurrencyCodes);
-    LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
 
@@ -104,7 +102,6 @@ public class ExchangeRatesController {
   public ResponseEntity<CurrentExchangeRates> getCurrentBuyingExchangeRates()
       throws ServiceException, ValidationException, ConstraintViolationException {
     CurrentExchangeRates currentExchangeRates = exchangeRateService.getCurrentBuyingExchangeRates();
-    LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
 
@@ -128,7 +125,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     CurrentExchangeRates currentExchangeRates =
         exchangeRateService.getCurrentSellingExchangeRates(sellingCurrencyId, buyingCurrencyIds);
-    LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
 
@@ -155,7 +151,6 @@ public class ExchangeRatesController {
     buyingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(buyingCurrencyCodes);
     CurrentExchangeRates currentExchangeRates = exchangeRateService
         .getCurrentSellingExchangeRates(sellingCurrencyCode, buyingCurrencyCodes);
-    LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
 
@@ -174,7 +169,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     CurrentExchangeRates currentExchangeRates =
         exchangeRateService.getCurrentSellingExchangeRates();
-    LOGGER.debug(currentExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(currentExchangeRates, OK));
   }
 
@@ -197,7 +191,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     HistoricalExchangeRates historicalExchangeRates =
         exchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyId, sellingCurrencyIds);
-    LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
 
@@ -224,7 +217,6 @@ public class ExchangeRatesController {
     sellingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(sellingCurrencyCodes);
     HistoricalExchangeRates historicalExchangeRates = exchangeRateService
         .getHistoricalBuyingExchangeRates(buyingCurrencyCode, sellingCurrencyCodes);
-    LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
 
@@ -243,7 +235,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     HistoricalExchangeRates historicalExchangeRates =
         exchangeRateService.getHistoricalBuyingExchangeRates();
-    LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
 
@@ -267,7 +258,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     HistoricalExchangeRates historicalExchangeRates =
         exchangeRateService.getHistoricalSellingExchangeRates(sellingCurrencyId, buyingCurrencyIds);
-    LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
 
@@ -294,7 +284,6 @@ public class ExchangeRatesController {
     buyingCurrencyCodes = StringUtil.sanitiseStringListToUpperCase(buyingCurrencyCodes);
     HistoricalExchangeRates historicalExchangeRates = exchangeRateService
         .getHistoricalSellingExchangeRates(sellingCurrencyCode, buyingCurrencyCodes);
-    LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
 
@@ -313,7 +302,6 @@ public class ExchangeRatesController {
     LOGGER.traceEntry();
     HistoricalExchangeRates historicalExchangeRates =
         exchangeRateService.getHistoricalSellingExchangeRates();
-    LOGGER.debug(historicalExchangeRates);
     return LOGGER.traceExit(new ResponseEntity<>(historicalExchangeRates, OK));
   }
 
