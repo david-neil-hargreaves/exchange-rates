@@ -57,11 +57,12 @@ public interface CurrencyService {
   public Currency findDefaultSubjectCurrency() throws InvalidConfigurationException;
 
   /**
-   * Finds the default other currencies i.e. currencies with default other currency flagged as true.
+   * Finds the default comparison currencies i.e. currencies with default comparison currency
+   * flagged as true.
    * 
-   * @return The default other currencies.
+   * @return The default comparison currencies.
    */
-  public List<Currency> findDefaultOtherCurrencies();
+  public List<Currency> findDefaultComparisonCurrencies();
 
   /**
    * Finds all currencies.

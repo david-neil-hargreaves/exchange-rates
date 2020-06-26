@@ -1,8 +1,8 @@
 package hsbc.service;
 
-import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED;
 import static hsbc.test.TestData.createCurrentPeriod;
 import static hsbc.test.TestData.createPeriods;
+import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

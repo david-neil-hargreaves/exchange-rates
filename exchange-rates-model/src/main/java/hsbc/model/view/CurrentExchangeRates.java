@@ -14,14 +14,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Represents current exchange rates for a subject currency to multiple other currencies.
+ * Represents current exchange rates for a subject currency to multiple comparison currencies.
  */
 @Data
 public class CurrentExchangeRates {
 
   private Currency subjectCurrency;
 
-  private List<Currency> otherCurrencies;
+  private List<Currency> comparisonCurrencies;
 
   @Setter(AccessLevel.NONE)
   @Getter(AccessLevel.NONE)
@@ -32,32 +32,32 @@ public class CurrentExchangeRates {
    * Constructs a CurrentExchangeRates.
    * 
    * @param subjectCurrency The subject currency.
-   * @param otherCurrencies The other currencies.
+   * @param comparisonCurrencies The comparison currencies.
    */
-  public CurrentExchangeRates(Currency subjectCurrency, List<Currency> otherCurrencies) {
+  public CurrentExchangeRates(Currency subjectCurrency, List<Currency> comparisonCurrencies) {
     this.subjectCurrency = subjectCurrency;
-    this.otherCurrencies = otherCurrencies;
+    this.comparisonCurrencies = comparisonCurrencies;
   }
 
   /**
-   * Sets the exchange rate from the subject currency to the other currency.
+   * Sets the exchange rate from the subject currency to the comparison currency.
    * 
-   * @param otherCurrency The other currency.
+   * @param comparisonCurrency The comparison currency.
    * @param rate The exchange rate.
    */
-  public void setExchangeRate(Currency otherCurrency, Optional<BigDecimal> rate) {
-    exchangeRates.put(otherCurrency, rate);
+  public void setExchangeRate(Currency comparisonCurrency, Optional<BigDecimal> rate) {
+    exchangeRates.put(comparisonCurrency, rate);
   }
 
   /**
-   * Returns the exchange rate from the subject currency to the other currency.
+   * Returns the exchange rate from the subject currency to the comparison currency.
    * 
-   * @param otherCurrency The other currency.
+   * @param comparisonCurrency The comparison currency.
    * @return The exchange rate.
    */
-  public Optional<BigDecimal> getExchangeRate(Currency otherCurrency) {
-    if (exchangeRates.containsKey(otherCurrency)) {
-      return exchangeRates.get(otherCurrency);
+  public Optional<BigDecimal> getExchangeRate(Currency comparisonCurrency) {
+    if (exchangeRates.containsKey(comparisonCurrency)) {
+      return exchangeRates.get(comparisonCurrency);
     } else {
       return Optional.empty();
     }
@@ -70,12 +70,12 @@ public class CurrentExchangeRates {
    */
   public List<CurrentExchangeRate> getCurrentExchangeRates() {
     List<CurrentExchangeRate> currentExchangeRates = new ArrayList<>();
-    for (Currency otherCurrency : otherCurrencies) {
-      if (exchangeRates.containsKey(otherCurrency)) {
-        currentExchangeRates
-            .add(new CurrentExchangeRate(otherCurrency, exchangeRates.get(otherCurrency)));
+    for (Currency comparisonCurrency : comparisonCurrencies) {
+      if (exchangeRates.containsKey(comparisonCurrency)) {
+        currentExchangeRates.add(
+            new CurrentExchangeRate(comparisonCurrency, exchangeRates.get(comparisonCurrency)));
       } else {
-        currentExchangeRates.add(new CurrentExchangeRate(otherCurrency, Optional.empty()));
+        currentExchangeRates.add(new CurrentExchangeRate(comparisonCurrency, Optional.empty()));
       }
     }
     Collections.sort(currentExchangeRates);

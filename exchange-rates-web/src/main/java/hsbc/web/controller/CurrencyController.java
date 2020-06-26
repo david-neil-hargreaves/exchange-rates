@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Provides currency data.
+ * Provides currency REST endpoints.
  */
 @Api(tags = "Currencies")
 @RestController
@@ -36,6 +36,7 @@ public class CurrencyController {
   /**
    * Returns all currencies.
    * 
+   * @return All currencies.
    */
   @GetMapping(value = "/all")
   public ResponseEntity<List<Currency>> getCurrencies() {
@@ -47,8 +48,8 @@ public class CurrencyController {
   /**
    * Returns the default subject currency.
    * 
-   * @throws ServiceException
-   * 
+   * @return The default subject currency.
+   * @throws ServiceException If a service exception occurs.
    */
   @GetMapping(value = "/defaultSubjectCurrency")
   public ResponseEntity<Currency> findDefaultSubjectCurrency() throws ServiceException {
@@ -58,13 +59,14 @@ public class CurrencyController {
   }
 
   /**
-   * Returns all default other currencies.
+   * Returns all default comparison currencies.
    * 
+   * @return All default comparison currencies.
    */
-  @GetMapping(value = "/defaultOtherCurrencies")
-  public ResponseEntity<List<Currency>> findDefaultOtherCurrencies() {
+  @GetMapping(value = "/defaultComparisonCurrencies")
+  public ResponseEntity<List<Currency>> findDefaultComparisonCurrencies() {
     LOGGER.traceEntry();
-    List<Currency> currencies = currencyService.findDefaultOtherCurrencies();
+    List<Currency> currencies = currencyService.findDefaultComparisonCurrencies();
     return LOGGER.traceExit(new ResponseEntity<>(currencies, OK));
   }
 

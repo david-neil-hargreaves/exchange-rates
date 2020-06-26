@@ -200,12 +200,13 @@ public class CurrencyServiceTest extends AbstractTest {
   }
 
   @Test
-  public void testFindDefaultOtherCurrencies() {
+  public void testFindDefaultComparisonCurrencies() {
     List<Currency> expectedCurrencies = createCurrencies();
-    when(mockCurrencyRepository.findByDefaultOtherCurrencyTrue()).thenReturn(expectedCurrencies);
-    List<Currency> actualCurrencies = currencyService.findDefaultOtherCurrencies();
+    when(mockCurrencyRepository.findByDefaultComparisonCurrencyTrue())
+        .thenReturn(expectedCurrencies);
+    List<Currency> actualCurrencies = currencyService.findDefaultComparisonCurrencies();
     assertEquals(ATTRIBUTE_CURRENCIES, expectedCurrencies, actualCurrencies);
-    verify(mockCurrencyRepository, times(1)).findByDefaultOtherCurrencyTrue();
+    verify(mockCurrencyRepository, times(1)).findByDefaultComparisonCurrencyTrue();
   }
 
   @Test

@@ -107,7 +107,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
       throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency buyingCurrency = currencyService.findDefaultSubjectCurrency();
-    List<Currency> sellingCurrencies = getOtherCurrencies(buyingCurrency);
+    List<Currency> sellingCurrencies = getComparisonCurrencies(buyingCurrency);
     return LOGGER.traceExit(getCurrentBuyingExchangeRates(buyingCurrency, sellingCurrencies));
   }
 
@@ -151,7 +151,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
       throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency sellingCurrency = currencyService.findDefaultSubjectCurrency();
-    List<Currency> buyingCurrencies = getOtherCurrencies(sellingCurrency);
+    List<Currency> buyingCurrencies = getComparisonCurrencies(sellingCurrency);
     return LOGGER.traceExit(getCurrentSellingExchangeRates(sellingCurrency, buyingCurrencies));
   }
 
@@ -213,7 +213,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
       throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency buyingCurrency = currencyService.findDefaultSubjectCurrency();
-    List<Currency> sellingCurrencies = getOtherCurrencies(buyingCurrency);
+    List<Currency> sellingCurrencies = getComparisonCurrencies(buyingCurrency);
     List<Period> periods =
         periodService.getLatestHistoricalPeriods(defaultPeriodType, defaultNumberHistoricalPeriods);
     return LOGGER
@@ -278,7 +278,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
       throws ValidationException, InvalidConfigurationException {
     LOGGER.traceEntry();
     Currency sellingCurrency = currencyService.findDefaultSubjectCurrency();
-    List<Currency> buyingCurrencies = getOtherCurrencies(sellingCurrency);
+    List<Currency> buyingCurrencies = getComparisonCurrencies(sellingCurrency);
     List<Period> periods =
         periodService.getLatestHistoricalPeriods(defaultPeriodType, defaultNumberHistoricalPeriods);
     return LOGGER
@@ -426,19 +426,19 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     return optionalRate;
   }
 
-  private List<Currency> getOtherCurrencies(Currency subjectCurrency)
+  private List<Currency> getComparisonCurrencies(Currency subjectCurrency)
       throws InvalidConfigurationException {
-    List<Currency> otherCurrencies = currencyService.findDefaultOtherCurrencies();
-    if (otherCurrencies.size() == 0) {
-      otherCurrencies = currencyService.findAll();
+    List<Currency> comparisonCurrencies = currencyService.findDefaultComparisonCurrencies();
+    if (comparisonCurrencies.size() == 0) {
+      comparisonCurrencies = currencyService.findAll();
     }
-    if (otherCurrencies.contains(subjectCurrency)) {
-      otherCurrencies.remove(subjectCurrency);
+    if (comparisonCurrencies.contains(subjectCurrency)) {
+      comparisonCurrencies.remove(subjectCurrency);
     }
-    if (otherCurrencies.size() == 0) {
+    if (comparisonCurrencies.size() == 0) {
       throw new InvalidConfigurationException(MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY);
     }
-    return otherCurrencies;
+    return comparisonCurrencies;
   }
 
   private Optional<BigDecimal> getRate(Optional<ExchangeRate> exchangeRate) {

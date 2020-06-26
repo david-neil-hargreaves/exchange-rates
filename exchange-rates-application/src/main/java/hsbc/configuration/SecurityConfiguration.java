@@ -25,13 +25,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * Sets up the application CORS (Cross Origin Resource Sharing) configuration.
+   * Sets up the application CORS (Cross Origin Resource Sharing) security configuration.
    * 
-   * @return application CORS (Cross Origin Resource Sharing) configuration.
+   * @return application CORS (Cross Origin Resource Sharing) security configuration.
    */
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
+    // TODO Statics!!! Here and above.
     configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
     configuration.setAllowCredentials(true);
     configuration

@@ -87,8 +87,8 @@ public class CurrencyServiceImpl implements CurrencyService {
   }
 
   @Override
-  public List<Currency> findDefaultOtherCurrencies() {
-    List<Currency> currencies = currencyRepository.findByDefaultOtherCurrencyTrue();
+  public List<Currency> findDefaultComparisonCurrencies() {
+    List<Currency> currencies = currencyRepository.findByDefaultComparisonCurrencyTrue();
     Collections.sort(currencies);
     return currencies;
   }

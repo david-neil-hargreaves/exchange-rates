@@ -9,15 +9,12 @@ public class ValidationException extends Exception {
   private static final long serialVersionUID = 1L;
 
   public static final String MESSAGE_SUBJECT_CURRENCY_REQUIRED = "%s currency is required.";
-  public static final String MESSAGE_OTHER_CURRENCIES_REQUIRED =
-      "%s currencies are required.";
-  public static final String MESSAGE_DUPLICATE_OTHER_CURRENCY =
-      "Duplicate %s currency %s.";
-  public static final String MESSAGE_OTHER_CURRENCY_CANNOT_BE_SAME_AS_SUBJECT_CURRENCY =
+  public static final String MESSAGE_COMPARISON_CURRENCIES_REQUIRED = "%s currencies are required.";
+  public static final String MESSAGE_DUPLICATE_COMPARISON_CURRENCY = "Duplicate %s currency %s.";
+  public static final String MESSAGE_COMPARISON_CURRENCY_CANNOT_BE_SAME_AS_SUBJECT_CURRENCY =
       "%s currency cannot be the same as the %s currency.";
-  public static final String MESSAGE_PERIODS_REQUIRED =
-      "Periods are required.";
-  
+  public static final String MESSAGE_PERIODS_REQUIRED = "Periods are required.";
+
   /**
    * Constructs a validation exception with the given message.
    * 

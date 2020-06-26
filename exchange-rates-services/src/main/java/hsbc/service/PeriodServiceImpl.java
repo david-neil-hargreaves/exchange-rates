@@ -27,12 +27,13 @@ public class PeriodServiceImpl implements PeriodService {
     LOGGER.traceEntry();
     Optional<Period> optionalCurrentPeriod = periodRepository.findCurrentPeriod(periodType);
     if (!(optionalCurrentPeriod.isPresent())) {
-      String message = String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, periodType.getDescription());
+      String message =
+          String.format(MESSAGE_CURRENT_PERIOD_NOT_CONFIGURED, periodType.getDescription());
       throw new InvalidConfigurationException(message);
     }
     Period currentPeriod = optionalCurrentPeriod.get();
-    List<Period> periodsBeforeCurrentPeriod =
-        periodRepository.findPeriodsBeforeStartDateTime(periodType, currentPeriod.getStartDateTime());
+    List<Period> periodsBeforeCurrentPeriod = periodRepository
+        .findPeriodsBeforeStartDateTime(periodType, currentPeriod.getStartDateTime());
     int startIndex = Math.max((periodsBeforeCurrentPeriod.size() - numberOfPeriods), 0);
     return LOGGER.traceExit(
         periodsBeforeCurrentPeriod.subList(startIndex, periodsBeforeCurrentPeriod.size()));

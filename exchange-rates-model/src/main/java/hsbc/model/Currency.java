@@ -50,7 +50,7 @@ public class Currency implements Comparable<Currency> {
   @Column
   @NotNull
   @JsonIgnore
-  private boolean defaultOtherCurrency;
+  private boolean defaultComparisonCurrency;
 
   /**
    * Compares two currencies for use when sorting currencies in a logical sort order. Currencies are

@@ -6,6 +6,7 @@ import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_EN
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_MIDDLE_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_START_DEC;
+import static hsbc.test.TestData.createComparisonCurrencies;
 import static hsbc.test.TestData.createDecember;
 import static hsbc.test.TestData.createEuro;
 import static hsbc.test.TestData.createEuroHongKongDollars;
@@ -16,7 +17,6 @@ import static hsbc.test.TestData.createHongKongDollars;
 import static hsbc.test.TestData.createHongKongDollarsEuro;
 import static hsbc.test.TestData.createJanuary;
 import static hsbc.test.TestData.createLira;
-import static hsbc.test.TestData.createOtherCurrencies;
 import static hsbc.test.TestData.createPeriods;
 import static hsbc.test.TestData.createPoundsSterling;
 import static hsbc.test.TestData.createPoundsSterlingEuro;
@@ -97,7 +97,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
   @Test
   public void testGetCurrentBuyingExchangeRates() throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     CurrentExchangeRates expectedCurrentExchangeRates =
         getExpectedResultGetCurrentBuyingExchangeRates(buyingCurrency, sellingCurrencies);
     CurrentExchangeRates actualCurrentExchangeRates =
@@ -111,7 +111,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
     Long buyingCurrencyId = buyingCurrency.getId();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Long> sellingCurrencyIds =
         sellingCurrencies.stream().map(Currency::getId).collect(Collectors.toList());
     when(mockCurrencyService.findById(buyingCurrencyId)).thenReturn(buyingCurrency);
@@ -131,7 +131,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
     String buyingCurrencyCode = buyingCurrency.getCode();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<String> sellingCurrencyCodes =
         sellingCurrencies.stream().map(Currency::getCode).collect(Collectors.toList());
     when(mockCurrencyService.findByCode(buyingCurrencyCode)).thenReturn(buyingCurrency);
@@ -150,9 +150,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
   public void testGetCurrentBuyingExchangeRatesNoParameters()
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(buyingCurrency);
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(sellingCurrencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(sellingCurrencies);
     CurrentExchangeRates expectedCurrentExchangeRates =
         getExpectedResultGetCurrentBuyingExchangeRates(buyingCurrency, sellingCurrencies);
     CurrentExchangeRates actualCurrentExchangeRates =
@@ -160,13 +160,13 @@ public class ExchangeRateServiceTest extends AbstractTest {
     verifyResultGetCurrentBuyingExchangeRates(buyingCurrency, sellingCurrencies,
         expectedCurrentExchangeRates, actualCurrentExchangeRates);
     verify(mockCurrencyService, times(1)).findDefaultSubjectCurrency();
-    verify(mockCurrencyService, times(1)).findDefaultOtherCurrencies();
+    verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
   }
 
   @Test
   public void testGetCurrentSellingExchangeRates() throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     CurrentExchangeRates expectedCurrentExchangeRates =
         getExpectedResultGetCurrentSellingExchangeRates(sellingCurrency, buyingCurrencies);
     CurrentExchangeRates actualCurrentExchangeRates =
@@ -180,7 +180,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     Long sellingCurrencyId = sellingCurrency.getId();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<Long> buyingCurrencyIds =
         buyingCurrencies.stream().map(Currency::getId).collect(Collectors.toList());
     when(mockCurrencyService.findById(sellingCurrencyId)).thenReturn(sellingCurrency);
@@ -200,7 +200,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     String sellingCurrencyCode = sellingCurrency.getCode();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<String> buyingCurrencyCodes =
         buyingCurrencies.stream().map(Currency::getCode).collect(Collectors.toList());
     when(mockCurrencyService.findByCode(sellingCurrencyCode)).thenReturn(sellingCurrency);
@@ -219,9 +219,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
   public void testGetCurrentSellingExchangeRatesNoParameters()
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(sellingCurrency);
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(buyingCurrencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(buyingCurrencies);
     CurrentExchangeRates expectedCurrentExchangeRates =
         getExpectedResultGetCurrentSellingExchangeRates(sellingCurrency, buyingCurrencies);
     CurrentExchangeRates actualCurrentExchangeRates =
@@ -229,16 +229,16 @@ public class ExchangeRateServiceTest extends AbstractTest {
     verifyResultGetCurrentSellingExchangeRates(sellingCurrency, buyingCurrencies,
         expectedCurrentExchangeRates, actualCurrentExchangeRates);
     verify(mockCurrencyService, times(1)).findDefaultSubjectCurrency();
-    verify(mockCurrencyService, times(1)).findDefaultOtherCurrencies();
+    verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
   }
 
   @Test
-  public void testGetCurrentSellingExchangeRatesNoParametersNoDefaultOtherCurrencies()
+  public void testGetCurrentSellingExchangeRatesNoParametersNoDefaultComparisonCurrencies()
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     List<Currency> buyingCurrencies = new ArrayList<>();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(sellingCurrency);
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(buyingCurrencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(buyingCurrencies);
     InvalidConfigurationException invalidConfigurationException =
         new InvalidConfigurationException(MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY);
     expectedException.expect(invalidConfigurationException.getClass());
@@ -248,13 +248,13 @@ public class ExchangeRateServiceTest extends AbstractTest {
   }
 
   @Test
-  public void testGetCurrentSellingExchangeRatesNoParametersOtherCurrenciesIncludesSubjectCurrency()
+  public void testGetCurrentSellingExchangeRatesComparisonCurrenciesIncludesSubjectCurrency()
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     List<Currency> buyingCurrencies = new ArrayList<>();
     buyingCurrencies.add(sellingCurrency);
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(sellingCurrency);
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(buyingCurrencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(buyingCurrencies);
     InvalidConfigurationException invalidConfigurationException =
         new InvalidConfigurationException(MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY);
     expectedException.expect(invalidConfigurationException.getClass());
@@ -266,7 +266,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
   @Test
   public void testGetHistoricalBuyingExchangeRates() throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
@@ -281,7 +281,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
   public void testGetHistoricalBuyingExchangeRatesZeroPeriods()
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Period> periods = new ArrayList<>();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         new HistoricalExchangeRates(buyingCurrency, sellingCurrencies, periods);
@@ -296,7 +296,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
     Long buyingCurrencyId = buyingCurrency.getId();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Long> sellingCurrencyIds =
         sellingCurrencies.stream().map(Currency::getId).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -318,7 +318,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
     String buyingCurrencyCode = buyingCurrency.getCode();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<String> sellingCurrencyCodes =
         sellingCurrencies.stream().map(Currency::getCode).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -340,7 +340,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
     Long buyingCurrencyId = buyingCurrency.getId();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Long> sellingCurrencyIds =
         sellingCurrencies.stream().map(Currency::getId).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -366,7 +366,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
     String buyingCurrencyCode = buyingCurrency.getCode();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<String> sellingCurrencyCodes =
         sellingCurrencies.stream().map(Currency::getCode).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -391,10 +391,10 @@ public class ExchangeRateServiceTest extends AbstractTest {
   public void testGetHistoricalBuyingExchangeRatesNoParameters()
       throws ValidationException, ServiceException {
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(buyingCurrency);
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(sellingCurrencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(sellingCurrencies);
     when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
         DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
@@ -405,7 +405,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findDefaultSubjectCurrency();
-    verify(mockCurrencyService, times(1)).findDefaultOtherCurrencies();
+    verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
     verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
         DEFAULT_NUMBER_HISTORICAL_PERIODS);
   }
@@ -416,7 +416,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     ((ExchangeRateServiceImpl) exchangeRateService)
         .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.START);
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
@@ -442,7 +442,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     ((ExchangeRateServiceImpl) exchangeRateService)
         .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.MIDDLE);
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
@@ -466,7 +466,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     ((ExchangeRateServiceImpl) exchangeRateService)
         .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.AVERAGE);
     Currency buyingCurrency = createEuro();
-    List<Currency> sellingCurrencies = createOtherCurrencies();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
@@ -487,7 +487,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
   @Test
   public void testGetHistoricalSellingExchangeRates() throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies,
@@ -502,7 +502,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
   public void testGetHistoricalSellingExchangeRatesZeroPeriods()
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<Period> periods = new ArrayList<>();
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         new HistoricalExchangeRates(sellingCurrency, buyingCurrencies, periods);
@@ -517,7 +517,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     Long sellingCurrencyId = sellingCurrency.getId();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<Long> buyingCurrencyIds =
         buyingCurrencies.stream().map(Currency::getId).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -539,7 +539,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     String sellingCurrencyCode = sellingCurrency.getCode();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<String> buyingCurrencyCodes =
         buyingCurrencies.stream().map(Currency::getCode).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -561,7 +561,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     Long sellingCurrencyId = sellingCurrency.getId();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<Long> buyingCurrencyIds =
         buyingCurrencies.stream().map(Currency::getId).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -587,7 +587,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
     String sellingCurrencyCode = sellingCurrency.getCode();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<String> buyingCurrencyCodes =
         buyingCurrencies.stream().map(Currency::getCode).collect(Collectors.toList());
     List<Period> periods = createPeriods();
@@ -612,10 +612,10 @@ public class ExchangeRateServiceTest extends AbstractTest {
   public void testGetHistoricalSellingExchangeRatesNoParameters()
       throws ValidationException, ServiceException {
     Currency sellingCurrency = createEuro();
-    List<Currency> buyingCurrencies = createOtherCurrencies();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(sellingCurrency);
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(buyingCurrencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(buyingCurrencies);
     when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
         DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
@@ -626,7 +626,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     verifyResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies, periods,
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findDefaultSubjectCurrency();
-    verify(mockCurrencyService, times(1)).findDefaultOtherCurrencies();
+    verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
     verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
         DEFAULT_NUMBER_HISTORICAL_PERIODS);
   }

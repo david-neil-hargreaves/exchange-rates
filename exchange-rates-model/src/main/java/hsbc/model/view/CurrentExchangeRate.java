@@ -8,17 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * Represents a current exchange rate for a subject currency (implied) to the other currency.
+ * Represents a current exchange rate for a subject currency (implied) to the comparison currency.
  */
 @Data
-@AllArgsConstructor(access=AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 class CurrentExchangeRate implements Comparable<CurrentExchangeRate> {
 
-  private Currency otherCurrency;
+  private Currency comparisonCurrency;
   private Optional<BigDecimal> rate;
 
   /**
-   * Compares two CurrentExchangeRates. These are sorted by the other currency.
+   * Compares two CurrentExchangeRates. These are sorted by the comparison currency.
    * 
    * @param other The other CurrentExchangeRate for use in the comparison.
    * @return
@@ -28,7 +28,7 @@ class CurrentExchangeRate implements Comparable<CurrentExchangeRate> {
    */
   @Override
   public int compareTo(CurrentExchangeRate other) {
-    return this.getOtherCurrency().compareTo(other.getOtherCurrency());
+    return this.getComparisonCurrency().compareTo(other.getComparisonCurrency());
   }
 
 }

@@ -56,7 +56,7 @@ public interface ExchangeRateService {
 
   /**
    * Returns a CurrentExchangeRates instance representing current buying exchange rates for the
-   * system default subject currency to the system default other currencies.
+   * system default subject currency to the system default comparison currencies.
    * 
    * @return A CurrentExchangeRates instance representing current buying exchange rates for the
    *         buying currency to the selling currencies.
@@ -107,7 +107,7 @@ public interface ExchangeRateService {
 
   /**
    * Returns a CurrentExchangeRates instance representing current selling exchange rates for the
-   * system default subject currency to the system default other currencies.
+   * system default subject currency to the system default comparison currencies.
    * 
    * @return A CurrentExchangeRates instance representing current selling exchange rates for the
    *         selling currency to the buying currencies.
@@ -191,7 +191,7 @@ public interface ExchangeRateService {
 
   /**
    * Returns a HistoricalExchangeRates instance representing historical buying exchange rates for
-   * the system default subject currency to the system default other currencies.
+   * the system default subject currency to the system default comparison currencies.
    * 
    * @return A HistoricalExchangeRates instance representing historical buying exchange rates for
    *         the buying currency to the selling currencies for the periods.
@@ -234,7 +234,7 @@ public interface ExchangeRateService {
    * the selling currency to the buying currencies for the periods.
    * 
    * @param sellingCurrencyCode The selling currency code.
-   * @param buyingCurrencyCode The buying currency codes.
+   * @param buyingCurrencyCodes The buying currency codes.
    * @param periods The periods.
    * @return A HistoricalExchangeRates instance representing historical selling exchange rates for
    *         the selling currency to the buying currencies for the periods.
@@ -273,7 +273,7 @@ public interface ExchangeRateService {
 
   /**
    * Returns a HistoricalExchangeRates instance representing historical selling exchange rates for
-   * the system default subject currency to the system default other currencies.
+   * the system default subject currency to the system default comparison currencies.
    * 
    * @return A HistoricalExchangeRates instance representing historical selling exchange rates for
    *         the selling currency to the buying currencies for the periods.

@@ -1,10 +1,10 @@
 package hsbc.web.controller;
 
+import static hsbc.test.TestData.createComparisonCurrencyCodes;
+import static hsbc.test.TestData.createComparisonCurrencyCodesLowerCase;
+import static hsbc.test.TestData.createComparisonCurrencyIds;
 import static hsbc.test.TestData.createCurrentExchangeRates;
 import static hsbc.test.TestData.createHistoricalExchangeRates;
-import static hsbc.test.TestData.createOtherCurrencyCodes;
-import static hsbc.test.TestData.createOtherCurrencyCodesLowerCase;
-import static hsbc.test.TestData.createOtherCurrencyIds;
 import static hsbc.test.TestData.createSubjectCurrencyCode;
 import static hsbc.test.TestData.createSubjectCurrencyCodeLowerCase;
 import static hsbc.test.TestData.createSubjectCurrencyId;
@@ -47,7 +47,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetCurrentBuyingExchangeRatesCurrencyIds()
       throws ServiceException, ValidationException {
     Long buyingCurrencyId = createSubjectCurrencyId();
-    List<Long> sellingCurrencyIds = createOtherCurrencyIds();
+    List<Long> sellingCurrencyIds = createComparisonCurrencyIds();
     CurrentExchangeRates currentExchangeRates = createCurrentExchangeRates();
     when(
         mockExchangeRateService.getCurrentBuyingExchangeRates(buyingCurrencyId, sellingCurrencyIds))
@@ -65,7 +65,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetCurrentBuyingExchangeRatesCurrencyCodes()
       throws ServiceException, ValidationException {
     String buyingCurrencyCode = createSubjectCurrencyCode();
-    List<String> sellingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> sellingCurrencyCodes = createComparisonCurrencyCodes();
     CurrentExchangeRates currentExchangeRates = createCurrentExchangeRates();
     when(mockExchangeRateService.getCurrentBuyingExchangeRates(buyingCurrencyCode,
         sellingCurrencyCodes)).thenReturn(currentExchangeRates);
@@ -83,8 +83,8 @@ public class ExchangeRatesControllerTest extends AbstractTest {
       throws ServiceException, ValidationException {
     String buyingCurrencyCodeLowerCase = createSubjectCurrencyCodeLowerCase();
     String buyingCurrencyCode = createSubjectCurrencyCode();
-    List<String> sellingCurrencyCodesLowerCase = createOtherCurrencyCodesLowerCase();
-    List<String> sellingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> sellingCurrencyCodesLowerCase = createComparisonCurrencyCodesLowerCase();
+    List<String> sellingCurrencyCodes = createComparisonCurrencyCodes();
     CurrentExchangeRates currentExchangeRates = createCurrentExchangeRates();
     when(mockExchangeRateService.getCurrentBuyingExchangeRates(buyingCurrencyCode,
         sellingCurrencyCodes)).thenReturn(currentExchangeRates);
@@ -114,7 +114,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetCurrentSellingExchangeRatesCurrencyIds()
       throws ServiceException, ValidationException {
     Long sellingCurrencyId = createSubjectCurrencyId();
-    List<Long> buyingCurrencyIds = createOtherCurrencyIds();
+    List<Long> buyingCurrencyIds = createComparisonCurrencyIds();
     CurrentExchangeRates currentExchangeRates = createCurrentExchangeRates();
     when(mockExchangeRateService.getCurrentSellingExchangeRates(sellingCurrencyId,
         buyingCurrencyIds)).thenReturn(currentExchangeRates);
@@ -131,7 +131,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetCurrentSellingExchangeRatesCurrencyCodes()
       throws ServiceException, ValidationException {
     String sellingCurrencyCode = createSubjectCurrencyCode();
-    List<String> buyingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> buyingCurrencyCodes = createComparisonCurrencyCodes();
     CurrentExchangeRates currentExchangeRates = createCurrentExchangeRates();
     when(mockExchangeRateService.getCurrentSellingExchangeRates(sellingCurrencyCode,
         buyingCurrencyCodes)).thenReturn(currentExchangeRates);
@@ -149,8 +149,8 @@ public class ExchangeRatesControllerTest extends AbstractTest {
       throws ServiceException, ValidationException {
     String sellingCurrencyCodeLowerCase = createSubjectCurrencyCodeLowerCase();
     String sellingCurrencyCode = createSubjectCurrencyCode();
-    List<String> buyingCurrencyCodesLowerCase = createOtherCurrencyCodesLowerCase();
-    List<String> buyingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> buyingCurrencyCodesLowerCase = createComparisonCurrencyCodesLowerCase();
+    List<String> buyingCurrencyCodes = createComparisonCurrencyCodes();
     CurrentExchangeRates currentExchangeRates = createCurrentExchangeRates();
     when(mockExchangeRateService.getCurrentSellingExchangeRates(sellingCurrencyCode,
         buyingCurrencyCodes)).thenReturn(currentExchangeRates);
@@ -180,7 +180,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetHistoricalBuyingExchangeRatesCurrencyIds()
       throws ServiceException, ValidationException {
     Long buyingCurrencyId = createSubjectCurrencyId();
-    List<Long> sellingCurrencyIds = createOtherCurrencyIds();
+    List<Long> sellingCurrencyIds = createComparisonCurrencyIds();
     HistoricalExchangeRates historicalExchangeRates = createHistoricalExchangeRates();
     when(mockExchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyId,
         sellingCurrencyIds)).thenReturn(historicalExchangeRates);
@@ -197,7 +197,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetHistoricalBuyingExchangeRatesCurrencyCodes()
       throws ServiceException, ValidationException {
     String buyingCurrencyCode = createSubjectCurrencyCode();
-    List<String> sellingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> sellingCurrencyCodes = createComparisonCurrencyCodes();
     HistoricalExchangeRates historicalExchangeRates = createHistoricalExchangeRates();
     when(mockExchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyCode,
         sellingCurrencyCodes)).thenReturn(historicalExchangeRates);
@@ -215,8 +215,8 @@ public class ExchangeRatesControllerTest extends AbstractTest {
       throws ServiceException, ValidationException {
     String buyingCurrencyCodeLowerCase = createSubjectCurrencyCodeLowerCase();
     String buyingCurrencyCode = createSubjectCurrencyCode();
-    List<String> sellingCurrencyCodesLowerCase = createOtherCurrencyCodesLowerCase();
-    List<String> sellingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> sellingCurrencyCodesLowerCase = createComparisonCurrencyCodesLowerCase();
+    List<String> sellingCurrencyCodes = createComparisonCurrencyCodes();
     HistoricalExchangeRates historicalExchangeRates = createHistoricalExchangeRates();
     when(mockExchangeRateService.getHistoricalBuyingExchangeRates(buyingCurrencyCode,
         sellingCurrencyCodes)).thenReturn(historicalExchangeRates);
@@ -248,7 +248,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetHistoricalSellingExchangeRatesCurrencyIds()
       throws ServiceException, ValidationException {
     Long sellingCurrencyId = createSubjectCurrencyId();
-    List<Long> buyingCurrencyIds = createOtherCurrencyIds();
+    List<Long> buyingCurrencyIds = createComparisonCurrencyIds();
     HistoricalExchangeRates historicalExchangeRates = createHistoricalExchangeRates();
     when(mockExchangeRateService.getHistoricalSellingExchangeRates(sellingCurrencyId,
         buyingCurrencyIds)).thenReturn(historicalExchangeRates);
@@ -265,7 +265,7 @@ public class ExchangeRatesControllerTest extends AbstractTest {
   public void testGetHistoricalSellingExchangeRatesCurrencyCodes()
       throws ServiceException, ValidationException {
     String sellingCurrencyCode = createSubjectCurrencyCode();
-    List<String> buyingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> buyingCurrencyCodes = createComparisonCurrencyCodes();
     HistoricalExchangeRates historicalExchangeRates = createHistoricalExchangeRates();
     when(mockExchangeRateService.getHistoricalSellingExchangeRates(sellingCurrencyCode,
         buyingCurrencyCodes)).thenReturn(historicalExchangeRates);
@@ -283,8 +283,8 @@ public class ExchangeRatesControllerTest extends AbstractTest {
       throws ServiceException, ValidationException {
     String sellingCurrencyCodeLowerCase = createSubjectCurrencyCodeLowerCase();
     String sellingCurrencyCode = createSubjectCurrencyCode();
-    List<String> buyingCurrencyCodesLowerCase = createOtherCurrencyCodesLowerCase();
-    List<String> buyingCurrencyCodes = createOtherCurrencyCodes();
+    List<String> buyingCurrencyCodesLowerCase = createComparisonCurrencyCodesLowerCase();
+    List<String> buyingCurrencyCodes = createComparisonCurrencyCodes();
     HistoricalExchangeRates historicalExchangeRates = createHistoricalExchangeRates();
     when(mockExchangeRateService.getHistoricalSellingExchangeRates(sellingCurrencyCode,
         buyingCurrencyCodes)).thenReturn(historicalExchangeRates);

@@ -13,30 +13,32 @@ import java.util.List;
 public interface ExchangeRateServiceValidator {
 
   /**
-   * Validates the subject currency and other currencies.
+   * Validates the subject currency and comparison currencies.
    * 
    * @param subjectCurrency The subject currency.
-   * @param otherCurrencies The other currencies.
+   * @param comparisonCurrencies The comparison currencies.
    * @param exchangeRateRoleSubjectCurrency The exchange rate role for the subject currency.
-   * @param exchangeRateRoleOtherCurrencies The exchange rate role for the other currencies.
+   * @param exchangeRateRoleComparisonCurrencies The exchange rate role for the comparison
+   *        currencies.
    * @throws ValidationException if the input parameters are invalid.
    */
-  public void validate(Currency subjectCurrency, List<Currency> otherCurrencies,
+  public void validate(Currency subjectCurrency, List<Currency> comparisonCurrencies,
       ExchangeRateRole exchangeRateRoleSubjectCurrency,
-      ExchangeRateRole exchangeRateRoleOtherCurrencies) throws ValidationException;
+      ExchangeRateRole exchangeRateRoleComparisonCurrencies) throws ValidationException;
 
   /**
-   * Validates the subject currency, other currencies and periods.
+   * Validates the subject currency, comparison currencies and periods.
    * 
    * @param subjectCurrency The subject currency.
-   * @param otherCurrencies The other currencies.
+   * @param comparisonCurrencies The comparison currencies.
    * @param periods The periods.
    * @param exchangeRateRoleSubjectCurrency The exchange rate role for the subject currency.
-   * @param exchangeRateRoleOtherCurrencies The exchange rate role for the other currencies.
+   * @param exchangeRateRoleComparisonCurrencies The exchange rate role for the comparison
+   *        currencies.
    * @throws ValidationException if the input parameters are invalid.
    */
-  public void validate(Currency subjectCurrency, List<Currency> otherCurrencies,
+  public void validate(Currency subjectCurrency, List<Currency> comparisonCurrencies,
       List<Period> periods, ExchangeRateRole exchangeRateRoleSubjectCurrency,
-      ExchangeRateRole exchangeRateRoleOtherCurrencies) throws ValidationException;
+      ExchangeRateRole exchangeRateRoleComparisonCurrencies) throws ValidationException;
 
 }

@@ -343,7 +343,7 @@ public class TestData {
     return currencies;
   }
 
-  public static List<Currency> createOtherCurrencies() {
+  public static List<Currency> createComparisonCurrencies() {
     List<Currency> currencies = new ArrayList<>();
     currencies.add(createHongKongDollars());
     currencies.add(createUsDollars());

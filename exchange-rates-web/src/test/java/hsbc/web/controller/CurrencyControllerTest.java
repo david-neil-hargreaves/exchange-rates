@@ -57,13 +57,14 @@ public class CurrencyControllerTest extends AbstractTest {
   }
 
   @Test
-  public void testFindDefaultOtherCurrencies() throws ServiceException, ValidationException {
+  public void testFindDefaultComparisonCurrencies() throws ServiceException, ValidationException {
     List<Currency> currencies = createCurrencies();
-    when(mockCurrencyService.findDefaultOtherCurrencies()).thenReturn(currencies);
+    when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(currencies);
     ResponseEntity<List<Currency>> expectedResponse = new ResponseEntity<>(currencies, OK);
-    ResponseEntity<List<Currency>> actualResponse = currencyController.findDefaultOtherCurrencies();
+    ResponseEntity<List<Currency>> actualResponse =
+        currencyController.findDefaultComparisonCurrencies();
     assertEquals(ATTRIBUTE_RESPONSE, expectedResponse, actualResponse);
-    verify(mockCurrencyService, times(1)).findDefaultOtherCurrencies();
+    verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
   }
 
 }

@@ -1,8 +1,8 @@
 
 package hsbc.util.exception;
 
-/** 
- * Represents a service exception. 
+/**
+ * Represents a service exception.
  */
 public class ServiceException extends Exception {
 

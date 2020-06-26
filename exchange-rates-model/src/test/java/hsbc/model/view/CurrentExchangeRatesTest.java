@@ -17,7 +17,7 @@ import org.junit.Test;
 public class CurrentExchangeRatesTest {
 
   private static final String ATTRIBUTE_SUBJECT_CURRENCY = "Subject currency";
-  private static final String ATTRIBUTE_OTHER_CURRENCIES = "Other currencies";
+  private static final String ATTRIBUTE_COMPARISON_CURRENCIES = "Comparison currencies";
   private static final String ATTRIBUTE_RATE = "Rate";
   private static final String ATTRIBUTE_CURRENT_EXCHANGE_RATES = "Current exchange rates";
 
@@ -37,8 +37,8 @@ public class CurrentExchangeRatesTest {
         Optional.of(exchangeRatePoundsSterling.getRate()));
     assertEquals(ATTRIBUTE_SUBJECT_CURRENCY, buyingCurrency,
         currentExchangeRates.getSubjectCurrency());
-    assertEquals(ATTRIBUTE_OTHER_CURRENCIES, sellingCurrencies,
-        currentExchangeRates.getOtherCurrencies());
+    assertEquals(ATTRIBUTE_COMPARISON_CURRENCIES, sellingCurrencies,
+        currentExchangeRates.getComparisonCurrencies());
     assertEquals(ATTRIBUTE_RATE, Optional.of(exchangeRateUsDollars.getRate()),
         currentExchangeRates.getExchangeRate(exchangeRateUsDollars.getSellingCurrency()));
     assertEquals(ATTRIBUTE_RATE, Optional.of(exchangeRatePoundsSterling.getRate()),

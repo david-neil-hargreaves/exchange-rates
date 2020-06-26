@@ -23,7 +23,7 @@ import org.junit.Test;
 public class HistoricalExchangeRatesTest {
 
   private static final String ATTRIBUTE_SUBJECT_CURRENCY = "Subject currency";
-  private static final String ATTRIBUTE_OTHER_CURRENCIES = "Other currencies";
+  private static final String ATTRIBUTE_COMPARISON_CURRENCIES = "Comparison currencies";
   private static final String ATTRIBUTE_PERIODS = "Periods";
   private static final String ATTRIBUTE_RATE = "Rate";
   private static final String ATTRIBUTE_HISTORICAL_EXCHANGE_RATES = "Historical exchange rates";
@@ -45,8 +45,8 @@ public class HistoricalExchangeRatesTest {
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_JANUARY));
     assertEquals(ATTRIBUTE_SUBJECT_CURRENCY, buyingCurrency,
         historicalExchangeRates.getSubjectCurrency());
-    assertEquals(ATTRIBUTE_OTHER_CURRENCIES, sellingCurrencies,
-        historicalExchangeRates.getOtherCurrencies());
+    assertEquals(ATTRIBUTE_COMPARISON_CURRENCIES, sellingCurrencies,
+        historicalExchangeRates.getComparisonCurrencies());
     assertEquals(ATTRIBUTE_PERIODS, periods, historicalExchangeRates.getPeriods());
     assertEquals(ATTRIBUTE_RATE, Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS_DECEMBER),
         historicalExchangeRates.getExchangeRate(usDollars, december));
@@ -54,17 +54,19 @@ public class HistoricalExchangeRatesTest {
         historicalExchangeRates.getExchangeRate(poundsSterling, january));
     assertEquals(ATTRIBUTE_RATE, Optional.empty(),
         historicalExchangeRates.getExchangeRate(usDollars, january));
-    Currency hongKongDollars = createHongKongDollars();
     List<HistoricalExchangeRatesCurrency> expectedHistoricalExchangeRates = new ArrayList<>();
-    HistoricalExchangeRatesCurrency poundsSterlingExchangeRates = new HistoricalExchangeRatesCurrency(poundsSterling);
+    HistoricalExchangeRatesCurrency poundsSterlingExchangeRates =
+        new HistoricalExchangeRatesCurrency(poundsSterling);
     expectedHistoricalExchangeRates.add(poundsSterlingExchangeRates);
     poundsSterlingExchangeRates.addRate(Optional.empty());
     poundsSterlingExchangeRates
         .addRate(Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_JANUARY));
-    HistoricalExchangeRatesCurrency usDollarsExchangeRates = new HistoricalExchangeRatesCurrency(usDollars);
+    HistoricalExchangeRatesCurrency usDollarsExchangeRates =
+        new HistoricalExchangeRatesCurrency(usDollars);
     expectedHistoricalExchangeRates.add(usDollarsExchangeRates);
     usDollarsExchangeRates.addRate(Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS_DECEMBER));
     usDollarsExchangeRates.addRate(Optional.empty());
+    Currency hongKongDollars = createHongKongDollars();
     HistoricalExchangeRatesCurrency hongKongDollarsExchangeRates =
         new HistoricalExchangeRatesCurrency(hongKongDollars);
     expectedHistoricalExchangeRates.add(hongKongDollarsExchangeRates);

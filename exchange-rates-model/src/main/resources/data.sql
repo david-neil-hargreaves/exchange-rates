@@ -22,7 +22,7 @@ CREATE TABLE currency (
   description VARCHAR(100) NOT NULL,
   sort_order_number INT NOT NULL,
   default_subject_currency BOOLEAN NOT NULL,
-  default_other_currency BOOLEAN NOT NULL
+  default_comparison_currency BOOLEAN NOT NULL
 );
 
 CREATE TABLE exchange_rate (
@@ -66,7 +66,7 @@ INSERT INTO period (period_type, code, description, start_date_time, end_date_ti
 INSERT INTO period (period_type, code, description, start_date_time, end_date_time, current_period) VALUES
   ('CALENDAR_MONTH', '2020006', 'June 2020', '2020-06-01', '2020-06-30', true);
 
-INSERT INTO currency (code, description, sort_order_number, default_subject_currency, default_other_currency) VALUES
+INSERT INTO currency (code, description, sort_order_number, default_subject_currency, default_comparison_currency) VALUES
   ('EUR', 'Euros', 10, true, false),
   ('HKD', 'Hong Kong Dollars', 40, false, true),
   ('GBP', 'Pounds Sterling', 20, false, true),

@@ -1,8 +1,9 @@
 package hsbc.service.validation;
 
-import static hsbc.util.exception.ValidationException.*;
-import static hsbc.util.exception.ValidationException.MESSAGE_OTHER_CURRENCIES_REQUIRED;
-import static hsbc.util.exception.ValidationException.MESSAGE_OTHER_CURRENCY_CANNOT_BE_SAME_AS_SUBJECT_CURRENCY;
+import static hsbc.util.exception.ValidationException.MESSAGE_COMPARISON_CURRENCIES_REQUIRED;
+import static hsbc.util.exception.ValidationException.MESSAGE_COMPARISON_CURRENCY_CANNOT_BE_SAME_AS_SUBJECT_CURRENCY;
+import static hsbc.util.exception.ValidationException.MESSAGE_DUPLICATE_COMPARISON_CURRENCY;
+import static hsbc.util.exception.ValidationException.MESSAGE_PERIODS_REQUIRED;
 import static hsbc.util.exception.ValidationException.MESSAGE_SUBJECT_CURRENCY_REQUIRED;
 
 import hsbc.model.Currency;
@@ -17,42 +18,42 @@ import org.springframework.stereotype.Service;
 public class ExchangeRateServiceValidatorImpl implements ExchangeRateServiceValidator {
 
   @Override
-  public void validate(Currency subjectCurrency, List<Currency> otherCurrencies,
+  public void validate(Currency subjectCurrency, List<Currency> comparisonCurrencies,
       ExchangeRateRole exchangeRateRoleSubjectCurrency,
-      ExchangeRateRole exchangeRateRoleOtherCurrencies) throws ValidationException {
+      ExchangeRateRole exchangeRateRoleComparisonCurrencies) throws ValidationException {
     if (subjectCurrency == null) {
       String message = String.format(MESSAGE_SUBJECT_CURRENCY_REQUIRED,
           exchangeRateRoleSubjectCurrency.getDescriptionInitialCapitalLetter());
       throw new ValidationException(message);
     }
-    if ((otherCurrencies == null) || (otherCurrencies.isEmpty())) {
-      String message = String.format(MESSAGE_OTHER_CURRENCIES_REQUIRED,
-          exchangeRateRoleOtherCurrencies.getDescriptionInitialCapitalLetter());
+    if ((comparisonCurrencies == null) || (comparisonCurrencies.isEmpty())) {
+      String message = String.format(MESSAGE_COMPARISON_CURRENCIES_REQUIRED,
+          exchangeRateRoleComparisonCurrencies.getDescriptionInitialCapitalLetter());
       throw new ValidationException(message);
     }
-    List<Currency> uniqueOtherCurrencies = new ArrayList<>();
-    for (Currency otherCurrency : otherCurrencies) {
-      if (uniqueOtherCurrencies.contains(otherCurrency)) {
-        String message = String.format(MESSAGE_DUPLICATE_OTHER_CURRENCY,
-            exchangeRateRoleOtherCurrencies.getDescription(), otherCurrency.getCode());
+    List<Currency> uniqueComparisonCurrencies = new ArrayList<>();
+    for (Currency comparisonCurrency : comparisonCurrencies) {
+      if (uniqueComparisonCurrencies.contains(comparisonCurrency)) {
+        String message = String.format(MESSAGE_DUPLICATE_COMPARISON_CURRENCY,
+            exchangeRateRoleComparisonCurrencies.getDescription(), comparisonCurrency.getCode());
         throw new ValidationException(message);
       }
-      uniqueOtherCurrencies.add(otherCurrency);
+      uniqueComparisonCurrencies.add(comparisonCurrency);
     }
-    if (otherCurrencies.contains(subjectCurrency)) {
-      String message = String.format(MESSAGE_OTHER_CURRENCY_CANNOT_BE_SAME_AS_SUBJECT_CURRENCY,
-          exchangeRateRoleOtherCurrencies.getDescriptionInitialCapitalLetter(),
+    if (comparisonCurrencies.contains(subjectCurrency)) {
+      String message = String.format(MESSAGE_COMPARISON_CURRENCY_CANNOT_BE_SAME_AS_SUBJECT_CURRENCY,
+          exchangeRateRoleComparisonCurrencies.getDescriptionInitialCapitalLetter(),
           exchangeRateRoleSubjectCurrency.getDescription());
       throw new ValidationException(message);
     }
   }
 
   @Override
-  public void validate(Currency subjectCurrency, List<Currency> otherCurrencies,
+  public void validate(Currency subjectCurrency, List<Currency> comparisonCurrencies,
       List<Period> periods, ExchangeRateRole exchangeRateRoleSubjectCurrency,
-      ExchangeRateRole exchangeRateRoleOtherCurrencies) throws ValidationException {
-    validate(subjectCurrency, otherCurrencies, exchangeRateRoleSubjectCurrency,
-        exchangeRateRoleOtherCurrencies);
+      ExchangeRateRole exchangeRateRoleComparisonCurrencies) throws ValidationException {
+    validate(subjectCurrency, comparisonCurrencies, exchangeRateRoleSubjectCurrency,
+        exchangeRateRoleComparisonCurrencies);
     if ((periods == null) || (periods.isEmpty())) {
       throw new ValidationException(MESSAGE_PERIODS_REQUIRED);
     }

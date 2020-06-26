@@ -18,6 +18,6 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
   public List<Currency> findByDefaultSubjectCurrencyTrue();
 
-  public List<Currency> findByDefaultOtherCurrencyTrue();
+  public List<Currency> findByDefaultComparisonCurrencyTrue();
 
 }

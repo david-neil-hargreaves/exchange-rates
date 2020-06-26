@@ -5,6 +5,9 @@ import java.util.List;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
+/**
+ * Represents an error from the REST endpoints.
+ */
 @Data
 public class ErrorResponse {
 

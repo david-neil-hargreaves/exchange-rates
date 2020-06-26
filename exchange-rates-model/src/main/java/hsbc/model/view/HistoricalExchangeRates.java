@@ -16,61 +16,64 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Represents historical exchange rates for a subject currency to multiple other currencies for a
- * list of periods.
+ * Represents historical exchange rates for a subject currency to multiple comparison currencies for
+ * a list of periods.
  */
 @Data
 public class HistoricalExchangeRates {
 
   private Currency subjectCurrency;
 
-  private List<Currency> otherCurrencies;
+  private List<Currency> comparisonCurrencies;
 
   private List<Period> periods;
 
   @Setter(AccessLevel.NONE)
   @Getter(AccessLevel.NONE)
-  private Map<OtherCurrencyPeriod, Optional<BigDecimal>> exchangeRates =
-      new TreeMap<OtherCurrencyPeriod, Optional<BigDecimal>>();
+  private Map<ComparisonCurrencyPeriod, Optional<BigDecimal>> exchangeRates =
+      new TreeMap<ComparisonCurrencyPeriod, Optional<BigDecimal>>();
 
   /**
    * Constructs a HistoricalExchangeRates.
    * 
    * @param subjectCurrency The subject currency.
-   * @param otherCurrencies The other currencies.
+   * @param comparisonCurrencies The comparison currencies.
    * @param periods The periods.
    */
-  public HistoricalExchangeRates(Currency subjectCurrency, List<Currency> otherCurrencies,
+  public HistoricalExchangeRates(Currency subjectCurrency, List<Currency> comparisonCurrencies,
       List<Period> periods) {
     this.subjectCurrency = subjectCurrency;
-    this.otherCurrencies = otherCurrencies;
+    this.comparisonCurrencies = comparisonCurrencies;
     this.periods = periods;
   }
 
 
   /**
-   * Sets the exchange rate from the subject currency to the other currency for the period.
+   * Sets the exchange rate from the subject currency to the comparison currency for the period.
    *
-   * @param otherCurrency The other currency.
+   * @param comparisonCurrency The comparison currency.
    * @param period The period.
    * @param rate The exchange rate.
    */
-  public void setExchangeRate(Currency otherCurrency, Period period, Optional<BigDecimal> rate) {
-    OtherCurrencyPeriod otherCurrencyPeriod = new OtherCurrencyPeriod(otherCurrency, period);
-    exchangeRates.put(otherCurrencyPeriod, rate);
+  public void setExchangeRate(Currency comparisonCurrency, Period period,
+      Optional<BigDecimal> rate) {
+    ComparisonCurrencyPeriod comparisonCurrencyPeriod =
+        new ComparisonCurrencyPeriod(comparisonCurrency, period);
+    exchangeRates.put(comparisonCurrencyPeriod, rate);
   }
 
   /**
-   * Returns the exchange rate from the subject currency to the other currency for the period.
+   * Returns the exchange rate from the subject currency to the comparison currency for the period.
    * 
-   * @param otherCurrency The other currency.
+   * @param comparisonCurrency The comparison currency.
    * @param period The period.
    * @return The exchange rate.
    */
-  public Optional<BigDecimal> getExchangeRate(Currency otherCurrency, Period period) {
-    OtherCurrencyPeriod otherCurrencyPeriod = new OtherCurrencyPeriod(otherCurrency, period);
-    if (exchangeRates.containsKey(otherCurrencyPeriod)) {
-      return exchangeRates.get(otherCurrencyPeriod);
+  public Optional<BigDecimal> getExchangeRate(Currency comparisonCurrency, Period period) {
+    ComparisonCurrencyPeriod comparisonCurrencyPeriod =
+        new ComparisonCurrencyPeriod(comparisonCurrency, period);
+    if (exchangeRates.containsKey(comparisonCurrencyPeriod)) {
+      return exchangeRates.get(comparisonCurrencyPeriod);
     } else {
       return Optional.empty();
     }
@@ -83,14 +86,15 @@ public class HistoricalExchangeRates {
    */
   public List<HistoricalExchangeRatesCurrency> getHistoricalExchangeRates() {
     List<HistoricalExchangeRatesCurrency> historicalExchangeRatesCurrencies = new ArrayList<>();
-    for (Currency otherCurrency : otherCurrencies) {
+    for (Currency comparisonCurrency : comparisonCurrencies) {
       HistoricalExchangeRatesCurrency historicalExchangeRatesCurrency =
-          new HistoricalExchangeRatesCurrency(otherCurrency);
+          new HistoricalExchangeRatesCurrency(comparisonCurrency);
       historicalExchangeRatesCurrencies.add(historicalExchangeRatesCurrency);
       for (Period period : periods) {
-        OtherCurrencyPeriod otherCurrencyPeriod = new OtherCurrencyPeriod(otherCurrency, period);
-        if (exchangeRates.containsKey(otherCurrencyPeriod)) {
-          historicalExchangeRatesCurrency.addRate(exchangeRates.get(otherCurrencyPeriod));
+        ComparisonCurrencyPeriod comparisonCurrencyPeriod =
+            new ComparisonCurrencyPeriod(comparisonCurrency, period);
+        if (exchangeRates.containsKey(comparisonCurrencyPeriod)) {
+          historicalExchangeRatesCurrency.addRate(exchangeRates.get(comparisonCurrencyPeriod));
         } else {
           historicalExchangeRatesCurrency.addRate(Optional.empty());
         }
@@ -102,18 +106,18 @@ public class HistoricalExchangeRates {
 
   @Data
   @AllArgsConstructor(access = AccessLevel.PRIVATE)
-  private class OtherCurrencyPeriod implements Comparable<OtherCurrencyPeriod> {
+  private class ComparisonCurrencyPeriod implements Comparable<ComparisonCurrencyPeriod> {
 
-    private Currency otherCurrency;
+    private Currency comparisonCurrency;
 
     private Period period;
 
     @Override
-    public int compareTo(OtherCurrencyPeriod other) {
-      if (this.getOtherCurrency().compareTo(other.getOtherCurrency()) != 0) {
-        return this.getOtherCurrency().compareTo(other.getOtherCurrency());
+    public int compareTo(ComparisonCurrencyPeriod comparison) {
+      if (this.getComparisonCurrency().compareTo(comparison.getComparisonCurrency()) != 0) {
+        return this.getComparisonCurrency().compareTo(comparison.getComparisonCurrency());
       }
-      return this.getPeriod().compareTo(other.getPeriod());
+      return this.getPeriod().compareTo(comparison.getPeriod());
     }
 
   }

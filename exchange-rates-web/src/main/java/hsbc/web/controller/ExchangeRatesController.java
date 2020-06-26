@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Provides exchange rates Web pages.
+ * Provides exchange rate REST endpoints.
  */
 @Api(tags = "Exchange Rates")
 @RestController
@@ -47,9 +47,10 @@ public class ExchangeRatesController {
    * 
    * @param buyingCurrencyId The buying currency i.d.
    * @param sellingCurrencyIds The selling currency i.d.s.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/buy/current/{buyingCurrencyId}")
   public ResponseEntity<CurrentExchangeRates> getCurrentBuyingExchangeRates(
@@ -69,9 +70,10 @@ public class ExchangeRatesController {
    * 
    * @param buyingCurrencyCode The buying currency code.
    * @param sellingCurrencyCodes The selling currency codes.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/buy/current/code/{buyingCurrencyCode}")
   public ResponseEntity<CurrentExchangeRates> getCurrentBuyingExchangeRates(
@@ -93,9 +95,10 @@ public class ExchangeRatesController {
    * Returns current buying exchange rates from a default buying currency to the default selling
    * currencies.
    * 
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/buy/current")
   public ResponseEntity<CurrentExchangeRates> getCurrentBuyingExchangeRates()
@@ -112,9 +115,10 @@ public class ExchangeRatesController {
    * 
    * @param sellingCurrencyId The selling currency i.d.
    * @param buyingCurrencyIds The buying currency i.d.s.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/sell/current/{sellingCurrencyId}")
   public ResponseEntity<CurrentExchangeRates> getCurrentSellingExchangeRates(
@@ -134,9 +138,10 @@ public class ExchangeRatesController {
    * 
    * @param sellingCurrencyCode The selling currency code.
    * @param buyingCurrencyCodes The buying currency codes.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/sell/current/code/{sellingCurrencyCode}")
   public ResponseEntity<CurrentExchangeRates> getCurrentSellingExchangeRates(
@@ -158,9 +163,10 @@ public class ExchangeRatesController {
    * Returns current selling exchange rates from a default selling currency to the default buying
    * currencies.
    * 
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/sell/current")
   public ResponseEntity<CurrentExchangeRates> getCurrentSellingExchangeRates()
@@ -178,9 +184,10 @@ public class ExchangeRatesController {
    * 
    * @param buyingCurrencyId The buying currency i.d.
    * @param sellingCurrencyIds The selling currency i.d.s.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/buy/history/{buyingCurrencyId}")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates(
@@ -200,9 +207,10 @@ public class ExchangeRatesController {
    * 
    * @param buyingCurrencyCode The buying currency code.
    * @param sellingCurrencyCodes The selling currency codes.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/buy/history/code/{buyingCurrencyCode}")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates(
@@ -224,9 +232,10 @@ public class ExchangeRatesController {
    * Returns historical buying exchange rates from a default buying currency to the default selling
    * currencies.
    * 
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/buy/history")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalBuyingExchangeRates()
@@ -245,9 +254,10 @@ public class ExchangeRatesController {
    * 
    * @param sellingCurrencyId The selling currency i.d.
    * @param buyingCurrencyIds The buying currency i.d.s.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/sell/history/{sellingCurrencyId}")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalSellingExchangeRates(
@@ -267,9 +277,10 @@ public class ExchangeRatesController {
    * 
    * @param sellingCurrencyCode The selling currency code.
    * @param buyingCurrencyCodes The buying currency codes.
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/sell/history/code/{sellingCurrencyCode}")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalSellingExchangeRates(
@@ -291,9 +302,10 @@ public class ExchangeRatesController {
    * Returns historical selling exchange rates from a default selling currency to the default buying
    * currencies.
    * 
-   * @return exchange rates.
-   * @throws ServiceException service exception.
-   * @throws ValidationException validation exception.
+   * @return Exchange rates.
+   * @throws ServiceException If a service exception occurs.
+   * @throws ValidationException If a validation exception occurs.
+   * @throws ConstraintViolationException If a constraint violation exception occurs.
    */
   @GetMapping(value = "/sell/history")
   public ResponseEntity<HistoricalExchangeRates> getHistoricalSellingExchangeRates()

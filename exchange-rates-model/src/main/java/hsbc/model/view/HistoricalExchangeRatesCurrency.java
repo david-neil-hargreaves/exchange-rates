@@ -8,19 +8,18 @@ import java.util.Optional;
 import lombok.Data;
 
 /**
- * Represents historical exchange rates for a subject currency (implied) to the other currency for a
- * list of periods (implied).
+ * Represents historical exchange rates for a subject currency (implied) to the comparison currency
+ * for a list of periods (implied).
  */
 @Data
-class HistoricalExchangeRatesCurrency
-    implements Comparable<HistoricalExchangeRatesCurrency> {
+class HistoricalExchangeRatesCurrency implements Comparable<HistoricalExchangeRatesCurrency> {
 
-  private Currency otherCurrency;
+  private Currency comparisonCurrency;
   private List<Optional<BigDecimal>> rates = new ArrayList<>();
 
-  HistoricalExchangeRatesCurrency(Currency otherCurrency) {
+  HistoricalExchangeRatesCurrency(Currency comparisonCurrency) {
     super();
-    this.otherCurrency = otherCurrency;
+    this.comparisonCurrency = comparisonCurrency;
   }
 
   void addRate(Optional<BigDecimal> rate) {
@@ -28,20 +27,21 @@ class HistoricalExchangeRatesCurrency
   }
 
   /**
-   * Compares two HistoricalExchangeRatesCurrency instances. These are sorted by the other currency.
+   * Compares two HistoricalExchangeRatesCurrency instances. These are sorted by the comparison
+   * currency.
    * 
-   * @param other The other HistoricalExchangeRatesCurrency for use in the comparison.
+   * @param comparison The comparison HistoricalExchangeRatesCurrency for use in the comparison.
    * @return
-   *         <li>-1 if this HistoricalExchangeRatesCurrency should appear before the other when
+   *         <li>-1 if this HistoricalExchangeRatesCurrency should appear before the comparison when
    *         sorting.
-   *         <li>1 if this HistoricalExchangeRatesCurrency should appear after the other when
+   *         <li>1 if this HistoricalExchangeRatesCurrency should appear after the comparison when
    *         sorting.
    *         <li>0 if the order of the HistoricalExchangeRatesCurrency instances when sorting is
    *         indeterminate.
    */
   @Override
-  public int compareTo(HistoricalExchangeRatesCurrency other) {
-    return this.getOtherCurrency().compareTo(other.getOtherCurrency());
+  public int compareTo(HistoricalExchangeRatesCurrency comparison) {
+    return this.getComparisonCurrency().compareTo(comparison.getComparisonCurrency());
   }
 
 }

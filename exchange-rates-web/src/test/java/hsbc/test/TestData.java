@@ -8,8 +8,6 @@ import java.util.List;
 
 public class TestData {
 
-
-
   public static final Long CURRENCY_ID_EUROS = 1L;
   public static final Long CURRENCY_ID_POUNDS_STERLING = 2L;
   public static final Long CURRENCY_ID_HONG_KONG_DOLLARS = 4L;
@@ -42,21 +40,21 @@ public class TestData {
     return CURRENCY_CODE_EUROS_LOWER_CASE;
   }
 
-  public static List<Long> createOtherCurrencyIds() {
+  public static List<Long> createComparisonCurrencyIds() {
     List<Long> currencyIds = new ArrayList<>();
     currencyIds.add(CURRENCY_ID_POUNDS_STERLING);
     currencyIds.add(CURRENCY_ID_HONG_KONG_DOLLARS);
     return currencyIds;
   }
 
-  public static List<String> createOtherCurrencyCodes() {
+  public static List<String> createComparisonCurrencyCodes() {
     List<String> currencyCodes = new ArrayList<>();
     currencyCodes.add(CURRENCY_CODE_POUNDS_STERLING);
     currencyCodes.add(CURRENCY_CODE_HONG_KONG_DOLLARS);
     return currencyCodes;
   }
 
-  public static List<String> createOtherCurrencyCodesLowerCase() {
+  public static List<String> createComparisonCurrencyCodesLowerCase() {
     List<String> currencyCodes = new ArrayList<>();
     currencyCodes.add(CURRENCY_CODE_POUNDS_STERLING_LOWER_CASE);
     currencyCodes.add(CURRENCY_CODE_HONG_KONG_DOLLARS_LOWER_CASE);
