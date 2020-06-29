@@ -17,12 +17,20 @@
 		<div *ngIf="comparisonCurrencies.errors?.duplicate" class="help-block" style="color: red">Duplicate comparison currencies are not allowed.</div>
         <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies').controls; let i=index">
           <label>
-            Comparison currency:
-			<select [formControlName]="i" [compareWith]="compareCurrency">
-	          <option [ngValue]="currency" *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>{{currency.code}}</option>
-            </select>
-			<button type="button" (click)="deleteComparisonCurrency(i)">Remove</button>
-          </label>
+		    <div *ngIf="comparisonCurrency.value.id !== undefined">
+              Comparison currency:
+			  <select [formControlName]="i" [compareWith]="compareCurrency">
+	            <option [ngValue]="currency" *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>{{currency.code}}</option>
+              </select>
+			  <button type="button" (click)="deleteComparisonCurrency(i)">&#x274E;</button>
+			</div>
+			<div *ngIf="comparisonCurrency.value.id === undefined">
+              Comparison currency:
+			  <select [formControlName]="i" [compareWith]="compareCurrency">
+	            <option [ngValue]="currency" *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>{{currency.code}}</option>
+              </select>
+			</div>
+	      </label>
         </div>
       </div>
 	</li>
