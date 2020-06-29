@@ -57,20 +57,25 @@ export class MenuReactiveFormComponent {
 	for (let i = 0; i < this.exchangeRateService.getComparisonCurrencies().length; i++) {
 	   this.comparisonCurrencies.push(this.fb.control(this.exchangeRateService.getComparisonCurrencies()[i]));
     }
+	this.addComparisonCurrency();
 	this.allCurrencies = this.exchangeRateService.getAllCurrencies();
 	this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
 	const formChangesSubscription = this.menuForm.valueChanges.subscribe(data => { 
 	  this.exchangeRateService.setSubjectCurrency(this.menuForm.controls.subjectCurrency.value);
 	  this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
 	  let comparisonCurrencyToDeleteIndex = -1;
+	  let hasEmptyComparisonCurrency = false;
 	  for (let i = 0; i < data.comparisonCurrencies.length; i++) {
+		if (data.comparisonCurrencies[i].id === undefined){
+          hasEmptyComparisonCurrency = true;
+        }			
 		if (data.comparisonCurrencies[i].id === data.subjectCurrency.id){
-		  comparisonCurrencyToDeleteIndex = i;
-	    }		
+		  this.deleteComparisonCurrency(i);
+		}
       }
-	  if (comparisonCurrencyToDeleteIndex !== -1){
-	    this.deleteComparisonCurrency(comparisonCurrencyToDeleteIndex);
-	  }	  
+      if (hasEmptyComparisonCurrency === false){
+        this.addComparisonCurrency();
+      }		  
     });
 	this.masterSubscription.add(formChangesSubscription);
   }
