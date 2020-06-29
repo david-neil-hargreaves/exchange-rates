@@ -1,0 +1,19 @@
+<div class="card my-5">
+
+  <div class="card-body">
+    
+	<h4>Sell {{ currencyExchangeRates?.subjectCurrency.code }} {{ currencyExchangeRates?.subjectCurrency.description }}</h4>
+	
+	<table class="table table-bordered table-striped">
+      <tbody>
+  	    <tr *ngFor="let currentExchangeRate of currencyExchangeRates?.currentExchangeRates">
+          <td>{{ currentExchangeRate.comparisonCurrency.code }}</td>
+          <td>{{ currentExchangeRate.comparisonCurrency.description }}</td>
+          <td>{{ currentExchangeRate.rate }}</td>
+        </tr>
+      </tbody>
+    </table>
+	
+  </div>
+  
+</div>

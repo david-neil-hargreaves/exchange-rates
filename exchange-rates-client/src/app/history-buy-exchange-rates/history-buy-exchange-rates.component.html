@@ -1,0 +1,32 @@
+<div class="card my-5">
+
+  <div class="card-body">
+ 	
+	<h4>Buy {{ currencyExchangeRates?.subjectCurrency.code }} {{ currencyExchangeRates?.subjectCurrency.description }}</h4>
+	
+	<table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Description</th>
+		  <ng-template ngFor let-period="$implicit" [ngForOf]="currencyExchangeRates?.periods">
+		     <th scope="col">{{period.description}}</th>
+		  </ng-template>
+        </tr>
+      </thead>
+      <tbody>
+		<ng-template ngFor let-currencyExchangeRate="$implicit" [ngForOf]="currencyExchangeRates?.historicalExchangeRates">
+	      <tr>
+            <td>{{ currencyExchangeRate.comparisonCurrency.code }}</td>
+            <td>{{ currencyExchangeRate.comparisonCurrency.description }}</td>
+	        <ng-template ngFor let-rate="$implicit" [ngForOf]="currencyExchangeRate.rates">
+              <td>{{rate}}</td>
+            </ng-template>
+	      </tr>
+	    </ng-template>   
+	  </tbody>
+    </table>
+	
+  </div>
+ 
+</div>

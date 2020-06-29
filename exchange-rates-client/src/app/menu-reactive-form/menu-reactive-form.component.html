@@ -1,0 +1,37 @@
+<form [formGroup]="menuForm" (ngSubmit)="onSubmit()">
+
+  <ul class="wrapper">
+  
+    <li class="form-row">
+	  <label>
+	    Subject currency:
+		<select formControlName="subjectCurrency" id="subjectCurrency" [compareWith]="compareCurrency">
+	      <option [ngValue]="currency" *ngFor="let currency of allCurrencies" [attr.selected]>{{currency.code}}</option>
+        </select>
+      </label>
+	</li>
+	
+	<li class="form-row">
+	  <div formArrayName="comparisonCurrencies">
+        <button type="button" (click)="addComparisonCurrency()">Add comparison currency</button>
+		<!--<div *ngIf="menuForm.get('comparisonCurrencies').status === 'INVALID'" class="help-block" style="color: #813838">A comparison currency is required.</div>-->
+		<div *ngIf="menuForm.get('comparisonCurrencies').status === 'INVALID'" class="help-block" style="color: red">A comparison currency is required.</div>
+        <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies').controls; let i=index">
+          <label>
+            Comparison currency:
+			<select [formControlName]="i" [compareWith]="compareCurrency">
+	          <option [ngValue]="currency" *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>{{currency.code}}</option>
+            </select>
+			<button type="button" (click)="deleteComparisonCurrency(i)">Remove</button>
+          </label>
+        </div>
+      </div>
+	</li>
+	
+	<li class="form-row">
+	  <button class="btn btn-info" type="submit" [disabled]="!menuForm.valid">Go</button>
+    </li>
+	
+  </ul>
+
+</form>

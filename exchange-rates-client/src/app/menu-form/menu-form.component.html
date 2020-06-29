@@ -1,0 +1,18 @@
+<div class="card my-5">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #menuForm="ngForm">
+      <div class="form-group">
+        <label for="subjectCurrencyCode">Subject Currency Code</label>
+        <input type="text" [(ngModel)]="subjectCurrencyCode" 
+          class="form-control"
+          id="subjectCurrencyCode"
+          name="subjectCurrencyCode"
+          placeholder="Enter the subject currency code"
+          required #name="ngModel">
+      </div>
+      <!--<div [hidden]="!subjectCurrencyCode.pristine" class="alert alert-danger">Subject currency code is required</div>-->
+      <button type="submit" [disabled]="!menuForm.form.valid" 
+        class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>
