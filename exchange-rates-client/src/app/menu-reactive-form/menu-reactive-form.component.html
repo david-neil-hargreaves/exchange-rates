@@ -13,7 +13,8 @@
 	
 	<li class="form-row">
 	  <div formArrayName="comparisonCurrencies">
-      <div *ngIf="menuForm.get('comparisonCurrencies').status === 'INVALID'" class="help-block" style="color: red">A comparison currency is required.</div>
+	    <div *ngIf="comparisonCurrencies.errors?.required" class="help-block" style="color: red">A comparison currency is required.</div>
+		<div *ngIf="comparisonCurrencies.errors?.duplicate" class="help-block" style="color: red">Duplicate comparison currencies are not allowed.</div>
         <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies').controls; let i=index">
           <label>
             Comparison currency:

@@ -82,22 +82,30 @@ export class MenuReactiveFormComponent {
   
   onSubmit() {
 	let comparisonCurrencies: Currency[] = [];
-	let validForm = false;
+	let uniqueComparisonCurrencies = new Set();
+	let hasComparisonCurrencies = false;
 	for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
 	  if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value != ''){	
-	    validForm = true;	
+	    hasComparisonCurrencies = true;
+        uniqueComparisonCurrencies.add((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value.id);		
 	    comparisonCurrencies.push((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value);
 	  }
     }
-	if (validForm){
-	  this.exchangeRateService.setSubjectCurrency(this.menuForm.controls.subjectCurrency.value);
-	  this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
-	  this.displayCurrentBuyingExchangeRates();
-	} else {
+	if (hasComparisonCurrencies === false){
 	  this.comparisonCurrencies.setErrors({
         required: true
       });
-    } 
+	  return;
+	}
+	if (uniqueComparisonCurrencies.size !== ((<FormArray>this.menuForm.get('comparisonCurrencies')).length - 1)) {
+      this.comparisonCurrencies.setErrors({
+        duplicate: true
+      });
+	  return;
+    }		
+    this.exchangeRateService.setSubjectCurrency(this.menuForm.controls.subjectCurrency.value);
+	this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+	this.displayCurrentBuyingExchangeRates();
   }
   
   get comparisonCurrencies() {
