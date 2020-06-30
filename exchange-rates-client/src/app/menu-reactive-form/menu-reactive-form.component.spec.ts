@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// import { ReactiveFormsModule } from '@angular/forms';
 import { CurrencyExchangeRates } from '../model/currency-exchange-rates';
 import { ExchangeRateService } from '../service/exchange-rate.service';
 import { CurrencyService } from '../service/currency.service';
@@ -114,6 +115,7 @@ describe('MenuReactiveFormComponent', () => {
 		
     TestBed.configureTestingModule({
       declarations: [ MenuReactiveFormComponent ],
+	  imports: [ ReactiveFormsModule ],
       providers: [
 	   	//{ provide: FormBuilder, useClass: MockFormBuilder },
 		FormBuilder,
