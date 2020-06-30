@@ -14,19 +14,6 @@ describe('MenuReactiveFormComponent', () => {
   let component: MenuReactiveFormComponent;
   let fixture: ComponentFixture<MenuReactiveFormComponent>;
   
-  class MockFormBuilder {
-	public group() {
-	  return new FormGroup({
-        new FormControl(),
-		new FormArray()
-      });
-    }
-	
-	public array() {
-	  return new FormArray();
-    }
-  }	  
-  
   class MockCurrencyService {
 	  public fetchAllCurrencies () {
 		  let currencies = [
