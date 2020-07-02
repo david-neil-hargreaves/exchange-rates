@@ -1,11 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
 import { CurrencyService } from './currency.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Currency } from '../model/currency';
-import { Observable } from 'rxjs/Observable';
 
 describe('CurrencyService', () => {
+
+    const currencies = [{ 'id': '1', 'code': 'EUR', 'description': 'Euros' },
+        { 'id': '3', 'code': 'GBP', 'description': 'Pounds Sterling' }];
+    const currency = { 'id': '1', 'code': 'EUR', 'description': 'Euros' };
 
     let currencyService: CurrencyService;
     let httpMock: HttpTestingController;
@@ -19,7 +20,6 @@ describe('CurrencyService', () => {
                 CurrencyService
             ]
         });
-
         currencyService = TestBed.get(CurrencyService);
         httpMock = TestBed.get(HttpTestingController);
     });
@@ -29,20 +29,36 @@ describe('CurrencyService', () => {
     }));
 
     it('should successfully fetch all currencies', (done) => {
-        let currencies: Currency[];
-        currencies = [{ 'id': '1', 'code': 'EUR', 'description': 'Euros' }, { 'id': '3', 'code': 'GBP', 'description': 'Pounds Sterling' }];
         currencyService.fetchAllCurrencies()
             .subscribe(data => {
                 expect(data).toBe(currencies);
                 done();
             });
-
         const request = httpMock.expectOne('http://localhost:8080/currencies/all');
-
-        request.flush(
-            currencies
-        );
-
+        request.flush(currencies);
         httpMock.verify();
     });
+
+    it('should successfully fetch default subject currency', (done) => {
+        currencyService.fetchDefaultSubjectCurrency()
+            .subscribe(data => {
+                expect(data).toBe(currency);
+                done();
+            });
+        const request = httpMock.expectOne('http://localhost:8080/currencies/defaultSubjectCurrency');
+        request.flush(currency);
+        httpMock.verify();
+    });
+
+    it('should successfully fetch default comparison currencies', (done) => {
+        currencyService.fetchDefaultComparisonCurrencies()
+            .subscribe(data => {
+                expect(data).toBe(currencies);
+                done();
+            });
+        const request = httpMock.expectOne('http://localhost:8080/currencies/defaultComparisonCurrencies');
+        request.flush(currencies);
+        httpMock.verify();
+    });
+
 });

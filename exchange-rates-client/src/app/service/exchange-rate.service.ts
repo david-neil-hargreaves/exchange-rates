@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Currency } from '../model/currency';
 import { CurrencyExchangeRates } from '../model/currency-exchange-rates';
-import { CurrencyService } from '../service/currency.service';
 
 @Injectable()
 export class ExchangeRateService {
@@ -18,7 +17,7 @@ export class ExchangeRateService {
     private comparisonCurrencies: Currency[];
     private candidateComparisonCurrencies: Currency[];
 
-    constructor(private httpClient: HttpClient, private currencyService: CurrencyService) {
+    constructor(private httpClient: HttpClient) {
         console.log('DEBUG: Constructing ExchangeRateService');
         this.baseUrl = 'http://localhost:8080/exchange-rates';
         this.buyCurrentPrefix = this.baseUrl + '/buy/current';
