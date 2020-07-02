@@ -7,54 +7,54 @@ import 'rxjs/add/observable/of';
 import { CurrentSellExchangeRatesComponent } from './current-sell-exchange-rates.component';
 
 describe('CurrentSellExchangeRatesComponent', () => {
-  let component: CurrentSellExchangeRatesComponent;
-  let fixture: ComponentFixture<CurrentSellExchangeRatesComponent>;
-  
-  class MockCurrencyService {
-	  
-  }	  
-  
-  class MockExchangeRateService {
-	public getCurrentSellingExchangeRates(): Observable<CurrencyExchangeRates> {  
-	  return Observable.of(null);
-	}
-	
-	public getAllCurrencies() {
-	  return null;
-	}
-	  
-	public getSubjectCurrency() {
-	  return null;
-	}
-	  
-	public getComparisonCurrencies() {
-	  return null;
-	}
-	  
-	public getCandidateComparisonCurrencies() {
-	  return null;
-	}
-  }	  
+    let component: CurrentSellExchangeRatesComponent;
+    let fixture: ComponentFixture<CurrentSellExchangeRatesComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CurrentSellExchangeRatesComponent ],
-	  providers: [
-	    CurrentSellExchangeRatesComponent,
-		{ provide: CurrencyService, useClass: MockCurrencyService },
-	    { provide: ExchangeRateService, useClass: MockExchangeRateService }
-	  ]
-    })
-    .compileComponents();
-  }));
+    class MockCurrencyService {
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CurrentSellExchangeRatesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    class MockExchangeRateService {
+        public getCurrentSellingExchangeRates(): Observable<CurrencyExchangeRates> {
+            return Observable.of(null);
+        }
+
+        public getAllCurrencies() {
+            return null;
+        }
+
+        public getSubjectCurrency() {
+            return null;
+        }
+
+        public getComparisonCurrencies() {
+            return null;
+        }
+
+        public getCandidateComparisonCurrencies() {
+            return null;
+        }
+    }
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [CurrentSellExchangeRatesComponent],
+            providers: [
+                CurrentSellExchangeRatesComponent,
+                { provide: CurrencyService, useClass: MockCurrencyService },
+                { provide: ExchangeRateService, useClass: MockExchangeRateService }
+            ]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CurrentSellExchangeRatesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });
