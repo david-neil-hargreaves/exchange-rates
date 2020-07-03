@@ -57,13 +57,13 @@ export class MenuReactiveFormComponent implements OnInit {
         for (let i = 0; i < this.exchangeRateService.getComparisonCurrencies().length; i++) {
             this.comparisonCurrencies.push(this.fb.control(this.exchangeRateService.getComparisonCurrencies()[i]));
         }
-        this.addComparisonCurrency();
         this.allCurrencies = this.exchangeRateService.getAllCurrencies();
         this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
+        if ((this.candidateComparisonCurrencies !== null) && (this.candidateComparisonCurrencies.length !== 0)) {
+            this.addComparisonCurrency();
+        }
         const formChangesSubscription = this.menuForm.valueChanges.subscribe(data => {
             this.exchangeRateService.setSubjectCurrency(this.menuForm.controls.subjectCurrency.value);
-            this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
-            const comparisonCurrencyToDeleteIndex = -1;
             let hasEmptyComparisonCurrency = false;
             for (let i = 0; i < data.comparisonCurrencies.length; i++) {
                 if (data.comparisonCurrencies[i].id === undefined) {
@@ -73,39 +73,20 @@ export class MenuReactiveFormComponent implements OnInit {
                     this.deleteComparisonCurrency(i);
                 }
             }
-            if (hasEmptyComparisonCurrency === false) {
+            const comparisonCurrencies: Currency[] = [];
+            for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
+                if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value !== '') {
+                    comparisonCurrencies.push((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value);
+                }
+            }
+            this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+            this.exchangeRateService.setCandidateComparisonCurrencies();
+            this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
+            if ((hasEmptyComparisonCurrency === false) && (this.candidateComparisonCurrencies.length !== 0)) {
                 this.addComparisonCurrency();
             }
         });
         this.masterSubscription.add(formChangesSubscription);
-    }
-
-    onSubmit() {
-        const comparisonCurrencies: Currency[] = [];
-        const uniqueComparisonCurrencies = new Set();
-        let hasComparisonCurrencies = false;
-        for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
-            if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value !== '') {
-                hasComparisonCurrencies = true;
-                uniqueComparisonCurrencies.add((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value.id);
-                comparisonCurrencies.push((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value);
-            }
-        }
-        if (hasComparisonCurrencies === false) {
-            this.comparisonCurrencies.setErrors({
-                required: true
-            });
-            return;
-        }
-        if (uniqueComparisonCurrencies.size !== ((<FormArray>this.menuForm.get('comparisonCurrencies')).length - 1)) {
-            this.comparisonCurrencies.setErrors({
-                duplicate: true
-            });
-            return;
-        }
-        this.exchangeRateService.setSubjectCurrency(this.menuForm.controls.subjectCurrency.value);
-        this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
-        this.displayCurrentBuyingExchangeRates();
     }
 
     get comparisonCurrencies() {
@@ -118,17 +99,32 @@ export class MenuReactiveFormComponent implements OnInit {
 
     deleteComparisonCurrency(index: number) {
         this.comparisonCurrencies.removeAt(index);
-        if ((<FormArray>this.menuForm.get('comparisonCurrencies')).length === 0) {
+
+        const comparisonCurrencies: Currency[] = [];
+        for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
+            if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value !== '') {
+                comparisonCurrencies.push((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value);
+            }
+        }
+        this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+        this.exchangeRateService.setCandidateComparisonCurrencies();
+        this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
+
+        if (((<FormArray>this.menuForm.get('comparisonCurrencies')).length === 0) && (this.candidateComparisonCurrencies.length !== 0)) {
             this.addComparisonCurrency();
         }
     }
 
-    displayCurrentBuyingExchangeRates() {
-        this.router.navigate(['/buy/current']);
-    }
-
     compareCurrency(currency1: any, currency2: any): boolean {
         return currency1 && currency2 ? currency1.id === currency2.id : currency1 === currency2;
+    }
+
+    onSubmit() {
+        this.displayCurrentBuyingExchangeRates();
+    }
+
+    displayCurrentBuyingExchangeRates() {
+        this.router.navigate(['/buy/current']);
     }
 
 }

@@ -19,9 +19,10 @@
           <label>
 		    <div *ngIf="comparisonCurrency.value.id !== undefined">
               Comparison currency:
-			  <select [formControlName]="i" [compareWith]="compareCurrency">
-	            <option [ngValue]="currency" *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>{{currency.code}}</option>
-              </select>
+			  <!--<select [formControlName]="i" [compareWith]="compareCurrency">
+	            <option [ngValue]="currency" *ngFor="let currency of candidateComparisonCurrencies" [attr.selected] disabled>{{currency.code}}</option>
+              </select>-->
+              {{comparisonCurrency.value.code}}
 			  <button type="button" (click)="deleteComparisonCurrency(i)">&#x274E;</button>
 			</div>
 			<div *ngIf="comparisonCurrency.value.id === undefined">
@@ -35,9 +36,9 @@
       </div>
 	</li>
 	
-	<li class="form-row">
+	<!--<li class="form-row">
 	  <button class="btn btn-info" type="submit" [disabled]="!menuForm.valid">Go</button>
-    </li>
+    </li>-->
 	
   </ul>
 

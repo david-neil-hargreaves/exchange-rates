@@ -90,18 +90,31 @@ export class ExchangeRateService {
         this.setCandidateComparisonCurrencies();
     }
 
-    private setCandidateComparisonCurrencies() {
+    public setCandidateComparisonCurrencies() {
         const subjectCurrency = this.subjectCurrency;
-        if ((this.subjectCurrency !== undefined) && (this.allCurrencies !== undefined)) {
+		const comparisonCurrencies = this.comparisonCurrencies;
+        if ((this.subjectCurrency !== undefined) && (this.allCurrencies !== undefined) && (this.comparisonCurrencies != undefined)) {
             this.candidateComparisonCurrencies = this.allCurrencies.slice();
             this.candidateComparisonCurrencies = this.candidateComparisonCurrencies.filter(function (currency) {
-                return currency.id !== subjectCurrency.id;
+  			let alreadySelected = false;
+		        if (subjectCurrency.id === currency.id) {
+			        alreadySelected = true;
+		        }
+                if (alreadySelected === false) {		
+			        for (let i = 0; i < comparisonCurrencies.length; i++) {
+				        if (comparisonCurrencies[i].id === currency.id) {
+					        alreadySelected = true;	
+				        }	
+			        }
+		        }
+		        return !alreadySelected;
             });
         }
     }
-
+	
     public setComparisonCurrencies(comparisonCurrencies: Currency[]) {
         this.comparisonCurrencies = comparisonCurrencies;
+		this.setCandidateComparisonCurrencies();
     }
 
     public getAllCurrencies() {

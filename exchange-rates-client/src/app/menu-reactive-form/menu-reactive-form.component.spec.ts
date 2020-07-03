@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { MenuReactiveFormComponent } from './menu-reactive-form.component';
 describe('MenuReactiveFormComponent', () => {
     let component: MenuReactiveFormComponent;
     let fixture: ComponentFixture<MenuReactiveFormComponent>;
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     class MockCurrencyService {
         public fetchAllCurrencies() {
@@ -89,12 +90,13 @@ describe('MenuReactiveFormComponent', () => {
         public setSubjectCurrency() {
         }
 
+        public setComparisonCurrencies() {
+        }
+
     }
 
     beforeEach(async(() => {
-
         const activatedRouteSpy = jasmine.createSpyObj('ActivatedRoute', ['getValue']);
-        const routerSpy = jasmine.createSpyObj('Router', ['getValue']);
 
         TestBed.configureTestingModule({
             declarations: [MenuReactiveFormComponent],
@@ -106,10 +108,9 @@ describe('MenuReactiveFormComponent', () => {
                 { provide: CurrencyService, useClass: MockCurrencyService },
                 { provide: ExchangeRateService, useClass: MockExchangeRateService }
             ]
-
-
         })
             .compileComponents();
+
     }));
 
     beforeEach(() => {
@@ -121,4 +122,40 @@ describe('MenuReactiveFormComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+
+    /*it('should successfully submit form', () => {
+        component.onSubmit();
+        //const submit = fixture.debugElement.nativeElement.querySelector('submit');
+        //submit.click();
+        const spy = routerSpy.navigate as jasmine.Spy;
+        const navArgs = spy.calls.first().args[0];
+        expect(navArgs[0]).toEqual('/buy/current',
+            'should navigate to /buy/current');
+    });
+
+    it('should display error message when submit invalid form', () => {
+        let button = fixture.debugElement.nativeElement.querySelector('button');
+        button.click();
+        button = fixture.debugElement.nativeElement.querySelector('button');
+        button.click();
+        button = fixture.debugElement.nativeElement.querySelector('button');
+        button.click();
+        component.onSubmit();
+        const spy = routerSpy.navigate as jasmine.Spy;
+        const navArgs = spy.calls.first().args[0];
+        expect(navArgs[0]).toEqual('/buy/current',
+            'should navigate to /buy/current');
+    });*/
+
+    it('should', fakeAsync(() => {
+        fixture.detectChanges();
+        spyOn(component, 'deleteComparisonCurrency'); //method attached to the click.
+        // const button = fixture.debugElement.query(By.css('button'));
+        const button = fixture.nativeElement.querySelector('button');
+        //button.triggerEventHandler('click', null);
+        tick(); // simulates the passage of time until all pending asynchronous activities finish
+        fixture.detectChanges();
+        //expect(component.deleteComparisonCurrency).toHaveBeenCalled();
+    }));
+
 });
