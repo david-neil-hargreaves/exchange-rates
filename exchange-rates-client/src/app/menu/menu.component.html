@@ -1,9 +1,40 @@
-<ul class="wrapper">
+<form [formGroup]="menuForm" (ngSubmit)="onSubmit()">
 
-    <li class="form-row">
-        <label>
-            Subject currency (NEW):
-        </label>
-    </li>
+    <ul class="wrapper">
 
-</ul>
+        <li class="form-row">
+            <label>
+                Subject currency:
+                <select formControlName="subjectCurrency" id="subjectCurrency" class="subjectCurrency"
+                    [compareWith]="compareCurrency">
+                    <option [ngValue]="currency" id="selectedSubjectCurrency" class="selectedSubjectCurrency"
+                        *ngFor="let currency of allCurrencies" [attr.selected]>{{currency.code}}</option>
+                </select>
+            </label>
+        </li>
+
+        <li class="form-row">
+            <div formArrayName="comparisonCurrencies">
+                <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies').controls; let i=index">
+                    <label>
+                        <div *ngIf="comparisonCurrency.value.id !== undefined">
+                            Comparison currency:
+                            {{comparisonCurrency.value.code}}
+                            <button type="button" (click)="deleteComparisonCurrency(i)">&#x274E;</button>
+                        </div>
+                        <div *ngIf="comparisonCurrency.value.id === undefined">
+                            Comparison currency:
+                            <select [formControlName]="i" [compareWith]="compareCurrency" id="comparisonCurrency">
+                                <option [ngValue]="currency" id="selectedComparisonCurrency"
+                                    *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>
+                                    {{currency.code}}</option>
+                            </select>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+</form>

@@ -4,7 +4,6 @@ import { CurrentBuyExchangeRatesComponent } from './current-buy-exchange-rates/c
 import { CurrentSellExchangeRatesComponent } from './current-sell-exchange-rates/current-sell-exchange-rates.component';
 import { HistoryBuyExchangeRatesComponent } from './history-buy-exchange-rates/history-buy-exchange-rates.component';
 import { HistorySellExchangeRatesComponent } from './history-sell-exchange-rates/history-sell-exchange-rates.component';
-import { MenuReactiveFormComponent } from './menu-reactive-form/menu-reactive-form.component';
 import { MenuComponent } from './menu/menu.component';
 
 const routes: Routes = [
@@ -12,7 +11,6 @@ const routes: Routes = [
     { path: 'sell/current', component: CurrentSellExchangeRatesComponent },
     { path: 'buy/history', component: HistoryBuyExchangeRatesComponent },
     { path: 'sell/history', component: HistorySellExchangeRatesComponent },
-    { path: 'reactive-menu', component: MenuReactiveFormComponent },
     { path: 'menu', component: MenuComponent }
 ];
 
