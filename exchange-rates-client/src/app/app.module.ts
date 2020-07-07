@@ -13,6 +13,7 @@ import { CurrentSellExchangeRatesComponent } from './current-sell-exchange-rates
 import { HistoryBuyExchangeRatesComponent } from './history-buy-exchange-rates/history-buy-exchange-rates.component';
 import { HistorySellExchangeRatesComponent } from './history-sell-exchange-rates/history-sell-exchange-rates.component';
 import { MenuReactiveFormComponent } from './menu-reactive-form/menu-reactive-form.component';
+import { MenuComponent } from './menu/menu.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { MenuReactiveFormComponent } from './menu-reactive-form/menu-reactive-fo
         CurrentSellExchangeRatesComponent,
         HistoryBuyExchangeRatesComponent,
         HistorySellExchangeRatesComponent,
-        MenuReactiveFormComponent
+        MenuReactiveFormComponent,
+        MenuComponent
     ],
     imports: [
         BrowserModule,

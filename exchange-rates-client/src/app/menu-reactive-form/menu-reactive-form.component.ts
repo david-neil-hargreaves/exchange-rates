@@ -19,7 +19,7 @@ export class MenuReactiveFormComponent implements OnInit {
     private masterSubscription: Subscription = new Subscription();
 
     constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router,
-        private exchangeRateService: ExchangeRateService, private currencyService: CurrencyService) {
+        public exchangeRateService: ExchangeRateService, private currencyService: CurrencyService) {
         console.log('DEBUG: Constructing MenuReactiveFormComponent');
         this.buildForm();
     }
@@ -49,6 +49,7 @@ export class MenuReactiveFormComponent implements OnInit {
     }
 
     buildForm() {
+        console.log('TAPIR buildForm subject currency is ' + this.exchangeRateService.getSubjectCurrency().code);
         this.menuForm = this.fb.group({
             subjectCurrency: [this.exchangeRateService.getSubjectCurrency(), Validators.required],
             comparisonCurrencies: this.fb.array([Validators.required])
@@ -59,7 +60,7 @@ export class MenuReactiveFormComponent implements OnInit {
         }
         this.allCurrencies = this.exchangeRateService.getAllCurrencies();
         this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
-        if ((this.candidateComparisonCurrencies !== null) && (this.candidateComparisonCurrencies.length !== 0)) {
+        if ((this.candidateComparisonCurrencies !== undefined) && (this.candidateComparisonCurrencies !== null) && (this.candidateComparisonCurrencies.length !== 0)) {
             this.addComparisonCurrency();
         }
         const formChangesSubscription = this.menuForm.valueChanges.subscribe(data => {
@@ -99,7 +100,6 @@ export class MenuReactiveFormComponent implements OnInit {
 
     deleteComparisonCurrency(index: number) {
         this.comparisonCurrencies.removeAt(index);
-
         const comparisonCurrencies: Currency[] = [];
         for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
             if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value !== '') {
@@ -109,7 +109,6 @@ export class MenuReactiveFormComponent implements OnInit {
         this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
         this.exchangeRateService.setCandidateComparisonCurrencies();
         this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
-
         if (((<FormArray>this.menuForm.get('comparisonCurrencies')).length === 0) && (this.candidateComparisonCurrencies.length !== 0)) {
             this.addComparisonCurrency();
         }
