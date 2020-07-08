@@ -15,7 +15,7 @@
 
         <li class="form-row">
             <div formArrayName="comparisonCurrencies">
-                <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies').controls; let i=index">
+                <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies')['controls']; let i=index">
                     <label>
                         <div *ngIf="comparisonCurrency.value.id !== undefined">
                             Comparison currency:
