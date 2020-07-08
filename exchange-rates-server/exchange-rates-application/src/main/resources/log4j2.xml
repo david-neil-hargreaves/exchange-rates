@@ -36,7 +36,7 @@
 		<!-- A given Logger name should not be specified more than once. If there 
 			are multiple entries for the same Logger name the last one lexically will 
 			be used. -->
-		<Logger name="hsbc" level="DEBUG" additivity="false">
+		<Logger name="hsbc" level="TRACE" additivity="false">
 			<AppenderRef ref="file" />
 		</Logger>
 		<Logger name="org.springframework.data.jpa.repository"

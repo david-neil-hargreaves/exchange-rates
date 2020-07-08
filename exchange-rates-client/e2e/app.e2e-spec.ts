@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import { browser } from 'protractor';
 
 describe('exchange-rates-client App', () => {
     let page: AppPage;
@@ -16,9 +17,18 @@ describe('exchange-rates-client App', () => {
         page.navigateToMenu();
     });
 
-    it('should select subject currency', () => {
-        page.selectSubjectCurrency();
+    it('should click subject currency', () => {
+        page.clickSubjectCurrency();
+        browser.pause(20000);
     });
 
+    /*it('should select subject currency', () => {
+        page.selectSubjectCurrency();
+    });*/
+
+    it('should display buy current screen', () => {
+        page.navigateToBuyCurrent();
+        browser.pause(20000);
+    });
 
 });

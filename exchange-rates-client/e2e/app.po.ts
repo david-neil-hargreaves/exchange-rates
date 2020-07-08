@@ -14,7 +14,15 @@ export class AppPage {
       return element(by.linkText('Menu')).click();
   }
 
-  selectSubjectCurrency(){
+  clickSubjectCurrency(){
     element(by.id('subjectCurrency')).click();
+  }
+
+  selectSubjectCurrency(){
+   element(by.id('selectedSubjectCurrency')).sendKeys('EUR');
+  }
+
+  navigateToBuyCurrent(){
+      return element(by.linkText('Buy (Current)')).click();
   }
 }

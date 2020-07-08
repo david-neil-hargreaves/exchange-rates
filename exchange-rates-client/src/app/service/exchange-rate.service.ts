@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Currency } from '../model/currency';
-import { CurrencyExchangeRates } from '../model/currency-exchange-rates';
+import { CurrentExchangeRates } from '../model/current-exchange-rates';
+import { HistoricalExchangeRates } from '../model/historical-exchange-rates';
+
 
 @Injectable()
 export class ExchangeRateService {
@@ -28,55 +30,55 @@ export class ExchangeRateService {
         this.comparisonCurrencies = new Array<Currency>();
     }
 
-    public getCurrentBuyingExchangeRates(): Observable<CurrencyExchangeRates> {
+    public getCurrentBuyingExchangeRates(): Observable<CurrentExchangeRates> {
         if ((this.subjectCurrency.id === undefined) && (this.comparisonCurrencies.length === 0)) {
-            return this.httpClient.get<CurrencyExchangeRates>(this.buyCurrentPrefix);
+            return this.httpClient.get<CurrentExchangeRates>(this.buyCurrentPrefix);
         } else {
             const url = this.buyCurrentPrefix + '/' + this.subjectCurrency.id;
             let params = new HttpParams();
             for (let i = 0; i < this.comparisonCurrencies.length; i++) {
                 params = params.append('sellingCurrencyIds', this.comparisonCurrencies[i].id);
             }
-            return this.httpClient.get<CurrencyExchangeRates>(url, { params: params });
+            return this.httpClient.get<CurrentExchangeRates>(url, { params: params });
         }
     }
 
-    public getCurrentSellingExchangeRates(): Observable<CurrencyExchangeRates> {
+    public getCurrentSellingExchangeRates(): Observable<CurrentExchangeRates> {
         if ((this.subjectCurrency.id === undefined) && (this.comparisonCurrencies.length === 0)) {
-            return this.httpClient.get<CurrencyExchangeRates>(this.sellCurrentPrefix);
+            return this.httpClient.get<CurrentExchangeRates>(this.sellCurrentPrefix);
         } else {
             const url = this.sellCurrentPrefix + '/' + this.subjectCurrency.id;
             let params = new HttpParams();
             for (let i = 0; i < this.comparisonCurrencies.length; i++) {
                 params = params.append('buyingCurrencyIds', this.comparisonCurrencies[i].id);
             }
-            return this.httpClient.get<CurrencyExchangeRates>(url, { params: params });
+            return this.httpClient.get<CurrentExchangeRates>(url, { params: params });
         }
     }
 
-    public getHistoricalBuyingExchangeRates(): Observable<CurrencyExchangeRates> {
+    public getHistoricalBuyingExchangeRates(): Observable<HistoricalExchangeRates> {
         if ((this.subjectCurrency.id === undefined) && (this.comparisonCurrencies.length === 0)) {
-            return this.httpClient.get<CurrencyExchangeRates>(this.buyHistoryPrefix);
+            return this.httpClient.get<HistoricalExchangeRates>(this.buyHistoryPrefix);
         } else {
             const url = this.buyHistoryPrefix + '/' + this.subjectCurrency.id;
             let params = new HttpParams();
             for (let i = 0; i < this.comparisonCurrencies.length; i++) {
                 params = params.append('sellingCurrencyIds', this.comparisonCurrencies[i].id);
             }
-            return this.httpClient.get<CurrencyExchangeRates>(url, { params: params });
+            return this.httpClient.get<HistoricalExchangeRates>(url, { params: params });
         }
     }
 
-    public getHistoricalSellingExchangeRates(): Observable<CurrencyExchangeRates> {
+    public getHistoricalSellingExchangeRates(): Observable<HistoricalExchangeRates> {
         if ((this.subjectCurrency.id === undefined) && (this.comparisonCurrencies.length === 0)) {
-            return this.httpClient.get<CurrencyExchangeRates>(this.sellHistoryPrefix);
+            return this.httpClient.get<HistoricalExchangeRates>(this.sellHistoryPrefix);
         } else {
             const url = this.sellHistoryPrefix + '/' + this.subjectCurrency.id;
             let params = new HttpParams();
             for (let i = 0; i < this.comparisonCurrencies.length; i++) {
                 params = params.append('buyingCurrencyIds', this.comparisonCurrencies[i].id);
             }
-            return this.httpClient.get<CurrencyExchangeRates>(url, { params: params });
+            return this.httpClient.get<HistoricalExchangeRates>(url, { params: params });
         }
     }
 

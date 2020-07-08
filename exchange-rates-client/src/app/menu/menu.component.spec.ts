@@ -88,34 +88,43 @@ describe('MenuComponent', () => {
             ]
         })
             .compileComponents();
+    }));
+
+    beforeEach(() => {
         fixture = TestBed.createComponent(MenuComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
         currencyService = TestBed.get(CurrencyService);
         exchangeRateService = TestBed.get(ExchangeRateService);
-    }));
+    });
 
     it('should create', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should select subject currency when selected', fakeAsync(() => {
+    it('should select subject currency when selected', () => {
         const debugElementSubjectCurrency = fixture.debugElement.query(By.css('.subjectCurrency'));
         const elementSubjectCurrency = debugElementSubjectCurrency.nativeElement;
         elementSubjectCurrency.click();
+        expect(fixture.isStable()).toEqual(true);
+        fixture.checkNoChanges();
         fixture.detectChanges();
-        tick();
-        fixture.whenStable();
+        //tick();
+        //fixture.whenStable();
         expect(elementSubjectCurrency.options[elementSubjectCurrency.selectedIndex].innerText).toEqual('EUR');
         expect(elementSubjectCurrency.selectedIndex).toEqual(0);
         const debugElementSelectedSubjectCurrency = fixture.debugElement.queryAll(By.css('.selectedSubjectCurrency'));
         debugElementSelectedSubjectCurrency[1].nativeElement.click();
+        expect(fixture.isStable()).toEqual(true);
+        fixture.checkNoChanges();
+        //debugElementSelectedSubjectCurrency[1].triggerEventHandler('click', 'selected');
         fixture.detectChanges();
-        tick();
-        fixture.whenStable();
+        //tick();
+        //fixture.whenStable();
         // TODO Broken test.  Selected subject currency should now be HKD, but stubbornly remains at EUR.
-        // expect(elementSubjectCurrency.options[elementSubjectCurrency.selectedIndex].innerText).toEqual('HKD');
-        // expect(elementSubjectCurrency.selectedIndex).toEqual(1);
-    }));
+        // getTestScheduler().flush(); // flush the observables
+        //expect(elementSubjectCurrency.options[elementSubjectCurrency.selectedIndex].innerText).toEqual('HKD');
+        //expect(elementSubjectCurrency.selectedIndex).toEqual(1);
+    });
 
 });

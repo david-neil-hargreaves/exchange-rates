@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrencyExchangeRates } from '../model/currency-exchange-rates';
+import { HistoricalExchangeRates } from '../model/historical-exchange-rates';
 import { CurrencyService } from '../service/currency.service';
 import { ExchangeRateService } from '../service/exchange-rate.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class HistoryBuyExchangeRatesComponent implements OnInit {
 
-    currencyExchangeRates: CurrencyExchangeRates;
+    historicalExchangeRates: HistoricalExchangeRates;
     private masterSubscription: Subscription = new Subscription();
 
     constructor(private currencyService: CurrencyService, private exchangeRateService: ExchangeRateService) {
@@ -32,7 +32,8 @@ export class HistoryBuyExchangeRatesComponent implements OnInit {
             this.masterSubscription.add(defaultComparisonCurrenciesSubscription);
         }
         const exchangeRatesSubscription = this.exchangeRateService.getHistoricalBuyingExchangeRates().subscribe(data => {
-            this.currencyExchangeRates = data;
+            this.historicalExchangeRates = data;
+            console.log(data);
         });
         this.masterSubscription.add(exchangeRatesSubscription);
     }
