@@ -1,4 +1,5 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -77,7 +78,7 @@ describe('MenuComponent', () => {
 
     }
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [MenuComponent],
             imports: [ReactiveFormsModule],
@@ -99,32 +100,31 @@ describe('MenuComponent', () => {
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(component).toBeDefined();
     });
 
-    it('should select subject currency when selected', () => {
-        const debugElementSubjectCurrency = fixture.debugElement.query(By.css('.subjectCurrency'));
-        const elementSubjectCurrency = debugElementSubjectCurrency.nativeElement;
-        elementSubjectCurrency.click();
-        expect(fixture.isStable()).toEqual(true);
-        fixture.checkNoChanges();
+    it('should select subject currency when selected', fakeAsync(() => {
+       expect(component.subjectCurrency.value.code).toEqual('EUR');
+       const select: HTMLSelectElement = fixture.debugElement.query(By.css('#subjectCurrency')).nativeElement;
+       select.value = select.options[1].value;  
+       select.dispatchEvent(new Event('change'));
+       fixture.detectChanges();
+       tick();
+       expect(component.subjectCurrency.value.code).toEqual('HKD');
+    }));
+
+    // TODO This is temporary code whilst debugging the unit tests.
+    it('should allow input', fakeAsync(() => {
+        const hostElement = fixture.nativeElement;
+        const nameInput: HTMLInputElement = hostElement.querySelector('input');
+        // simulate user entering a new name into the input box
+        nameInput.value = 'Dave';
+        // dispatch a DOM event so that Angular learns of input value change.
+        nameInput.dispatchEvent(new Event('input'));
+        // Tell Angular to update the display binding.
         fixture.detectChanges();
-        //tick();
-        //fixture.whenStable();
-        expect(elementSubjectCurrency.options[elementSubjectCurrency.selectedIndex].innerText).toEqual('EUR');
-        expect(elementSubjectCurrency.selectedIndex).toEqual(0);
-        const debugElementSelectedSubjectCurrency = fixture.debugElement.queryAll(By.css('.selectedSubjectCurrency'));
-        debugElementSelectedSubjectCurrency[1].nativeElement.click();
-        expect(fixture.isStable()).toEqual(true);
-        fixture.checkNoChanges();
-        //debugElementSelectedSubjectCurrency[1].triggerEventHandler('click', 'selected');
-        fixture.detectChanges();
-        //tick();
-        //fixture.whenStable();
-        // TODO Broken test.  Selected subject currency should now be HKD, but stubbornly remains at EUR.
-        // getTestScheduler().flush(); // flush the observables
-        //expect(elementSubjectCurrency.options[elementSubjectCurrency.selectedIndex].innerText).toEqual('HKD');
-        //expect(elementSubjectCurrency.selectedIndex).toEqual(1);
-    });
+        tick();
+        expect(component.input.value).toEqual('Dave');
+    }));
 
 });

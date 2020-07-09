@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrencyExchangeRates } from '../model/currency-exchange-rates';
 import { CurrentExchangeRates } from '../model/current-exchange-rates';
 import { CurrencyService } from '../service/currency.service';
 import { ExchangeRateService } from '../service/exchange-rate.service';
@@ -35,7 +34,6 @@ export class CurrentBuyExchangeRatesComponent implements OnInit {
         }
         const exchangeRatesSubscription = this.exchangeRateService.getCurrentBuyingExchangeRates().subscribe(data => {
             this.currentExchangeRates = data;
-            console.log(data);
         });
         this.masterSubscription.add(exchangeRatesSubscription);
     }

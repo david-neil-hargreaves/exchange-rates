@@ -33,7 +33,6 @@ export class HistoryBuyExchangeRatesComponent implements OnInit {
         }
         const exchangeRatesSubscription = this.exchangeRateService.getHistoricalBuyingExchangeRates().subscribe(data => {
             this.historicalExchangeRates = data;
-            console.log(data);
         });
         this.masterSubscription.add(exchangeRatesSubscription);
     }

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CurrencyExchangeRates } from '../model/currency-exchange-rates';
+import { HistoricalExchangeRates } from '../model/historical-exchange-rates';
 import { ExchangeRateService } from '../service/exchange-rate.service';
 import { CurrencyService } from '../service/currency.service';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +15,7 @@ describe('HistorySellExchangeRatesComponent', () => {
     }
 
     class MockExchangeRateService {
-        public getHistoricalSellingExchangeRates(): Observable<CurrencyExchangeRates> {
+        public getHistoricalSellingExchangeRates(): Observable<HistoricalExchangeRates> {
             return Observable.of(null);
         }
 

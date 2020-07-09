@@ -4,6 +4,13 @@
 
         <li class="form-row">
             <label>
+                Input:
+                <input formControlName="input" id="input" class="input" type="text"/>
+            </label>
+        </li>
+
+        <li class="form-row">
+            <label>
                 Subject currency:
                 <select formControlName="subjectCurrency" id="subjectCurrency" class="subjectCurrency"
                     [compareWith]="compareCurrency">

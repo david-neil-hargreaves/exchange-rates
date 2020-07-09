@@ -50,6 +50,7 @@ export class MenuComponent implements OnInit {
 
     buildForm() {
         this.menuForm = this.fb.group({
+            input: [],
             subjectCurrency: [this.exchangeRateService.getSubjectCurrency(), Validators.required],
             comparisonCurrencies: this.fb.array([Validators.required])
         });
@@ -94,6 +95,14 @@ export class MenuComponent implements OnInit {
         return this.menuForm.get('comparisonCurrencies') as FormArray;
     }
 
+    get input() {
+        return this.menuForm.get('input') as FormControl;
+    }
+
+    get subjectCurrency() {
+        return this.menuForm.get('subjectCurrency') as FormControl;
+    }
+
     addComparisonCurrency() {
         for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
             if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value === '') {
@@ -124,7 +133,6 @@ export class MenuComponent implements OnInit {
     }
 
     onSubmit() {
-        console.log('submitted');
     }
 
 }
