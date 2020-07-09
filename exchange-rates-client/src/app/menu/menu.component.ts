@@ -50,7 +50,6 @@ export class MenuComponent implements OnInit {
 
     buildForm() {
         this.menuForm = this.fb.group({
-            input: [],
             subjectCurrency: [this.exchangeRateService.getSubjectCurrency(), Validators.required],
             comparisonCurrencies: this.fb.array([Validators.required])
         });
@@ -93,10 +92,6 @@ export class MenuComponent implements OnInit {
 
     get comparisonCurrencies() {
         return this.menuForm.get('comparisonCurrencies') as FormArray;
-    }
-
-    get input() {
-        return this.menuForm.get('input') as FormControl;
     }
 
     get subjectCurrency() {
