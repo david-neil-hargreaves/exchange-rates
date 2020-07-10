@@ -5,6 +5,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 describe('ExchangeRateService', () => {
 
     const currency = { 'id': '1', 'code': 'EUR', 'description': 'Euros' };
+    const comparisonCurrencies = [
+        { id: '2', code: 'HKD', description: 'Hong Kong Dollars' },
+        { id: '3', code: 'GBP', description: 'Pounds Sterling' }
+    ];
     const currencies = [{ 'id': '1', 'code': 'EUR', 'description': 'Euros' },
     { 'id': '3', 'code': 'GBP', 'description': 'Pounds Sterling' }];
     const currenciesExceptSubjectCurrency = [{ 'id': '3', 'code': 'GBP', 'description': 'Pounds Sterling' }];
@@ -35,7 +39,7 @@ describe('ExchangeRateService', () => {
         expect(service).toBeTruthy();
     }));
 
-    it('should successfully get current buying exchange rates', (done) => {
+    it('should successfully get current buying exchange rates for subject currency', (done) => {
         exchangeRateService.setSubjectCurrency(currency);
         exchangeRateService.getCurrentBuyingExchangeRates()
             .subscribe(data => {
@@ -47,7 +51,20 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get current buying exchange rates (subject currency not specified)', (done) => {
+    it('should successfully get current buying exchange rates for subject currency and comparison currencies', (done) => {
+        exchangeRateService.setSubjectCurrency(currency);
+        exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+        exchangeRateService.getCurrentBuyingExchangeRates()
+            .subscribe(data => {
+                expect(data).toBe(currentExchangeRates);
+                done();
+            });
+        const request = httpMock.expectOne('http://localhost:8080/exchange-rates/buy/current/1?sellingCurrencyIds=2&sellingCurrencyIds=3');
+        request.flush(currentExchangeRates);
+        httpMock.verify();
+    });
+
+    it('should successfully get current buying exchange rates, subject currency not specified', (done) => {
         exchangeRateService.getCurrentBuyingExchangeRates()
             .subscribe(data => {
                 expect(data).toBe(currentExchangeRates);
@@ -58,7 +75,7 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get current selling exchange rates', (done) => {
+    it('should successfully get current selling exchange rates for subject currency', (done) => {
         exchangeRateService.setSubjectCurrency(currency);
         exchangeRateService.getCurrentSellingExchangeRates()
             .subscribe(data => {
@@ -70,7 +87,20 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get current selling exchange rates (subject currency not specified)', (done) => {
+    it('should successfully get current selling exchange rates for subject currency and comparison currencies', (done) => {
+        exchangeRateService.setSubjectCurrency(currency);
+        exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+        exchangeRateService.getCurrentSellingExchangeRates()
+            .subscribe(data => {
+                expect(data).toBe(currentExchangeRates);
+                done();
+            });
+        const request = httpMock.expectOne('http://localhost:8080/exchange-rates/sell/current/1?buyingCurrencyIds=2&buyingCurrencyIds=3');
+        request.flush(currentExchangeRates);
+        httpMock.verify();
+    });
+
+    it('should successfully get current selling exchange rates, subject currency not specified', (done) => {
         exchangeRateService.getCurrentSellingExchangeRates()
             .subscribe(data => {
                 expect(data).toBe(currentExchangeRates);
@@ -81,7 +111,7 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get historical buying exchange rates', (done) => {
+    it('should successfully get historical buying exchange rates for subject currency', (done) => {
         exchangeRateService.setSubjectCurrency(currency);
         exchangeRateService.getHistoricalBuyingExchangeRates()
             .subscribe(data => {
@@ -93,7 +123,20 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get historical buying exchange rates (subject currency not specified)', (done) => {
+    it('should successfully get historical buying exchange rates for subject currency and comparison currencies', (done) => {
+        exchangeRateService.setSubjectCurrency(currency);
+        exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+        exchangeRateService.getHistoricalBuyingExchangeRates()
+            .subscribe(data => {
+                expect(data).toBe(historicalExchangeRates);
+                done();
+            });
+        const request = httpMock.expectOne('http://localhost:8080/exchange-rates/buy/history/1?sellingCurrencyIds=2&sellingCurrencyIds=3');
+        request.flush(historicalExchangeRates);
+        httpMock.verify();
+    });
+
+    it('should successfully get historical buying exchange rates, subject currency not specified', (done) => {
         exchangeRateService.getHistoricalBuyingExchangeRates()
             .subscribe(data => {
                 expect(data).toBe(historicalExchangeRates);
@@ -104,7 +147,7 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get historical selling exchange rates', (done) => {
+    it('should successfully get historical selling exchange rates for subject currency', (done) => {
         exchangeRateService.setSubjectCurrency(currency);
         exchangeRateService.getHistoricalSellingExchangeRates()
             .subscribe(data => {
@@ -116,7 +159,20 @@ describe('ExchangeRateService', () => {
         httpMock.verify();
     });
 
-    it('should successfully get historical selling exchange rates (subject currency not specified)', (done) => {
+    it('should successfully get historical selling exchange rates for subject currency and comparison currencies', (done) => {
+        exchangeRateService.setSubjectCurrency(currency);
+        exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
+        exchangeRateService.getHistoricalSellingExchangeRates()
+            .subscribe(data => {
+                expect(data).toBe(historicalExchangeRates);
+                done();
+            });
+        const request = httpMock.expectOne('http://localhost:8080/exchange-rates/sell/history/1?buyingCurrencyIds=2&buyingCurrencyIds=3');
+        request.flush(historicalExchangeRates);
+        httpMock.verify();
+    });
+
+    it('should successfully get historical selling exchange rates, subject currency not specified', (done) => {
         exchangeRateService.getHistoricalSellingExchangeRates()
             .subscribe(data => {
                 expect(data).toBe(historicalExchangeRates);
