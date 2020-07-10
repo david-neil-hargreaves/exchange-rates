@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { Currency } from '../model/currency';
 import { ExchangeRateService } from '../service/exchange-rate.service';
@@ -30,22 +29,16 @@ export class MenuComponent implements OnInit {
             this.buildForm();
         });
         this.masterSubscription.add(defaultAllCurrenciesSubscription);
-        if ((this.exchangeRateService.getSubjectCurrency() === undefined) ||
-            (this.exchangeRateService.getSubjectCurrency().id === undefined)) {
-            const defaultSubjectCurrencySubscription = this.currencyService.fetchDefaultSubjectCurrency().subscribe(data => {
-                this.exchangeRateService.setSubjectCurrency(data);
-                this.buildForm();
-            });
-            this.masterSubscription.add(defaultSubjectCurrencySubscription);
-        }
-        if ((this.exchangeRateService.getComparisonCurrencies() === undefined) ||
-            (this.exchangeRateService.getComparisonCurrencies().length === 0)) {
-            const defaultComparisonCurrenciesSubscription = this.currencyService.fetchDefaultComparisonCurrencies().subscribe(data => {
-                this.exchangeRateService.setComparisonCurrencies(data);
-                this.buildForm();
-            });
-            this.masterSubscription.add(defaultComparisonCurrenciesSubscription);
-        }
+        const defaultSubjectCurrencySubscription = this.currencyService.fetchDefaultSubjectCurrency().subscribe(data => {
+            this.exchangeRateService.setSubjectCurrency(data);
+            this.buildForm();
+        });
+        this.masterSubscription.add(defaultSubjectCurrencySubscription);
+        const defaultComparisonCurrenciesSubscription = this.currencyService.fetchDefaultComparisonCurrencies().subscribe(data => {
+            this.exchangeRateService.setComparisonCurrencies(data);
+            this.buildForm();
+        });
+        this.masterSubscription.add(defaultComparisonCurrenciesSubscription);
     }
 
     buildForm() {
@@ -59,17 +52,10 @@ export class MenuComponent implements OnInit {
         }
         this.allCurrencies = this.exchangeRateService.getAllCurrencies();
         this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
-        if ((this.candidateComparisonCurrencies !== undefined) && (this.candidateComparisonCurrencies !== null)
-            && (this.candidateComparisonCurrencies.length !== 0)) {
-            this.addComparisonCurrency();
-        }
+        this.addComparisonCurrencySelectIfRequired();
         const formChangesSubscription = this.menuForm.valueChanges.subscribe(data => {
             this.exchangeRateService.setSubjectCurrency(this.menuForm.controls.subjectCurrency.value);
-            let hasEmptyComparisonCurrency = false;
             for (let i = 0; i < data.comparisonCurrencies.length; i++) {
-                if (data.comparisonCurrencies[i].id === undefined) {
-                    hasEmptyComparisonCurrency = true;
-                }
                 if (data.comparisonCurrencies[i].id === data.subjectCurrency.id) {
                     this.deleteComparisonCurrency(i);
                 }
@@ -83,9 +69,7 @@ export class MenuComponent implements OnInit {
             this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
             this.exchangeRateService.setCandidateComparisonCurrencies();
             this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
-            if ((hasEmptyComparisonCurrency === false) && (this.candidateComparisonCurrencies.length !== 0)) {
-                this.addComparisonCurrency();
-            }
+            this.addComparisonCurrencySelectIfRequired();
         });
         this.masterSubscription.add(formChangesSubscription);
     }
@@ -98,11 +82,15 @@ export class MenuComponent implements OnInit {
         return this.menuForm.get('subjectCurrency') as FormControl;
     }
 
-    addComparisonCurrency() {
+    addComparisonCurrencySelectIfRequired() {
         for (let i = 0; i < (<FormArray>this.menuForm.get('comparisonCurrencies')).length; i++) {
             if ((<FormArray>this.menuForm.get('comparisonCurrencies')).at(i).value === '') {
                 return;
             }
+        }
+        if ((this.candidateComparisonCurrencies === undefined) || (this.candidateComparisonCurrencies === null)
+            || (this.candidateComparisonCurrencies.length === 0)) {
+            return;
         }
         this.comparisonCurrencies.push(this.fb.control(''));
     }
@@ -118,16 +106,10 @@ export class MenuComponent implements OnInit {
         this.exchangeRateService.setComparisonCurrencies(comparisonCurrencies);
         this.exchangeRateService.setCandidateComparisonCurrencies();
         this.candidateComparisonCurrencies = this.exchangeRateService.getCandidateComparisonCurrencies();
-        if (((<FormArray>this.menuForm.get('comparisonCurrencies')).length === 0) && (this.candidateComparisonCurrencies.length !== 0)) {
-            this.addComparisonCurrency();
-        }
     }
 
     compareCurrency(currency1: any, currency2: any): boolean {
         return currency1 && currency2 ? currency1.id === currency2.id : currency1 === currency2;
-    }
-
-    onSubmit() {
     }
 
 }
