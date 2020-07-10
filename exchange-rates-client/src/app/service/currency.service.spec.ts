@@ -25,7 +25,7 @@ describe('CurrencyService', () => {
     });
 
     it('should be created', inject([CurrencyService], (service: CurrencyService) => {
-        expect(service).toBeTruthy();
+        expect(service).toBeDefined();
     }));
 
     it('should successfully fetch all currencies', (done) => {

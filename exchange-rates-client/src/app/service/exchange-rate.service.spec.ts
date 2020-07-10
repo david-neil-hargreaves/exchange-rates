@@ -36,7 +36,7 @@ describe('ExchangeRateService', () => {
     });
 
     it('should be created', inject([ExchangeRateService], (service: ExchangeRateService) => {
-        expect(service).toBeTruthy();
+        expect(service).toBeDefined();
     }));
 
     it('should successfully get current buying exchange rates for subject currency', (done) => {

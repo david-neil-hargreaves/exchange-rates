@@ -29,16 +29,22 @@ export class MenuComponent implements OnInit {
             this.buildForm();
         });
         this.masterSubscription.add(defaultAllCurrenciesSubscription);
-        const defaultSubjectCurrencySubscription = this.currencyService.fetchDefaultSubjectCurrency().subscribe(data => {
-            this.exchangeRateService.setSubjectCurrency(data);
-            this.buildForm();
-        });
-        this.masterSubscription.add(defaultSubjectCurrencySubscription);
-        const defaultComparisonCurrenciesSubscription = this.currencyService.fetchDefaultComparisonCurrencies().subscribe(data => {
-            this.exchangeRateService.setComparisonCurrencies(data);
-            this.buildForm();
-        });
-        this.masterSubscription.add(defaultComparisonCurrenciesSubscription);
+              if ((this.exchangeRateService.getSubjectCurrency() === undefined) ||
+            (this.exchangeRateService.getSubjectCurrency().id === undefined)) {
+            const defaultSubjectCurrencySubscription = this.currencyService.fetchDefaultSubjectCurrency().subscribe(data => {
+                this.exchangeRateService.setSubjectCurrency(data);
+                this.buildForm();
+            });
+            this.masterSubscription.add(defaultSubjectCurrencySubscription);
+        }
+        if ((this.exchangeRateService.getComparisonCurrencies() === undefined) ||
+            (this.exchangeRateService.getComparisonCurrencies().length === 0)) {
+            const defaultComparisonCurrenciesSubscription = this.currencyService.fetchDefaultComparisonCurrencies().subscribe(data => {
+                this.exchangeRateService.setComparisonCurrencies(data);
+                this.buildForm();
+            });
+            this.masterSubscription.add(defaultComparisonCurrenciesSubscription);
+        }
     }
 
     buildForm() {

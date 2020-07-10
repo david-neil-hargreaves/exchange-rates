@@ -1,48 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CurrentExchangeRates } from '../model/current-exchange-rates';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { ExchangeRateService } from '../service/exchange-rate.service';
 import { CurrencyService } from '../service/currency.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { CurrentBuyExchangeRatesComponent } from './current-buy-exchange-rates.component';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('CurrentBuyExchangeRatesComponent', () => {
+
     let component: CurrentBuyExchangeRatesComponent;
     let fixture: ComponentFixture<CurrentBuyExchangeRatesComponent>;
-
-    class MockCurrencyService {
-
-    }
-
-    class MockExchangeRateService {
-        public getCurrentBuyingExchangeRates(): Observable<CurrentExchangeRates> {
-            return Observable.of(null);
-        }
-
-        public getAllCurrencies() {
-            return null;
-        }
-
-        public getSubjectCurrency() {
-            return null;
-        }
-
-        public getComparisonCurrencies() {
-            return null;
-        }
-
-        public getCandidateComparisonCurrencies() {
-            return null;
-        }
-    }
+    let httpMock: HttpTestingController;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [CurrentBuyExchangeRatesComponent],
+            imports: [ReactiveFormsModule, HttpClientTestingModule],
             providers: [
                 CurrentBuyExchangeRatesComponent,
-                { provide: CurrencyService, useClass: MockCurrencyService },
-                { provide: ExchangeRateService, useClass: MockExchangeRateService }
+                CurrencyService,
+                ExchangeRateService
             ]
         })
             .compileComponents();
@@ -52,10 +28,11 @@ describe('CurrentBuyExchangeRatesComponent', () => {
         fixture = TestBed.createComponent(CurrentBuyExchangeRatesComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+        httpMock = TestBed.get(HttpTestingController);
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(component).toBeDefined();
     });
 
 });
