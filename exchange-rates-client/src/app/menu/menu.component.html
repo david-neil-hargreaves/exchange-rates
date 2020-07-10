@@ -20,7 +20,7 @@
                         <div *ngIf="comparisonCurrency.value.id !== undefined">
                             Comparison currency:
                             {{comparisonCurrency.value.code}}
-                            <button type="button" (click)="deleteComparisonCurrency(i)">&#x274E;</button>
+                            <button type="button" id="deleteComparisonCurrency{{i}}" (click)="deleteComparisonCurrency(i)">&#x274E;</button>
                         </div>
                         <div *ngIf="comparisonCurrency.value.id === undefined">
                             Comparison currency:
