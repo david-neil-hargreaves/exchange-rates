@@ -28,6 +28,7 @@
 		<module>exchange-rates-web</module>
 		<module>exchange-rates-application</module>
 		<module>coverage</module>
+		<module>integration-tests</module>
 	</modules>
 
 	<build>
