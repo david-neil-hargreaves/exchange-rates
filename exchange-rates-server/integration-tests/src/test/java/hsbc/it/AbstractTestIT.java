@@ -1,5 +1,6 @@
 package hsbc.it;
 
+import static hsbc.it.TestData.LINK_TEXT_BUY_CURRENT;
 import static io.github.bonigarcia.wdm.DriverManagerType.FIREFOX;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -31,17 +32,16 @@ abstract public class AbstractTestIT {
 
   @After
   public void tearDown() {
-     //driver.close();
+    driver.close();
   }
 
   protected WebElement getWebElement(final String xpath) {
     return driver.findElement(By.xpath(xpath));
-    /*WebElement webElement = wait.until(new Function<WebDriver, WebElement>() {
-      public WebElement apply(WebDriver driver) {
-        return driver.findElement(By.xpath(xpath));
-      }
-    });
-    return webElement;*/
+    /*
+     * WebElement webElement = wait.until(new Function<WebDriver, WebElement>() { public WebElement
+     * apply(WebDriver driver) { return driver.findElement(By.xpath(xpath)); } }); return
+     * webElement;
+     */
   }
 
   protected String getWebElementText(final String xpath) {
@@ -50,16 +50,23 @@ abstract public class AbstractTestIT {
 
   protected WebElement getWebElementByTagName(final String tagName) {
     return driver.findElement(By.tagName(tagName));
-    /*WebElement webElement = wait.until(new Function<WebDriver, WebElement>() {
-      public WebElement apply(WebDriver driver) {
-        return driver.findElement(By.tagName(tagName));
-      }
-    });
-    return webElement;*/
+    /*
+     * WebElement webElement = wait.until(new Function<WebDriver, WebElement>() { public WebElement
+     * apply(WebDriver driver) { return driver.findElement(By.tagName(tagName)); } }); return
+     * webElement;
+     */
   }
 
   protected String getWebElementTextByTagName(final String tagName) {
     return getWebElementByTagName(tagName).getText();
+  }
+
+  protected WebElement getLink(final String linkText) {
+    return driver.findElement(By.linkText(linkText));
+  }
+  
+  protected WebElement getWebElementById(final String id) {
+    return driver.findElement(By.id(id));
   }
 
 }

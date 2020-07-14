@@ -5,10 +5,17 @@ import java.util.Map;
 
 public class TestData {
 
+  public final static String URL_LANDING_SCREEN = "http://localhost:4200/";
   public final static String URL_BUY_CURRENT_SCREEN = "http://localhost:4200/buy/current";
   public final static String URL_SELL_CURRENT_SCREEN = "http://localhost:4200/sell/current";
   public final static String URL_BUY_HISTORY_SCREEN = "http://localhost:4200/buy/history";
   public final static String URL_SELL_HISTORY_SCREEN = "http://localhost:4200/sell/history";
+  public final static String URL_MENU = "http://localhost:4200/menu";
+  public final static String LINK_TEXT_BUY_CURRENT = "Buy (Current)";
+  public final static String LINK_TEXT_SELL_CURRENT = "Sell (Current)";
+  public final static String LINK_TEXT_BUY_HISTORY = "Buy (History)";
+  public final static String LINK_TEXT_SELL_HISTORY = "Sell (History)";
+  public final static String LINK_TEXT_MENU = "Menu";
   public final static String TAG_HEADING = "H4";
   public final static String TAG_HEADING_TEXT_BUY = "Buy EUR Euros";
   public final static String TAG_HEADING_TEXT_SELL = "Sell EUR Euros";
