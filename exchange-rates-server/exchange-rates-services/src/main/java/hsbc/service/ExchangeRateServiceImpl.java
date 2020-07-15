@@ -65,7 +65,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
   private MathContext mathsContext = new MathContext(precision, roundingMode);
 
-  private int scale = 2;
+  private int scale = 6;
 
   @Override
   public CurrentExchangeRates getCurrentBuyingExchangeRates(Currency buyingCurrency,
@@ -344,11 +344,16 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   private Optional<BigDecimal> getRateForPeriod(Period period,
       List<ExchangeRateHistory> exchangeRateHistories,
       Optional<ExchangeRate> optionalCurrentExchangeRate) {
+    Optional<BigDecimal> rateForPeriod;
     if (exchangeRatePeriodMatchType == ExchangeRatePeriodMatchType.AVERAGE) {
-      return getRateForPeriodAverage(period, exchangeRateHistories, optionalCurrentExchangeRate);
+      rateForPeriod = getRateForPeriodAverage(period, exchangeRateHistories, optionalCurrentExchangeRate);
     } else {
-      return getRateForPeriodDate(period, exchangeRateHistories, optionalCurrentExchangeRate);
+      rateForPeriod = getRateForPeriodDate(period, exchangeRateHistories, optionalCurrentExchangeRate);
     }
+    if (rateForPeriod.isPresent()) {
+      rateForPeriod.get().setScale(scale, roundingMode);
+    }
+    return rateForPeriod;
   }
 
   private Optional<BigDecimal> getRateForPeriodAverage(Period period,
@@ -444,7 +449,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   private Optional<BigDecimal> getRate(Optional<ExchangeRate> exchangeRate) {
     Optional<BigDecimal> rate;
     if (exchangeRate.isPresent()) {
-      rate = Optional.of(exchangeRate.get().getRate());
+      rate = Optional.of(exchangeRate.get().getRate().setScale(scale, roundingMode));
     } else {
       rate = Optional.empty();
     }

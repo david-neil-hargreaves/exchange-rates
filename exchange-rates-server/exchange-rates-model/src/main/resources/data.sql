@@ -91,6 +91,20 @@ WHERE buy.code = 'EUR'
 ; 
 
 INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2019-06-01', 1.38
+FROM currency buy, currency sell
+WHERE buy.code = 'EUR' 
+  AND sell.code = 'USD'
+;
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2019-05-01', 354.372
+FROM currency buy, currency sell
+WHERE buy.code = 'EUR' 
+  AND sell.code = 'HUF'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
 SELECT buy.id, sell.id, '2020-05-01', 1.12
 FROM currency buy, currency sell
 WHERE buy.code = 'GBP' 
@@ -102,6 +116,48 @@ SELECT buy.id, sell.id, '2020-01-01', 0.12
 FROM currency buy, currency sell
 WHERE buy.code = 'HKD' 
   AND sell.code = 'EUR'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2019-05-01', 40.0410
+FROM currency buy, currency sell
+WHERE buy.code = 'HKD' 
+  AND sell.code = 'HUF'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2019-07-01', 0.72
+FROM currency buy, currency sell
+WHERE buy.code = 'USD' 
+  AND sell.code = 'EUR'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2019-05-01', 0.0028
+FROM currency buy, currency sell
+WHERE buy.code = 'HUF' 
+  AND sell.code = 'EUR'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2019-05-01', 0.249744
+FROM currency buy, currency sell
+WHERE buy.code = 'HUF' 
+  AND sell.code = 'HKD'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2020-02-01', 0.332342
+FROM currency buy, currency sell
+WHERE buy.code = 'HUF' 
+  AND sell.code = 'RSD'
+; 
+
+INSERT INTO exchange_rate(buying_currency_id, selling_currency_id, start_date_time, rate)
+SELECT buy.id, sell.id, '2020-02-01', 3.00895
+FROM currency buy, currency sell
+WHERE buy.code = 'RSD' 
+  AND sell.code = 'HUF'
 ; 
 
 INSERT INTO exchange_rate_history(buying_currency_id, selling_currency_id, start_date_time, end_date_time, rate)
@@ -131,4 +187,34 @@ FROM currency buy, currency sell
 WHERE buy.code = 'EUR' 
   AND sell.code = 'USD'
 ;  
+
+INSERT INTO exchange_rate_history(buying_currency_id, selling_currency_id, start_date_time, end_date_time, rate)
+SELECT buy.id, sell.id, '2019-10-01', '2020-04-30', 1.16
+FROM currency buy, currency sell
+WHERE buy.code = 'GBP' 
+  AND sell.code = 'EUR'
+;
+
+INSERT INTO exchange_rate_history(buying_currency_id, selling_currency_id, start_date_time, end_date_time, rate)
+SELECT buy.id, sell.id, '2019-10-01', '2019-12-31', 0.13
+FROM currency buy, currency sell
+WHERE buy.code = 'HKD' 
+  AND sell.code = 'EUR'
+;
+
+INSERT INTO exchange_rate_history(buying_currency_id, selling_currency_id, start_date_time, end_date_time, rate)
+SELECT buy.id, sell.id, '2019-10-01', '2020-02-29', 6.13
+FROM currency buy, currency sell
+WHERE buy.code = 'HUF' 
+  AND sell.code = 'ITL'
+;
+
+INSERT INTO exchange_rate_history(buying_currency_id, selling_currency_id, start_date_time, end_date_time, rate)
+SELECT buy.id, sell.id, '2019-10-01', '2020-02-29', 0.163132
+FROM currency buy, currency sell
+WHERE buy.code = 'ITL' 
+  AND sell.code = 'HUF'
+;
+
+
 
