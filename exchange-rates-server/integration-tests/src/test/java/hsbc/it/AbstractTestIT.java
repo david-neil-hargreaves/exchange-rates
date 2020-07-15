@@ -2,44 +2,63 @@ package hsbc.it;
 
 import static hsbc.it.TestData.ATTRIBUTE_COLUMN_HEADING_CURRENCY_CODE;
 import static hsbc.it.TestData.ATTRIBUTE_COLUMN_HEADING_CURRENCY_DESCRIPTION;
+import static hsbc.it.TestData.ATTRIBUTE_COMPARISON_CURRENCY;
 import static hsbc.it.TestData.ATTRIBUTE_CURRENCY_CODE;
 import static hsbc.it.TestData.ATTRIBUTE_CURRENCY_DESCRIPTION;
 import static hsbc.it.TestData.ATTRIBUTE_EXCHANGE_RATE;
 import static hsbc.it.TestData.ATTRIBUTE_HEADING;
 import static hsbc.it.TestData.ATTRIBUTE_PERIOD;
+import static hsbc.it.TestData.ATTRIBUTE_SUBJECT_CURRENCY;
 import static hsbc.it.TestData.ATTRIBUTE_URL;
 import static hsbc.it.TestData.COLUMN_CURRENCY_CODE;
 import static hsbc.it.TestData.COLUMN_CURRENCY_DESCRIPTION;
 import static hsbc.it.TestData.COLUMN_EXCHANGE_RATE;
 import static hsbc.it.TestData.COLUMN_HEADING_CURRENCY_CODE;
 import static hsbc.it.TestData.COLUMN_HEADING_CURRENCY_DESCRIPTION;
-import static hsbc.it.TestData.DEFAULT_CURRENCY_CODES;
-import static hsbc.it.TestData.DEFAULT_CURRENCY_DESCRIPTIONS;
+import static hsbc.it.TestData.CUSTOM_COMPARISON_CURRENCY_CODES;
+import static hsbc.it.TestData.CUSTOM_COMPARISON_CURRENCY_CODES_SELECTED_ORDER;
+import static hsbc.it.TestData.CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS;
+import static hsbc.it.TestData.CUSTOM_EXCHANGE_RATES_BUY_CURRENT;
+import static hsbc.it.TestData.CUSTOM_EXCHANGE_RATES_BUY_HISTORY;
+import static hsbc.it.TestData.CUSTOM_EXCHANGE_RATES_SELL_CURRENT;
+import static hsbc.it.TestData.CUSTOM_EXCHANGE_RATES_SELL_HISTORY;
+import static hsbc.it.TestData.CUSTOM_HEADING_TEXT_BUY;
+import static hsbc.it.TestData.CUSTOM_HEADING_TEXT_SELL;
+import static hsbc.it.TestData.CUSTOM_SUBJECT_CURRENCY_CODE;
+import static hsbc.it.TestData.DEFAULT_COMPARISON_CURRENCY_CODES;
+import static hsbc.it.TestData.DEFAULT_COMPARISON_CURRENCY_DESCRIPTIONS;
 import static hsbc.it.TestData.DEFAULT_EXCHANGE_RATES_BUY_CURRENT;
 import static hsbc.it.TestData.DEFAULT_EXCHANGE_RATES_BUY_HISTORY;
 import static hsbc.it.TestData.DEFAULT_EXCHANGE_RATES_SELL_CURRENT;
 import static hsbc.it.TestData.DEFAULT_EXCHANGE_RATES_SELL_HISTORY;
-import static hsbc.it.TestData.DEFAULT_TAG_HEADING_TEXT_BUY;
-import static hsbc.it.TestData.DEFAULT_TAG_HEADING_TEXT_SELL;
+import static hsbc.it.TestData.DEFAULT_HEADING_TEXT_BUY;
+import static hsbc.it.TestData.DEFAULT_HEADING_TEXT_SELL;
+import static hsbc.it.TestData.DEFAULT_SUBJECT_CURRENCY_CODE;
+import static hsbc.it.TestData.ELEMENT_ID_PREFIX_COMPARISON_CURRENCY;
+import static hsbc.it.TestData.ELEMENT_ID_SUBJECT_CURRENCY;
+import static hsbc.it.TestData.PARENT_ELEMENT_SELECTOR;
 import static hsbc.it.TestData.PERIODS;
+import static hsbc.it.TestData.PREFIX_COMPARISON_CURRENCY;
 import static hsbc.it.TestData.TAG_HEADING;
 import static hsbc.it.TestData.URL_BUY_CURRENT_SCREEN;
 import static hsbc.it.TestData.URL_BUY_HISTORY_SCREEN;
+import static hsbc.it.TestData.URL_MENU;
 import static hsbc.it.TestData.URL_SELL_CURRENT_SCREEN;
 import static hsbc.it.TestData.URL_SELL_HISTORY_SCREEN;
 import static io.github.bonigarcia.wdm.DriverManagerType.FIREFOX;
 import static org.junit.Assert.assertEquals;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
+import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 
 abstract public class AbstractTestIT {
@@ -94,109 +113,157 @@ abstract public class AbstractTestIT {
   protected WebElement getWebElementById(final String id) {
     return driver.findElement(By.id(id));
   }
-  
-  protected void verifyBuyCurrentScreenDefaultCurrencies() {
+
+  protected void verifyCurrentScreen(String expectedHeading, String[] expectedCurrencyCodes,
+      String[] expectedCurrencyDescriptions, String[] expectedExchangeRates) {
+    String heading = getWebElementTextByTagName(TAG_HEADING);
+    assertEquals(ATTRIBUTE_HEADING, expectedHeading, heading);
+    for (int row = 1; row <= expectedCurrencyCodes.length; row++) {
+      String currencyCode =
+          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_CODE + "]");
+      assertEquals(ATTRIBUTE_CURRENCY_CODE, expectedCurrencyCodes[row - 1], currencyCode);
+      String currencyDescription = getWebElementText(
+          "//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_DESCRIPTION + "]");
+      assertEquals(ATTRIBUTE_CURRENCY_DESCRIPTION, expectedCurrencyDescriptions[row - 1],
+          currencyDescription);
+      String exchangeRate =
+          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_EXCHANGE_RATE + "]");
+      assertEquals(ATTRIBUTE_EXCHANGE_RATE, expectedExchangeRates[row - 1], exchangeRate);
+    }
+  }
+
+  protected void verifyBuyCurrentScreen(String expectedHeading, String[] expectedCurrencyCodes,
+      String[] expectedCurrencyDescriptions, String[] expectedExchangeRates) {
     assertEquals(ATTRIBUTE_URL, URL_BUY_CURRENT_SCREEN, driver.getCurrentUrl());
-    String heading = getWebElementTextByTagName(TAG_HEADING);
-    assertEquals(ATTRIBUTE_HEADING, DEFAULT_TAG_HEADING_TEXT_BUY, heading);
-    for (int row = 1; row <= DEFAULT_CURRENCY_CODES.length; row++) {
-      String currencyCode =
-          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_CODE + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_CODE, DEFAULT_CURRENCY_CODES[row - 1], currencyCode);
-      String currencyDescription = getWebElementText(
-          "//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_DESCRIPTION + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_DESCRIPTION, DEFAULT_CURRENCY_DESCRIPTIONS[row - 1],
-          currencyDescription);
-      String exchangeRate =
-          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_EXCHANGE_RATE + "]");
-      assertEquals(ATTRIBUTE_EXCHANGE_RATE, DEFAULT_EXCHANGE_RATES_BUY_CURRENT[row - 1], exchangeRate);
-    }
+    verifyCurrentScreen(expectedHeading, expectedCurrencyCodes, expectedCurrencyDescriptions,
+        expectedExchangeRates);
   }
-  
-  protected void verifySellCurrentScreenDefaultCurrencies() {
+
+  protected void verifySellCurrentScreen(String expectedHeading, String[] expectedCurrencyCodes,
+      String[] expectedCurrencyDescriptions, String[] expectedExchangeRates) {
     assertEquals(ATTRIBUTE_URL, URL_SELL_CURRENT_SCREEN, driver.getCurrentUrl());
+    verifyCurrentScreen(expectedHeading, expectedCurrencyCodes, expectedCurrencyDescriptions,
+        expectedExchangeRates);
+  }
+
+  protected void verifyHistoryScreen(String expectedHeading, String[] expectedPeriods,
+      String[] expectedCurrencyCodes, String[] expectedCurrencyDescriptions,
+      Map<Integer, String[]> expectedExchangeRates) {
     String heading = getWebElementTextByTagName(TAG_HEADING);
-    assertEquals(ATTRIBUTE_HEADING, DEFAULT_TAG_HEADING_TEXT_SELL, heading);
-    for (int row = 1; row <= DEFAULT_CURRENCY_CODES.length; row++) {
+    assertEquals(ATTRIBUTE_HEADING, expectedHeading, heading);
+    String columnHeadingCurrencyCode =
+        getWebElementText("//table/thead/tr/th[" + COLUMN_CURRENCY_CODE + "]");
+    assertEquals(ATTRIBUTE_COLUMN_HEADING_CURRENCY_CODE, COLUMN_HEADING_CURRENCY_CODE,
+        columnHeadingCurrencyCode);
+    String columnHeadingCurrencyDescription =
+        getWebElementText("//table/thead/tr/th[" + COLUMN_CURRENCY_DESCRIPTION + "]");
+    assertEquals(ATTRIBUTE_COLUMN_HEADING_CURRENCY_DESCRIPTION, COLUMN_HEADING_CURRENCY_DESCRIPTION,
+        columnHeadingCurrencyDescription);
+    for (int periodNumber = 1; periodNumber <= expectedPeriods.length; periodNumber++) {
+      String period = getWebElementText("//table/thead/tr/th[" + (periodNumber + 2) + "]");
+      assertEquals(ATTRIBUTE_PERIOD, expectedPeriods[periodNumber - 1], period);
+    }
+    for (int row = 1; row <= expectedCurrencyCodes.length; row++) {
       String currencyCode =
           getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_CODE + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_CODE, DEFAULT_CURRENCY_CODES[row - 1], currencyCode);
+      assertEquals(ATTRIBUTE_CURRENCY_CODE, expectedCurrencyCodes[row - 1], currencyCode);
       String currencyDescription = getWebElementText(
           "//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_DESCRIPTION + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_DESCRIPTION, DEFAULT_CURRENCY_DESCRIPTIONS[row - 1],
+      assertEquals(ATTRIBUTE_CURRENCY_DESCRIPTION, expectedCurrencyDescriptions[row - 1],
           currencyDescription);
-      String exchangeRate =
-          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_EXCHANGE_RATE + "]");
-      assertEquals(ATTRIBUTE_EXCHANGE_RATE, DEFAULT_EXCHANGE_RATES_SELL_CURRENT[row - 1],
-          exchangeRate);
+      for (int periodNumber = 1; periodNumber <= expectedPeriods.length; periodNumber++) {
+        String exchangeRate =
+            getWebElementText("//table/tbody/tr[" + row + "]/td[" + (periodNumber + 2) + "]");
+        assertEquals(ATTRIBUTE_EXCHANGE_RATE,
+            ((String[]) expectedExchangeRates.get(row))[periodNumber - 1], exchangeRate);
+      }
     }
   }
-  
-  protected void verifyBuyHistoryScreenDefaultCurrencies() {
+
+  protected void verifyBuyHistoryScreen(String expectedHeading, String[] expectedPeriods,
+      String[] expectedCurrencyCodes, String[] expectedCurrencyDescriptions,
+      Map<Integer, String[]> expectedExchangeRates) {
     assertEquals(ATTRIBUTE_URL, URL_BUY_HISTORY_SCREEN, driver.getCurrentUrl());
-    String heading = getWebElementTextByTagName(TAG_HEADING);
-    assertEquals(ATTRIBUTE_HEADING, DEFAULT_TAG_HEADING_TEXT_BUY, heading);
-    String columnHeadingCurrencyCode =
-        getWebElementText("//table/thead/tr/th[" + COLUMN_CURRENCY_CODE + "]");
-    assertEquals(ATTRIBUTE_COLUMN_HEADING_CURRENCY_CODE, COLUMN_HEADING_CURRENCY_CODE,
-        columnHeadingCurrencyCode);
-    String columnHeadingCurrencyDescription =
-        getWebElementText("//table/thead/tr/th[" + COLUMN_CURRENCY_DESCRIPTION + "]");
-    assertEquals(ATTRIBUTE_COLUMN_HEADING_CURRENCY_DESCRIPTION,
-        COLUMN_HEADING_CURRENCY_DESCRIPTION, columnHeadingCurrencyDescription);
-    for (int periodNumber = 1; periodNumber <= PERIODS.length; periodNumber++) {
-      String period = getWebElementText("//table/thead/tr/th[" + (periodNumber + 2) + "]");
-      assertEquals(ATTRIBUTE_PERIOD, PERIODS[periodNumber - 1], period);
-    }
-    for (int row = 1; row <= DEFAULT_CURRENCY_CODES.length; row++) {
-      String currencyCode =
-          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_CODE + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_CODE, DEFAULT_CURRENCY_CODES[row - 1], currencyCode);
-      String currencyDescription = getWebElementText(
-          "//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_DESCRIPTION + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_DESCRIPTION, DEFAULT_CURRENCY_DESCRIPTIONS[row - 1],
-          currencyDescription);
-      for (int periodNumber = 1; periodNumber <= PERIODS.length; periodNumber++) {
-        String exchangeRate =
-            getWebElementText("//table/tbody/tr[" + row + "]/td[" + (periodNumber + 2) + "]");
-        assertEquals(ATTRIBUTE_EXCHANGE_RATE,
-            ((String[]) DEFAULT_EXCHANGE_RATES_BUY_HISTORY.get(row))[periodNumber - 1], exchangeRate);
-      }
+    verifyHistoryScreen(expectedHeading, expectedPeriods, expectedCurrencyCodes,
+        expectedCurrencyDescriptions, expectedExchangeRates);
+  }
+
+  protected void verifySellHistoryScreen(String expectedHeading, String[] expectedPeriods,
+      String[] expectedCurrencyCodes, String[] expectedCurrencyDescriptions,
+      Map<Integer, String[]> expectedExchangeRates) {
+    assertEquals(ATTRIBUTE_URL, URL_SELL_HISTORY_SCREEN, driver.getCurrentUrl());
+    verifyHistoryScreen(expectedHeading, expectedPeriods, expectedCurrencyCodes,
+        expectedCurrencyDescriptions, expectedExchangeRates);
+  }
+
+  protected void verifyBuyCurrentScreenDefaultCurrencies() {
+    verifyBuyCurrentScreen(DEFAULT_HEADING_TEXT_BUY, DEFAULT_COMPARISON_CURRENCY_CODES,
+        DEFAULT_COMPARISON_CURRENCY_DESCRIPTIONS, DEFAULT_EXCHANGE_RATES_BUY_CURRENT);
+  }
+
+  protected void verifySellCurrentScreenDefaultCurrencies() {
+    verifySellCurrentScreen(DEFAULT_HEADING_TEXT_SELL, DEFAULT_COMPARISON_CURRENCY_CODES,
+        DEFAULT_COMPARISON_CURRENCY_DESCRIPTIONS, DEFAULT_EXCHANGE_RATES_SELL_CURRENT);
+  }
+
+  protected void verifyBuyHistoryScreenDefaultCurrencies() {
+    verifyBuyHistoryScreen(DEFAULT_HEADING_TEXT_BUY, PERIODS, DEFAULT_COMPARISON_CURRENCY_CODES,
+        DEFAULT_COMPARISON_CURRENCY_DESCRIPTIONS, DEFAULT_EXCHANGE_RATES_BUY_HISTORY);
+  }
+
+  protected void verifySellHistoryScreenDefaultCurrencies() {
+    verifySellHistoryScreen(DEFAULT_HEADING_TEXT_SELL, PERIODS, DEFAULT_COMPARISON_CURRENCY_CODES,
+        DEFAULT_COMPARISON_CURRENCY_DESCRIPTIONS, DEFAULT_EXCHANGE_RATES_SELL_HISTORY);
+  }
+
+  protected void verifyBuyCurrentScreenCustomCurrencies() {
+    verifyBuyCurrentScreen(CUSTOM_HEADING_TEXT_BUY, CUSTOM_COMPARISON_CURRENCY_CODES,
+        CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS, CUSTOM_EXCHANGE_RATES_BUY_CURRENT);
+  }
+
+  protected void verifySellCurrentScreenCustomCurrencies() {
+    verifySellCurrentScreen(CUSTOM_HEADING_TEXT_SELL, CUSTOM_COMPARISON_CURRENCY_CODES,
+        CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS, CUSTOM_EXCHANGE_RATES_SELL_CURRENT);
+  }
+
+  protected void verifyBuyHistoryScreenCustomCurrencies() {
+    verifyBuyHistoryScreen(CUSTOM_HEADING_TEXT_BUY, PERIODS, CUSTOM_COMPARISON_CURRENCY_CODES,
+        CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS, CUSTOM_EXCHANGE_RATES_BUY_HISTORY);
+  }
+
+  protected void verifySellHistoryScreenCustomCurrencies() {
+    verifySellHistoryScreen(CUSTOM_HEADING_TEXT_SELL, PERIODS, CUSTOM_COMPARISON_CURRENCY_CODES,
+        CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS, CUSTOM_EXCHANGE_RATES_SELL_HISTORY);
+  }
+
+  protected void verifyMenuSelection(String expectedSubjectCurrencyCode,
+      String[] expectedComparisonCurrencyCodes) {
+    assertEquals(ATTRIBUTE_URL, URL_MENU, driver.getCurrentUrl());
+    Select subjectCurrencySelect = new Select(getWebElementById(ELEMENT_ID_SUBJECT_CURRENCY));
+    assertEquals(ATTRIBUTE_SUBJECT_CURRENCY, expectedSubjectCurrencyCode,
+        subjectCurrencySelect.getFirstSelectedOption().getText());
+    int comparisonCurrencyIndex = 0;
+    for (String expectedComparisonCurrencyCode : expectedComparisonCurrencyCodes) {
+      String deleteButtonId = ELEMENT_ID_PREFIX_COMPARISON_CURRENCY + comparisonCurrencyIndex++;
+      WebElement deleteButton = getWebElementById(deleteButtonId);
+      WebElement deleteButtonDiv = deleteButton.findElement(By.xpath(PARENT_ELEMENT_SELECTOR));
+      String expectedComparisonCurrency =
+          PREFIX_COMPARISON_CURRENCY + expectedComparisonCurrencyCode;
+      String actualComparisonCurrency = deleteButtonDiv.getText();
+      actualComparisonCurrency =
+          actualComparisonCurrency.substring(0, expectedComparisonCurrency.length());
+      assertEquals(ATTRIBUTE_COMPARISON_CURRENCY, expectedComparisonCurrency,
+          actualComparisonCurrency);
     }
   }
-  
-  protected void verifySellHistoryScreenDefaultCurrencies() {
-    driver.get(URL_SELL_HISTORY_SCREEN);
-    assertEquals(ATTRIBUTE_URL, URL_SELL_HISTORY_SCREEN, driver.getCurrentUrl());
-    String heading = getWebElementTextByTagName(TAG_HEADING);
-    assertEquals(ATTRIBUTE_HEADING, DEFAULT_TAG_HEADING_TEXT_SELL, heading);
-    String columnHeadingCurrencyCode =
-        getWebElementText("//table/thead/tr/th[" + COLUMN_CURRENCY_CODE + "]");
-    assertEquals(ATTRIBUTE_COLUMN_HEADING_CURRENCY_CODE, COLUMN_HEADING_CURRENCY_CODE,
-        columnHeadingCurrencyCode);
-    String columnHeadingCurrencyDescription =
-        getWebElementText("//table/thead/tr/th[" + COLUMN_CURRENCY_DESCRIPTION + "]");
-    assertEquals(ATTRIBUTE_COLUMN_HEADING_CURRENCY_DESCRIPTION,
-        COLUMN_HEADING_CURRENCY_DESCRIPTION, columnHeadingCurrencyDescription);
-    for (int periodNumber = 1; periodNumber <= PERIODS.length; periodNumber++) {
-      String period = getWebElementText("//table/thead/tr/th[" + (periodNumber + 2) + "]");
-      assertEquals(ATTRIBUTE_PERIOD, PERIODS[periodNumber - 1], period);
-    }
-    for (int row = 1; row <= DEFAULT_CURRENCY_CODES.length; row++) {
-      String currencyCode =
-          getWebElementText("//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_CODE + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_CODE, DEFAULT_CURRENCY_CODES[row - 1], currencyCode);
-      String currencyDescription = getWebElementText(
-          "//table/tbody/tr[" + row + "]/td[" + COLUMN_CURRENCY_DESCRIPTION + "]");
-      assertEquals(ATTRIBUTE_CURRENCY_DESCRIPTION, DEFAULT_CURRENCY_DESCRIPTIONS[row - 1],
-          currencyDescription);
-      for (int periodNumber = 1; periodNumber <= PERIODS.length; periodNumber++) {
-        String exchangeRate =
-            getWebElementText("//table/tbody/tr[" + row + "]/td[" + (periodNumber + 2) + "]");
-        assertEquals(ATTRIBUTE_EXCHANGE_RATE,
-            ((String[]) DEFAULT_EXCHANGE_RATES_SELL_HISTORY.get(row))[periodNumber - 1], exchangeRate);
-      }
-    }
+
+  protected void verifyMenuSelectionDefaultCurrencies() {
+    verifyMenuSelection(DEFAULT_SUBJECT_CURRENCY_CODE, DEFAULT_COMPARISON_CURRENCY_CODES);
+  }
+
+  protected void verifyMenuSelectionCustomCurrencies() {
+    verifyMenuSelection(CUSTOM_SUBJECT_CURRENCY_CODE,
+        CUSTOM_COMPARISON_CURRENCY_CODES_SELECTED_ORDER);
   }
 
 }

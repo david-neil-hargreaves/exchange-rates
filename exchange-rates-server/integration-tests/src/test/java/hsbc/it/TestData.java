@@ -22,10 +22,11 @@ public class TestData {
   public final static String[] PERIODS = new String[] {"December 2019", "January 2020",
       "February 2020", "March 2020", "April 2020", "May 2020"};
   
-  public final static String DEFAULT_TAG_HEADING_TEXT_BUY = "Buy EUR Euros";
-  public final static String DEFAULT_TAG_HEADING_TEXT_SELL = "Sell EUR Euros";
-  public final static String[] DEFAULT_CURRENCY_CODES = new String[] {"GBP", "USD", "HKD"};
-  public final static String[] DEFAULT_CURRENCY_DESCRIPTIONS =
+  public final static String DEFAULT_HEADING_TEXT_BUY = "Buy EUR Euros";
+  public final static String DEFAULT_HEADING_TEXT_SELL = "Sell EUR Euros";
+  public final static String DEFAULT_SUBJECT_CURRENCY_CODE = "EUR";
+  public final static String[] DEFAULT_COMPARISON_CURRENCY_CODES = new String[] {"GBP", "USD", "HKD"};
+  public final static String[] DEFAULT_COMPARISON_CURRENCY_DESCRIPTIONS =
       new String[] {"Pounds Sterling", "US Dollars", "Hong Kong Dollars"};
   public final static String[] DEFAULT_EXCHANGE_RATES_BUY_CURRENT = new String[] {"0.89", "1.38", "8.5"};
   public final static String[] DEFAULT_EXCHANGE_RATES_SELL_CURRENT = new String[] {"1.12", "0.72", "0.12"};
@@ -43,10 +44,12 @@ public class TestData {
     DEFAULT_EXCHANGE_RATES_SELL_HISTORY.put(3, new String[] {"0.13", "0.12", "0.12", "0.12", "0.12", "0.12"});
   }
   
-  public final static String CUSTOM_TAG_HEADING_TEXT_BUY = "Buy HUF Forints";
-  public final static String CUSTOM_TAG_HEADING_TEXT_SELL = "Sell HUF Forints";
-  public final static String[] CUSTOM_CURRENCY_CODES = new String[] {"EUR", "HKD", "ITL", "RSD"};
-  public final static String[] CUSTOM_CURRENCY_DESCRIPTIONS =
+  public final static String CUSTOM_HEADING_TEXT_BUY = "Buy HUF Forints";
+  public final static String CUSTOM_HEADING_TEXT_SELL = "Sell HUF Forints";
+  public final static String CUSTOM_SUBJECT_CURRENCY_CODE = "HUF";
+  public final static String[] CUSTOM_COMPARISON_CURRENCY_CODES = new String[] {"EUR", "HKD", "ITL", "RSD"};
+  public final static String[] CUSTOM_COMPARISON_CURRENCY_CODES_SELECTED_ORDER = new String[] {"HKD", "EUR", "RSD", "ITL"};
+  public final static String[] CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS =
       new String[] {"Euros", "Hong Kong Dollars", "Lira", "Serbian Dinars"};
   public final static String[] CUSTOM_EXCHANGE_RATES_BUY_CURRENT = new String[] {"0.0028", "0.249744", "", "0.332342"};
   public final static String[] CUSTOM_EXCHANGE_RATES_SELL_CURRENT = new String[] {"354.372", "40.041", "", "3.00895"};
@@ -66,6 +69,16 @@ public class TestData {
     CUSTOM_EXCHANGE_RATES_SELL_HISTORY.put(4, new String[] {"", "", "3.00895", "3.00895", "3.00895", "3.00895"});
   }
   
+  public final static String CURRENCY_CODE_EUROS = "EUR";
+  public final static String CURRENCY_CODE_SERBIAN_DINARS = "RSD";
+  public final static String CURRENCY_CODE_LIRA = "ITL";
+  
+  public final static String ELEMENT_ID_SUBJECT_CURRENCY = "subjectCurrency";
+  public final static String ELEMENT_ID_PREFIX_COMPARISON_CURRENCY = "deleteComparisonCurrency";
+  public final static String ELEMENT_ID_COMPARISON_CURRENCY = "comparisonCurrency";
+  public final static String PREFIX_COMPARISON_CURRENCY = "Comparison currency: ";
+  public final static String PARENT_ELEMENT_SELECTOR = "parent::node()";
+  
   public final static String ATTRIBUTE_URL = "URL";
   public final static String ATTRIBUTE_HEADING = "Heading";
   public final static String ATTRIBUTE_COLUMN_HEADING_CURRENCY_CODE =
@@ -76,6 +89,9 @@ public class TestData {
   public final static String ATTRIBUTE_CURRENCY_CODE = "Currency Code";
   public final static String ATTRIBUTE_CURRENCY_DESCRIPTION = "Currency Description";
   public final static String ATTRIBUTE_EXCHANGE_RATE = "Exchange Rate";
+  public final static String ATTRIBUTE_SUBJECT_CURRENCY = "Subject currency";
+  public final static String ATTRIBUTE_COMPARISON_CURRENCY = "Comparison currency";
+  
   public final static int COLUMN_CURRENCY_CODE = 1;
   public final static int COLUMN_CURRENCY_DESCRIPTION = 2;
   public final static int COLUMN_EXCHANGE_RATE = 3;

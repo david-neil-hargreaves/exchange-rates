@@ -1,29 +1,95 @@
 package hsbc.it;
 
-import static hsbc.it.TestData.ATTRIBUTE_URL;
+import static hsbc.it.TestData.CURRENCY_CODE_EUROS;
+import static hsbc.it.TestData.CURRENCY_CODE_LIRA;
+import static hsbc.it.TestData.CURRENCY_CODE_SERBIAN_DINARS;
+import static hsbc.it.TestData.CUSTOM_SUBJECT_CURRENCY_CODE;
+import static hsbc.it.TestData.ELEMENT_ID_COMPARISON_CURRENCY;
+import static hsbc.it.TestData.ELEMENT_ID_PREFIX_COMPARISON_CURRENCY;
+import static hsbc.it.TestData.ELEMENT_ID_SUBJECT_CURRENCY;
+import static hsbc.it.TestData.LINK_TEXT_BUY_CURRENT;
+import static hsbc.it.TestData.LINK_TEXT_BUY_HISTORY;
+import static hsbc.it.TestData.LINK_TEXT_MENU;
+import static hsbc.it.TestData.LINK_TEXT_SELL_CURRENT;
+import static hsbc.it.TestData.LINK_TEXT_SELL_HISTORY;
 import static hsbc.it.TestData.URL_MENU;
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class MenuIT extends AbstractTestIT {
 
   @Test
-  public void navigateToMenu() {
+  public void selectCustomCurrenciesDisplayBuyCurrent() {
     driver.get(URL_MENU);
-    assertEquals(ATTRIBUTE_URL, URL_MENU, driver.getCurrentUrl());
-    WebElement subjectCurrencySelect = getWebElementById("subjectCurrency");
-    WebElement subjectCurrencySelectDiv = subjectCurrencySelect.findElement(By.xpath("parent::node()"));
-    //WebElement deleteButton = getWebElementById("deleteComparisonCurrency0");
-    //WebElement deleteButtonDiv = deleteButton.findElement(By.xpath("parent::node()"));
-    WebElement deleteButton = getWebElementByTagName("button");
-    WebElement deleteButtonDiv = deleteButton.findElement(By.xpath("parent::node()"));
-    String expectedComparisonCurrency = "Comparison currency: GBP";
-    String actualComparisonCurrency = deleteButtonDiv.getText();
-    actualComparisonCurrency = actualComparisonCurrency.substring(0, expectedComparisonCurrency.length());
-    assertEquals("Comparison Currency", expectedComparisonCurrency, actualComparisonCurrency);
+    verifyMenuSelectionDefaultCurrencies();
+    changeCurrencySelectionFromDefaultToCustom();
+    verifyMenuSelectionCustomCurrencies();
+    WebElement link = getLink(LINK_TEXT_BUY_CURRENT);
+    link.click();
+    verifyBuyCurrentScreenCustomCurrencies();
+    link = getLink(LINK_TEXT_MENU);
+    link.click();
+    verifyMenuSelectionCustomCurrencies();
+  }
+
+  @Test
+  public void selectCustomCurrenciesDisplaySellCurrent() {
+    driver.get(URL_MENU);
+    verifyMenuSelectionDefaultCurrencies();
+    changeCurrencySelectionFromDefaultToCustom();
+    verifyMenuSelectionCustomCurrencies();
+    WebElement link = getLink(LINK_TEXT_SELL_CURRENT);
+    link.click();
+    verifySellCurrentScreenCustomCurrencies();
+    link = getLink(LINK_TEXT_MENU);
+    link.click();
+    verifyMenuSelectionCustomCurrencies();
+  }
+
+  @Test
+  public void selectCustomCurrenciesDisplayBuyHistory() {
+    driver.get(URL_MENU);
+    verifyMenuSelectionDefaultCurrencies();
+    changeCurrencySelectionFromDefaultToCustom();
+    verifyMenuSelectionCustomCurrencies();
+    WebElement link = getLink(LINK_TEXT_BUY_HISTORY);
+    link.click();
+    verifyBuyHistoryScreenCustomCurrencies();
+    link = getLink(LINK_TEXT_MENU);
+    link.click();
+    verifyMenuSelectionCustomCurrencies();
+  }
+
+  @Test
+  public void selectCustomCurrenciesDisplaySellHistory() {
+    driver.get(URL_MENU);
+    verifyMenuSelectionDefaultCurrencies();
+    changeCurrencySelectionFromDefaultToCustom();
+    verifyMenuSelectionCustomCurrencies();
+    WebElement link = getLink(LINK_TEXT_SELL_HISTORY);
+    link.click();
+    verifySellHistoryScreenCustomCurrencies();
+    link = getLink(LINK_TEXT_MENU);
+    link.click();
+    verifyMenuSelectionCustomCurrencies();
+  }
+
+  private void changeCurrencySelectionFromDefaultToCustom() {
+    Select subjectCurrencySelect = new Select(getWebElementById(ELEMENT_ID_SUBJECT_CURRENCY));
+    subjectCurrencySelect.selectByVisibleText(CUSTOM_SUBJECT_CURRENCY_CODE);
+    String deleteButtonId = ELEMENT_ID_PREFIX_COMPARISON_CURRENCY + 0;
+    WebElement deleteButton = getWebElementById(deleteButtonId);
+    deleteButton.click();
+    deleteButton = getWebElementById(deleteButtonId);
+    deleteButton.click();
+    Select comparisonCurrencySelect = new Select(getWebElementById(ELEMENT_ID_COMPARISON_CURRENCY));
+    comparisonCurrencySelect.selectByVisibleText(CURRENCY_CODE_EUROS);
+    comparisonCurrencySelect = new Select(getWebElementById(ELEMENT_ID_COMPARISON_CURRENCY));
+    comparisonCurrencySelect.selectByVisibleText(CURRENCY_CODE_SERBIAN_DINARS);
+    comparisonCurrencySelect = new Select(getWebElementById(ELEMENT_ID_COMPARISON_CURRENCY));
+    comparisonCurrencySelect.selectByVisibleText(CURRENCY_CODE_LIRA);
   }
 
 }
