@@ -1,13 +1,13 @@
-<form [formGroup]="menuForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="menuForm">
 
     <ul class="wrapper">
 
         <li class="form-row">
             <label>
                 Subject currency:
-                <select formControlName="subjectCurrency" id="subjectCurrency" class="subjectCurrency"
+                <select formControlName="subjectCurrency" id="subjectCurrency"
                     [compareWith]="compareCurrency">
-                    <option [ngValue]="currency" id="selectedSubjectCurrency" class="selectedSubjectCurrency"
+                    <option [ngValue]="currency" id="selectedSubjectCurrency"
                         *ngFor="let currency of allCurrencies" [attr.selected]>{{currency.code}}</option>
                 </select>
             </label>
