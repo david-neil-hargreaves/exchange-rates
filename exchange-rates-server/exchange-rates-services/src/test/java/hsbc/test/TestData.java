@@ -31,29 +31,31 @@ public class TestData {
   public static final String CURRENCY_CODE_LIRA = "ITL";
   public static final String CURRENCY_CODE_INVALID = "GRO";
   public static final String CURRENCY_DESCRIPTION_EUROS = "Euros";
-  public static final String CURRENCY_DESCRIPTION_POUNDS_STERLING = "Pounds sterling";
-  public static final String CURRENCY_DESCRIPTION_US_DOLLARS = "US dollars";
-  public static final String CURRENCY_DESCRIPTION_HONG_KONG_DOLLARS = "Hong Kong dollars";
-  public static final String CURRENCY_DESCRIPTION_LIRA = "Lira";
+  public static final String CURRENCY_DESCRIPTION_POUNDS_STERLING = "Pounds Sterling";
+  public static final String CURRENCY_DESCRIPTION_US_DOLLARS = "US Dollars";
+  public static final String CURRENCY_DESCRIPTION_HONG_KONG_DOLLARS = "Hong Kong Dollars";
+  public static final String CURRENCY_DESCRIPTION_LIRA = "Italian Lira";
   public static final Integer CURRENCY_SORT_ORDER_EUROS = 20;
   public static final Integer CURRENCY_SORT_ORDER_POUNDS_STERLING = 10;
   public static final Integer CURRENCY_SORT_ORDER_US_DOLLARS = 30;
   public static final Integer CURRENCY_SORT_ORDER_HONG_KONG_DOLLARS = 40;
   public static final Integer CURRENCY_SORT_ORDER_LIRA = 50;
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING =
-      new BigDecimal("0.89");
-  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS = new BigDecimal("1.1");
+      new BigDecimal("0.890000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS =
+      new BigDecimal("1.100000");
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS =
-      new BigDecimal("8.50");
+      new BigDecimal("8.500000");
   public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS =
-      new BigDecimal("1.12");
+      new BigDecimal("1.120000");
   public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_US_DOLLARS =
-      new BigDecimal("1.23");
+      new BigDecimal("1.230000");
   public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_HONG_KONG_DOLLARS =
-      new BigDecimal("9.54");
-  public static final BigDecimal EXCHANGE_RATE_BUY_US_DOLLARS_SELL_EUROS = new BigDecimal("0.91");
+      new BigDecimal("9.540000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_US_DOLLARS_SELL_EUROS =
+      new BigDecimal("0.910000");
   public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS =
-      new BigDecimal("0.12");
+      new BigDecimal("0.120000");
 
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_20200224 =
       new BigDecimal("0.95");
@@ -73,9 +75,9 @@ public class TestData {
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN =
       new BigDecimal("1.63");
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_DEC =
-      new BigDecimal("1.43");
+      new BigDecimal("1.425170");
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN =
-      new BigDecimal("1.61");
+      new BigDecimal("1.612260");
 
   public static final Date DATE_20191128_000000 = getDate("2019-11-28T00:00:00Z");
   public static final Date DATE_20191205_235959 = getDate("2019-12-05T23:59:59Z");

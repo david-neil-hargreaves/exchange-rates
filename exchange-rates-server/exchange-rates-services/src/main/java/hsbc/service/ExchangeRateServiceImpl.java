@@ -346,9 +346,11 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
       Optional<ExchangeRate> optionalCurrentExchangeRate) {
     Optional<BigDecimal> rateForPeriod;
     if (exchangeRatePeriodMatchType == ExchangeRatePeriodMatchType.AVERAGE) {
-      rateForPeriod = getRateForPeriodAverage(period, exchangeRateHistories, optionalCurrentExchangeRate);
+      rateForPeriod =
+          getRateForPeriodAverage(period, exchangeRateHistories, optionalCurrentExchangeRate);
     } else {
-      rateForPeriod = getRateForPeriodDate(period, exchangeRateHistories, optionalCurrentExchangeRate);
+      rateForPeriod =
+          getRateForPeriodDate(period, exchangeRateHistories, optionalCurrentExchangeRate);
     }
     if (rateForPeriod.isPresent()) {
       rateForPeriod.get().setScale(scale, roundingMode);

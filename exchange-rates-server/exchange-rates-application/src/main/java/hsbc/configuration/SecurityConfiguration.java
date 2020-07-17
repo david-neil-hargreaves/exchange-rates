@@ -19,16 +19,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  private final static String AUTHORISE_REQUESTS_PATH = "/**";
-  private final static String ACCESS_DENIED_PAGE = "/access-denied";
-  private final static List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:4200");
-  private final static List<String> ALLOWED_METHODS =
+  private static final String AUTHORISE_REQUESTS_PATH = "/**";
+  private static final String ACCESS_DENIED_PAGE = "/access-denied";
+  private static final List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:4200");
+  private static final List<String> ALLOWED_METHODS =
       Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
-  private final static List<String> ALLOWED_HEADERS =
+  private static final List<String> ALLOWED_HEADERS =
       Arrays.asList("Authorization", "Cache-Control", "Content-Type");
-  private final static List<String> EXPOSED_HEADERS =
+  private static final List<String> EXPOSED_HEADERS =
       Arrays.asList("custom-header1", "custom-header2");
-  private final static String CORS_CONFIGURATION_PATH = "/**";
+  private static final String CORS_CONFIGURATION_PATH = "/**";
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {

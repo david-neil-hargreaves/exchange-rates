@@ -15,6 +15,10 @@
 	<groupId>hsbc</groupId>
 	<artifactId>integration-tests</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	
+	<properties>
+		<webdrivermanager.version>2.2.5</webdrivermanager.version>
+	</properties>
 
 	<dependencies>
 
@@ -22,25 +26,7 @@
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-application</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>hsbc</groupId>
-			<artifactId>exchange-rates-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<!-- Spring Boot uses Logback by default - this application is using 
-					Log4J. -->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -52,34 +38,31 @@
 					<groupId>org.seleniumhq.selenium</groupId>
 					<artifactId>selenium-chrome-driver</artifactId>
 				</exclusion>
+				<!-- Spring Boot uses Logback by default - this application is using 
+					Log4J. -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>2.2.5</version>
+			<version>${webdrivermanager.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-firefox-driver</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 
