@@ -50,7 +50,7 @@ public class TestData {
   public final static String[] CUSTOM_COMPARISON_CURRENCY_CODES = new String[] {"EUR", "HKD", "ITL", "RSD"};
   public final static String[] CUSTOM_COMPARISON_CURRENCY_CODES_SELECTED_ORDER = new String[] {"HKD", "EUR", "RSD", "ITL"};
   public final static String[] CUSTOM_COMPARISON_CURRENCY_DESCRIPTIONS =
-      new String[] {"Euros", "Hong Kong Dollars", "Lira", "Serbian Dinars"};
+      new String[] {"Euros", "Hong Kong Dollars", "Italian Lira", "Serbian Dinars"};
   public final static String[] CUSTOM_EXCHANGE_RATES_BUY_CURRENT = new String[] {"0.0028", "0.249744", "", "0.332342"};
   public final static String[] CUSTOM_EXCHANGE_RATES_SELL_CURRENT = new String[] {"354.372", "40.041", "", "3.00895"};
   public final static Map<Integer, String[]> CUSTOM_EXCHANGE_RATES_BUY_HISTORY = new HashMap<>();
