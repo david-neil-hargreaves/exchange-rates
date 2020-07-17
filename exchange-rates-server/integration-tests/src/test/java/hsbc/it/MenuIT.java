@@ -13,16 +13,22 @@ import static hsbc.it.TestData.LINK_TEXT_MENU;
 import static hsbc.it.TestData.LINK_TEXT_SELL_CURRENT;
 import static hsbc.it.TestData.LINK_TEXT_SELL_HISTORY;
 import static hsbc.it.TestData.URL_MENU;
-
+import hsbc.WebApplication;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = WebApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class MenuIT extends AbstractTestIT {
 
   @Test
   public void selectCustomCurrenciesDisplayBuyCurrent() {
-    driver.get(URL_MENU);
+    webDriver.get(URL_MENU);
     verifyMenuSelectionDefaultCurrencies();
     changeCurrencySelectionFromDefaultToCustom();
     verifyMenuSelectionCustomCurrencies();
@@ -36,7 +42,7 @@ public class MenuIT extends AbstractTestIT {
 
   @Test
   public void selectCustomCurrenciesDisplaySellCurrent() {
-    driver.get(URL_MENU);
+    webDriver.get(URL_MENU);
     verifyMenuSelectionDefaultCurrencies();
     changeCurrencySelectionFromDefaultToCustom();
     verifyMenuSelectionCustomCurrencies();
@@ -50,7 +56,7 @@ public class MenuIT extends AbstractTestIT {
 
   @Test
   public void selectCustomCurrenciesDisplayBuyHistory() {
-    driver.get(URL_MENU);
+    webDriver.get(URL_MENU);
     verifyMenuSelectionDefaultCurrencies();
     changeCurrencySelectionFromDefaultToCustom();
     verifyMenuSelectionCustomCurrencies();
@@ -64,7 +70,7 @@ public class MenuIT extends AbstractTestIT {
 
   @Test
   public void selectCustomCurrenciesDisplaySellHistory() {
-    driver.get(URL_MENU);
+    webDriver.get(URL_MENU);
     verifyMenuSelectionDefaultCurrencies();
     changeCurrencySelectionFromDefaultToCustom();
     verifyMenuSelectionCustomCurrencies();

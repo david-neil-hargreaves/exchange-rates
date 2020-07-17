@@ -50,6 +50,7 @@ import static org.junit.Assert.assertEquals;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
 import java.util.Map;
+import java.util.function.Function;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.By;
@@ -63,28 +64,28 @@ import org.openqa.selenium.support.ui.Wait;
 
 abstract public class AbstractTestIT {
 
-  protected WebDriver driver;
+  protected WebDriver webDriver;
   private Wait<WebDriver> wait;
 
   @Before
   public void setUp() {
     WebDriverManager.getInstance(FIREFOX).setup();
-    driver = new FirefoxDriver();
-    driver.manage().window().maximize();
-    wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofMillis(5000))
+    webDriver = new FirefoxDriver();
+    webDriver.manage().window().maximize();
+    wait = new FluentWait<WebDriver>(webDriver).withTimeout(Duration.ofMillis(5000))
         .pollingEvery(Duration.ofMillis(250)).ignoring(NoSuchElementException.class);
   }
 
   @After
   public void tearDown() {
-    driver.close();
+    webDriver.close();
   }
 
   protected WebElement getWebElement(final String xpath) {
-    return driver.findElement(By.xpath(xpath));
+    return webDriver.findElement(By.xpath(xpath));
     /*
      * WebElement webElement = wait.until(new Function<WebDriver, WebElement>() { public WebElement
-     * apply(WebDriver driver) { return driver.findElement(By.xpath(xpath)); } }); return
+     * apply(WebDriver webDriver) { return webDriver.findElement(By.xpath(xpath)); } }); return
      * webElement;
      */
   }
@@ -94,12 +95,13 @@ abstract public class AbstractTestIT {
   }
 
   protected WebElement getWebElementByTagName(final String tagName) {
-    return driver.findElement(By.tagName(tagName));
-    /*
-     * WebElement webElement = wait.until(new Function<WebDriver, WebElement>() { public WebElement
-     * apply(WebDriver driver) { return driver.findElement(By.tagName(tagName)); } }); return
-     * webElement;
-     */
+    WebElement webElement = wait.until(new Function<WebDriver, WebElement>() {
+      public WebElement apply(WebDriver driver) {
+        return driver.findElement(By.tagName(tagName));
+      }
+    });
+    return webElement;
+
   }
 
   protected String getWebElementTextByTagName(final String tagName) {
@@ -107,11 +109,11 @@ abstract public class AbstractTestIT {
   }
 
   protected WebElement getLink(final String linkText) {
-    return driver.findElement(By.linkText(linkText));
+    return webDriver.findElement(By.linkText(linkText));
   }
 
   protected WebElement getWebElementById(final String id) {
-    return driver.findElement(By.id(id));
+    return webDriver.findElement(By.id(id));
   }
 
   protected void verifyCurrentScreen(String expectedHeading, String[] expectedCurrencyCodes,
@@ -134,14 +136,14 @@ abstract public class AbstractTestIT {
 
   protected void verifyBuyCurrentScreen(String expectedHeading, String[] expectedCurrencyCodes,
       String[] expectedCurrencyDescriptions, String[] expectedExchangeRates) {
-    assertEquals(ATTRIBUTE_URL, URL_BUY_CURRENT_SCREEN, driver.getCurrentUrl());
+    assertEquals(ATTRIBUTE_URL, URL_BUY_CURRENT_SCREEN, webDriver.getCurrentUrl());
     verifyCurrentScreen(expectedHeading, expectedCurrencyCodes, expectedCurrencyDescriptions,
         expectedExchangeRates);
   }
 
   protected void verifySellCurrentScreen(String expectedHeading, String[] expectedCurrencyCodes,
       String[] expectedCurrencyDescriptions, String[] expectedExchangeRates) {
-    assertEquals(ATTRIBUTE_URL, URL_SELL_CURRENT_SCREEN, driver.getCurrentUrl());
+    assertEquals(ATTRIBUTE_URL, URL_SELL_CURRENT_SCREEN, webDriver.getCurrentUrl());
     verifyCurrentScreen(expectedHeading, expectedCurrencyCodes, expectedCurrencyDescriptions,
         expectedExchangeRates);
   }
@@ -183,7 +185,7 @@ abstract public class AbstractTestIT {
   protected void verifyBuyHistoryScreen(String expectedHeading, String[] expectedPeriods,
       String[] expectedCurrencyCodes, String[] expectedCurrencyDescriptions,
       Map<Integer, String[]> expectedExchangeRates) {
-    assertEquals(ATTRIBUTE_URL, URL_BUY_HISTORY_SCREEN, driver.getCurrentUrl());
+    assertEquals(ATTRIBUTE_URL, URL_BUY_HISTORY_SCREEN, webDriver.getCurrentUrl());
     verifyHistoryScreen(expectedHeading, expectedPeriods, expectedCurrencyCodes,
         expectedCurrencyDescriptions, expectedExchangeRates);
   }
@@ -191,7 +193,7 @@ abstract public class AbstractTestIT {
   protected void verifySellHistoryScreen(String expectedHeading, String[] expectedPeriods,
       String[] expectedCurrencyCodes, String[] expectedCurrencyDescriptions,
       Map<Integer, String[]> expectedExchangeRates) {
-    assertEquals(ATTRIBUTE_URL, URL_SELL_HISTORY_SCREEN, driver.getCurrentUrl());
+    assertEquals(ATTRIBUTE_URL, URL_SELL_HISTORY_SCREEN, webDriver.getCurrentUrl());
     verifyHistoryScreen(expectedHeading, expectedPeriods, expectedCurrencyCodes,
         expectedCurrencyDescriptions, expectedExchangeRates);
   }
@@ -238,7 +240,7 @@ abstract public class AbstractTestIT {
 
   protected void verifyMenuSelection(String expectedSubjectCurrencyCode,
       String[] expectedComparisonCurrencyCodes) {
-    assertEquals(ATTRIBUTE_URL, URL_MENU, driver.getCurrentUrl());
+    assertEquals(ATTRIBUTE_URL, URL_MENU, webDriver.getCurrentUrl());
     Select subjectCurrencySelect = new Select(getWebElementById(ELEMENT_ID_SUBJECT_CURRENCY));
     assertEquals(ATTRIBUTE_SUBJECT_CURRENCY, expectedSubjectCurrencyCode,
         subjectCurrencySelect.getFirstSelectedOption().getText());
