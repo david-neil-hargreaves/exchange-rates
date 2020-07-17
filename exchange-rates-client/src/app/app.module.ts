@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ErrorHandler } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -12,6 +13,7 @@ import { CurrentSellExchangeRatesComponent } from './current-sell-exchange-rates
 import { HistoryBuyExchangeRatesComponent } from './history-buy-exchange-rates/history-buy-exchange-rates.component';
 import { HistorySellExchangeRatesComponent } from './history-sell-exchange-rates/history-sell-exchange-rates.component';
 import { MenuComponent } from './menu/menu.component';
+import { CustomErrorHandlerComponent } from './custom-error-handler/custom-error-handler.component';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { MenuComponent } from './menu/menu.component';
         CurrentSellExchangeRatesComponent,
         HistoryBuyExchangeRatesComponent,
         HistorySellExchangeRatesComponent,
-        MenuComponent
+        MenuComponent,
+        CustomErrorHandlerComponent
     ],
     imports: [
         BrowserModule,
@@ -32,7 +35,8 @@ import { MenuComponent } from './menu/menu.component';
     ],
     providers: [
         ExchangeRateService,
-        CurrencyService
+        CurrencyService,
+        {provide: ErrorHandler, useClass: CustomErrorHandlerComponent}
     ],
     bootstrap: [AppComponent]
 })
