@@ -15,7 +15,7 @@
 	<groupId>hsbc</groupId>
 	<artifactId>integration-tests</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+
 	<properties>
 		<webdrivermanager.version>2.2.5</webdrivermanager.version>
 	</properties>
@@ -71,6 +71,19 @@
 	<build>
 
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- This integration tests module should never be deployed. -->
 			<plugin>
