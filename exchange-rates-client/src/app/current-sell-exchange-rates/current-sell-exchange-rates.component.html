@@ -1,21 +1,23 @@
-<div class="card my-5">
+<div *ngIf="currentExchangeRates !== undefined">
 
-    <div class="card-body">
+    <div class="card my-5">
 
-        <div *ngIf="currentExchangeRates !== undefined">
+        <div class="card-body">
+
             <h4>Sell {{ currentExchangeRates?.subjectCurrency.code }}
                 {{ currentExchangeRates?.subjectCurrency.description }}</h4>
-        </div>
 
-        <table class="table table-bordered table-striped">
-            <tbody>
-                <tr *ngFor="let exchangeRate of currentExchangeRates?.currentExchangeRates">
-                    <td>{{ exchangeRate.comparisonCurrency.code }}</td>
-                    <td>{{ exchangeRate.comparisonCurrency.description }}</td>
-                    <td>{{ exchangeRate.rate }}</td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr *ngFor="let exchangeRate of currentExchangeRates?.currentExchangeRates">
+                        <td>{{ exchangeRate.comparisonCurrency.code }}</td>
+                        <td>{{ exchangeRate.comparisonCurrency.description }}</td>
+                        <td>{{ exchangeRate.rate }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
 

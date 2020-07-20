@@ -1,40 +1,45 @@
-<form [formGroup]="menuForm">
+<div *ngIf="allCurrencies !== undefined">
 
-    <ul class="wrapper">
+    <form [formGroup]="menuForm">
 
-        <li class="form-row">
-            <label>
-                Subject currency:
-                <select formControlName="subjectCurrency" id="subjectCurrency"
-                    [compareWith]="compareCurrency">
-                    <option [ngValue]="currency" id="selectedSubjectCurrency"
-                        *ngFor="let currency of allCurrencies" [attr.selected]>{{currency.code}}</option>
-                </select>
-            </label>
-        </li>
+        <ul class="wrapper">
 
-        <li class="form-row">
-            <div formArrayName="comparisonCurrencies">
-                <div *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies')['controls']; let i=index">
-                    <label>
-                        <div *ngIf="comparisonCurrency.value.id !== undefined">
-                            Comparison currency:
-                            {{comparisonCurrency.value.code}}
-                            <button type="button" id="deleteComparisonCurrency{{i}}" (click)="deleteComparisonCurrency(i)">&#x274E;</button>
-                        </div>
-                        <div *ngIf="comparisonCurrency.value.id === undefined">
-                            Comparison currency:
-                            <select [formControlName]="i" [compareWith]="compareCurrency" id="comparisonCurrency">
-                                <option [ngValue]="currency" id="selectedComparisonCurrency"
-                                    *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>
-                                    {{currency.code}}</option>
-                            </select>
-                        </div>
-                    </label>
+            <li class="form-row">
+                <label>
+                    Subject currency:
+                    <select formControlName="subjectCurrency" id="subjectCurrency" [compareWith]="compareCurrency">
+                        <option [ngValue]="currency" id="selectedSubjectCurrency" *ngFor="let currency of allCurrencies"
+                            [attr.selected]>{{currency.code}}</option>
+                    </select>
+                </label>
+            </li>
+
+            <li class="form-row">
+                <div formArrayName="comparisonCurrencies">
+                    <div
+                        *ngFor="let comparisonCurrency of menuForm.get('comparisonCurrencies')['controls']; let i=index">
+                        <label>
+                            <div *ngIf="comparisonCurrency.value.id !== undefined">
+                                Comparison currency:
+                                {{comparisonCurrency.value.code}}
+                                <button type="button" id="deleteComparisonCurrency{{i}}"
+                                    (click)="deleteComparisonCurrency(i)">&#x274E;</button>
+                            </div>
+                            <div *ngIf="comparisonCurrency.value.id === undefined">
+                                Comparison currency:
+                                <select [formControlName]="i" [compareWith]="compareCurrency" id="comparisonCurrency">
+                                    <option [ngValue]="currency" id="selectedComparisonCurrency"
+                                        *ngFor="let currency of candidateComparisonCurrencies" [attr.selected]>
+                                        {{currency.code}}</option>
+                                </select>
+                            </div>
+                        </label>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
 
-    </ul>
+        </ul>
 
-</form>
+    </form>
+
+</div>

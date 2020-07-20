@@ -1,35 +1,37 @@
-<div class="card my-5">
+<div *ngIf="historicalExchangeRates !== undefined">
 
-    <div class="card-body">
+    <div class="card my-5">
 
-        <div *ngIf="historicalExchangeRates !== undefined">
+        <div class="card-body">
+
             <h4>Sell {{ historicalExchangeRates?.subjectCurrency.code }}
                 {{ historicalExchangeRates?.subjectCurrency.description }}</h4>
-        </div>
 
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Code</th>
-                    <th scope="col">Description</th>
-                    <ng-template ngFor let-period="$implicit" [ngForOf]="historicalExchangeRates?.periods">
-                        <th scope="col">{{period.description}}</th>
-                    </ng-template>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-template ngFor let-historicalExchangeRate="$implicit"
-                    [ngForOf]="historicalExchangeRates?.historicalExchangeRates">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
                     <tr>
-                        <td>{{ historicalExchangeRate.comparisonCurrency.code }}</td>
-                        <td>{{ historicalExchangeRate.comparisonCurrency.description }}</td>
-                        <ng-template ngFor let-rate="$implicit" [ngForOf]="historicalExchangeRate.rates">
-                            <td>{{rate}}</td>
+                        <th scope="col">Code</th>
+                        <th scope="col">Description</th>
+                        <ng-template ngFor let-period="$implicit" [ngForOf]="historicalExchangeRates?.periods">
+                            <th scope="col">{{period.description}}</th>
                         </ng-template>
                     </tr>
-                </ng-template>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <ng-template ngFor let-historicalExchangeRate="$implicit"
+                        [ngForOf]="historicalExchangeRates?.historicalExchangeRates">
+                        <tr>
+                            <td>{{ historicalExchangeRate.comparisonCurrency.code }}</td>
+                            <td>{{ historicalExchangeRate.comparisonCurrency.description }}</td>
+                            <ng-template ngFor let-rate="$implicit" [ngForOf]="historicalExchangeRate.rates">
+                                <td>{{rate}}</td>
+                            </ng-template>
+                        </tr>
+                    </ng-template>
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
 

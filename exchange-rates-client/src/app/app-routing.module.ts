@@ -5,7 +5,7 @@ import { CurrentSellExchangeRatesComponent } from './current-sell-exchange-rates
 import { HistoryBuyExchangeRatesComponent } from './history-buy-exchange-rates/history-buy-exchange-rates.component';
 import { HistorySellExchangeRatesComponent } from './history-sell-exchange-rates/history-sell-exchange-rates.component';
 import { MenuComponent } from './menu/menu.component';
-import { CustomErrorHandlerComponent } from './custom-error-handler/custom-error-handler.component';
+import { CustomErrorDisplayComponent } from './custom-error-display/custom-error-display.component';
 
 const routes: Routes = [
     { path: 'buy/current', component: CurrentBuyExchangeRatesComponent },
@@ -13,7 +13,7 @@ const routes: Routes = [
     { path: 'buy/history', component: HistoryBuyExchangeRatesComponent },
     { path: 'sell/history', component: HistorySellExchangeRatesComponent },
     { path: 'menu', component: MenuComponent },
-    { path: 'error', component: CustomErrorHandlerComponent }
+    { path: 'error', component: CustomErrorDisplayComponent }
 ];
 
 @NgModule({

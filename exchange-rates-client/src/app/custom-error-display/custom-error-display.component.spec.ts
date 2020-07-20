@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomErrorHandlerComponent } from './custom-error-handler.component';
+import { CustomErrorDisplayComponent } from './custom-error-display.component';
 
-describe('CustomErrorHandlerComponent', () => {
-  let component: CustomErrorHandlerComponent;
-  let fixture: ComponentFixture<CustomErrorHandlerComponent>;
+describe('CustomErrorDisplayComponent', () => {
+  let component: CustomErrorDisplayComponent;
+  let fixture: ComponentFixture<CustomErrorDisplayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomErrorHandlerComponent ]
+      declarations: [ CustomErrorDisplayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CustomErrorHandlerComponent);
+    fixture = TestBed.createComponent(CustomErrorDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
