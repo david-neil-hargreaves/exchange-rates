@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { Currency } from './model/currency';
-import { ExchangeRateService } from './service/exchange-rate.service';
-import { CurrencyService } from './service/currency.service';
 
 @Component({
     selector: 'app-root',

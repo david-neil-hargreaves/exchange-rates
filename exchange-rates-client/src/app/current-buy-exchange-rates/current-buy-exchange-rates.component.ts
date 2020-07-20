@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class CurrentBuyExchangeRatesComponent implements OnInit {
 
-    //currencyExchangeRates: CurrencyExchangeRates;
     currentExchangeRates: CurrentExchangeRates;
     private masterSubscription: Subscription = new Subscription();
 
