@@ -24,28 +24,34 @@ public class TestData {
   public static final Long CURRENCY_ID_US_DOLLARS = 3L;
   public static final Long CURRENCY_ID_HONG_KONG_DOLLARS = 4L;
   public static final Long CURRENCY_ID_LIRA = 5L;
+  public static final Long CURRENCY_ID_SERBIAN_DINARS = 6L;
   public static final String CURRENCY_CODE_EUROS = "EUR";
   public static final String CURRENCY_CODE_POUNDS_STERLING = "GBP";
   public static final String CURRENCY_CODE_US_DOLLARS = "USD";
   public static final String CURRENCY_CODE_HONG_KONG_DOLLARS = "HKD";
   public static final String CURRENCY_CODE_LIRA = "ITL";
+  public static final String CURRENCY_CODE_SERBIAN_DINARS = "RSD";
   public static final String CURRENCY_CODE_INVALID = "GRO";
   public static final String CURRENCY_DESCRIPTION_EUROS = "Euros";
   public static final String CURRENCY_DESCRIPTION_POUNDS_STERLING = "Pounds Sterling";
   public static final String CURRENCY_DESCRIPTION_US_DOLLARS = "US Dollars";
   public static final String CURRENCY_DESCRIPTION_HONG_KONG_DOLLARS = "Hong Kong Dollars";
   public static final String CURRENCY_DESCRIPTION_LIRA = "Italian Lira";
+  public static final String CURRENCY_DESCRIPTION_SERBIAN_DINARS = "Serbian Dinars";
   public static final Integer CURRENCY_SORT_ORDER_EUROS = 20;
   public static final Integer CURRENCY_SORT_ORDER_POUNDS_STERLING = 10;
   public static final Integer CURRENCY_SORT_ORDER_US_DOLLARS = 30;
   public static final Integer CURRENCY_SORT_ORDER_HONG_KONG_DOLLARS = 40;
   public static final Integer CURRENCY_SORT_ORDER_LIRA = 50;
+  public static final Integer CURRENCY_SORT_ORDER_SERBIAN_DINARS = 60;
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING =
       new BigDecimal("0.890000");
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_US_DOLLARS =
       new BigDecimal("1.100000");
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS =
       new BigDecimal("8.500000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_SERBIAN_DINARS =
+      new BigDecimal("120.000000");
   public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS =
       new BigDecimal("1.120000");
   public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_US_DOLLARS =
@@ -56,6 +62,8 @@ public class TestData {
       new BigDecimal("0.910000");
   public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS =
       new BigDecimal("0.120000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_SERBIAN_DINARS_SELL_EUROS =
+      new BigDecimal("0.008333");
 
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_20200224 =
       new BigDecimal("0.95");
@@ -200,6 +208,15 @@ public class TestData {
     currency.setSortOrderNumber(CURRENCY_SORT_ORDER_LIRA);
     return currency;
   }
+  
+  public static Currency createSerbianDinars() {
+    Currency currency = new Currency();
+    currency.setId(CURRENCY_ID_SERBIAN_DINARS);
+    currency.setCode(CURRENCY_CODE_SERBIAN_DINARS);
+    currency.setDescription(CURRENCY_DESCRIPTION_SERBIAN_DINARS);
+    currency.setSortOrderNumber(CURRENCY_SORT_ORDER_SERBIAN_DINARS);
+    return currency;
+  }
 
   public static ExchangeRate createEuroPoundsSterling() {
     ExchangeRate exchangeRate = new ExchangeRate();
@@ -224,6 +241,15 @@ public class TestData {
     exchangeRate.setBuyingCurrency(createEuro());
     exchangeRate.setSellingCurrency(createHongKongDollars());
     exchangeRate.setRate(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS);
+    exchangeRate.setStartDateTime(DATE_20200106_000000);
+    return exchangeRate;
+  }
+  
+  public static ExchangeRate createEuroSerbianDinars() {
+    ExchangeRate exchangeRate = new ExchangeRate();
+    exchangeRate.setBuyingCurrency(createEuro());
+    exchangeRate.setSellingCurrency(createSerbianDinars());
+    exchangeRate.setRate(EXCHANGE_RATE_BUY_EUROS_SELL_SERBIAN_DINARS);
     exchangeRate.setStartDateTime(DATE_20200106_000000);
     return exchangeRate;
   }
@@ -267,6 +293,15 @@ public class TestData {
     exchangeRate.setBuyingCurrency(createHongKongDollars());
     exchangeRate.setSellingCurrency(createEuro());
     exchangeRate.setRate(EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS);
+    exchangeRate.setStartDateTime(DATE_20200106_000000);
+    return exchangeRate;
+  }
+  
+  public static ExchangeRate createSerbianDinarsEuro() {
+    ExchangeRate exchangeRate = new ExchangeRate();
+    exchangeRate.setBuyingCurrency(createSerbianDinars());
+    exchangeRate.setSellingCurrency(createEuro());
+    exchangeRate.setRate(EXCHANGE_RATE_BUY_SERBIAN_DINARS_SELL_EUROS);
     exchangeRate.setStartDateTime(DATE_20200106_000000);
     return exchangeRate;
   }
@@ -473,6 +508,7 @@ public class TestData {
     currencies.add(createUsDollars());
     currencies.add(createPoundsSterling());
     currencies.add(createLira());
+    currencies.add(createSerbianDinars());
     return currencies;
   }
 

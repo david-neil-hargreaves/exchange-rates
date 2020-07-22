@@ -1,5 +1,9 @@
 package hsbc.service;
 
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_AVERAGE_JAN;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_HIGH_JAN;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_LOW_JAN;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_START_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_END_DEC;
@@ -10,27 +14,35 @@ import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LO
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_MIDDLE_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_START_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_SERBIAN_DINARS;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS_LOW_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_END_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_REST_JAN;
-import static hsbc.test.TestData.*;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_SERBIAN_DINARS_SELL_EUROS;
+import static hsbc.test.TestData.createComparisonCurrencies;
 import static hsbc.test.TestData.createDecember;
 import static hsbc.test.TestData.createEuro;
 import static hsbc.test.TestData.createEuroHongKongDollars;
+import static hsbc.test.TestData.createEuroHongKongDollarsHistory;
 import static hsbc.test.TestData.createEuroPoundsSterling;
 import static hsbc.test.TestData.createEuroPoundsSterlingHistory;
+import static hsbc.test.TestData.createEuroSerbianDinars;
 import static hsbc.test.TestData.createEuroUsDollars;
 import static hsbc.test.TestData.createHongKongDollars;
 import static hsbc.test.TestData.createHongKongDollarsEuro;
+import static hsbc.test.TestData.createHongKongDollarsEuroHistory;
 import static hsbc.test.TestData.createJanuary;
 import static hsbc.test.TestData.createLira;
 import static hsbc.test.TestData.createPeriods;
 import static hsbc.test.TestData.createPoundsSterling;
 import static hsbc.test.TestData.createPoundsSterlingEuro;
 import static hsbc.test.TestData.createPoundsSterlingEuroHistory;
+import static hsbc.test.TestData.createSerbianDinars;
+import static hsbc.test.TestData.createSerbianDinarsEuro;
 import static hsbc.test.TestData.createUsDollars;
 import static hsbc.test.TestData.createUsDollarsEuro;
 import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY;
@@ -441,6 +453,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
             periods);
     Currency hongKongDollars = createHongKongDollars();
     Currency poundsSterling = createPoundsSterling();
+    Currency serbianDinars = createSerbianDinars();
     Period december = createDecember();
     Period january = createJanuary();
     expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
@@ -449,6 +462,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_START_DEC));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_END_DEC));
+    expectedHistoricalExchangeRates.setExchangeRate(serbianDinars, january, Optional.empty());
     HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
         .getHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods);
     verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
@@ -492,6 +506,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
             periods);
     Currency poundsSterling = createPoundsSterling();
     Currency hongKongDollars = createHongKongDollars();
+    Currency serbianDinars = createSerbianDinars();
     Period december = createDecember();
     Period january = createJanuary();
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
@@ -500,6 +515,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN));
     expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_AVERAGE_JAN));
+    expectedHistoricalExchangeRates.setExchangeRate(serbianDinars, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_SERBIAN_DINARS));
     HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
         .getHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods);
     verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
@@ -532,8 +549,6 @@ public class ExchangeRateServiceTest extends AbstractTest {
     verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
   }
-
-  // TODO Need test EUR HKD with first half of Jan covered by history, second half by current.
 
   @Test
   public void testGetHistoricalBuyingExchangeRatesExchangeRatePeriodMatchTypeLow()
@@ -766,6 +781,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Currency hongKongDollars = createHongKongDollars();
     Currency usDollars = createUsDollars();
     Currency poundsSterling = createPoundsSterling();
+    Currency serbianDinars = createSerbianDinars();
     Optional<ExchangeRate> hongKongDollarsExchangeRate = Optional.of(createEuroHongKongDollars());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(buyingCurrency,
         hongKongDollars)).thenReturn(hongKongDollarsExchangeRate);
@@ -775,6 +791,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Optional<ExchangeRate> poundsSterlingExchangeRate = Optional.of(createEuroPoundsSterling());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(buyingCurrency,
         poundsSterling)).thenReturn(poundsSterlingExchangeRate);
+    Optional<ExchangeRate> serbianDinarsExchangeRate = Optional.of(createEuroSerbianDinars());
+    when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(buyingCurrency,
+        serbianDinars)).thenReturn(serbianDinarsExchangeRate);
     CurrentExchangeRates expectedCurrentExchangeRates =
         new CurrentExchangeRates(buyingCurrency, sellingCurrencies);
     expectedCurrentExchangeRates.setExchangeRate(hongKongDollars,
@@ -783,6 +802,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         Optional.of(usDollarsExchangeRate.get().getRate()));
     expectedCurrentExchangeRates.setExchangeRate(poundsSterling,
         Optional.of(poundsSterlingExchangeRate.get().getRate()));
+    expectedCurrentExchangeRates.setExchangeRate(serbianDinars,
+        Optional.of(serbianDinarsExchangeRate.get().getRate()));
     Currency lira = createLira();
     expectedCurrentExchangeRates.setExchangeRate(lira, Optional.empty());
     return expectedCurrentExchangeRates;
@@ -791,6 +812,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
   private void verifyResultGetCurrentBuyingExchangeRates(Currency buyingCurrency,
       List<Currency> sellingCurrencies, CurrentExchangeRates expectedCurrentExchangeRates,
       CurrentExchangeRates actualCurrentExchangeRates) {
+    assertEquals(ATTRIBUTE_CURRENT_EXCHANGE_RATES, expectedCurrentExchangeRates.toString(),
+        actualCurrentExchangeRates.toString());
     assertEquals(ATTRIBUTE_CURRENT_EXCHANGE_RATES, expectedCurrentExchangeRates,
         actualCurrentExchangeRates);
     for (Currency sellingCurrency : sellingCurrencies) {
@@ -805,6 +828,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Currency hongKongDollars = createHongKongDollars();
     Currency usDollars = createUsDollars();
     Currency poundsSterling = createPoundsSterling();
+    Currency serbianDinars = createSerbianDinars();
     Optional<ExchangeRate> hongKongDollarsExchangeRate = Optional.of(createHongKongDollarsEuro());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(hongKongDollars,
         sellingCurrency)).thenReturn(hongKongDollarsExchangeRate);
@@ -814,6 +838,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Optional<ExchangeRate> poundsSterlingExchangeRate = Optional.of(createPoundsSterlingEuro());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(poundsSterling,
         sellingCurrency)).thenReturn(poundsSterlingExchangeRate);
+    Optional<ExchangeRate> serbianDinarsExchangeRate = Optional.of(createSerbianDinarsEuro());
+    when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(serbianDinars,
+        sellingCurrency)).thenReturn(serbianDinarsExchangeRate);
     CurrentExchangeRates expectedCurrentExchangeRates =
         new CurrentExchangeRates(sellingCurrency, buyingCurrencies);
     expectedCurrentExchangeRates.setExchangeRate(hongKongDollars,
@@ -822,6 +849,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         Optional.of(usDollarsExchangeRate.get().getRate()));
     expectedCurrentExchangeRates.setExchangeRate(poundsSterling,
         Optional.of(poundsSterlingExchangeRate.get().getRate()));
+    expectedCurrentExchangeRates.setExchangeRate(serbianDinars,
+        Optional.of(serbianDinarsExchangeRate.get().getRate()));
     Currency lira = createLira();
     expectedCurrentExchangeRates.setExchangeRate(lira, Optional.empty());
     return expectedCurrentExchangeRates;
@@ -844,6 +873,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Currency hongKongDollars = createHongKongDollars();
     Currency usDollars = createUsDollars();
     Currency poundsSterling = createPoundsSterling();
+    Currency serbianDinars = createSerbianDinars();
     Period december = createDecember();
     Period january = createJanuary();
     Date fromRangeDateTime = december.getStartDateTime();
@@ -860,6 +890,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
         createEuroPoundsSterlingHistory();
     when(mockExchangeRateHistoryRepository.findExchangeRateHistories(buyingCurrency, poundsSterling,
         fromRangeDateTime, toRangeDateTime)).thenReturn(exchangeRateHistoriesPoundsSterling);
+    List<ExchangeRateHistory> exchangeRateHistoriesSerbianDinars = new ArrayList<>();
+    when(mockExchangeRateHistoryRepository.findExchangeRateHistories(buyingCurrency, serbianDinars,
+        fromRangeDateTime, toRangeDateTime)).thenReturn(exchangeRateHistoriesSerbianDinars);
     Optional<ExchangeRate> hongKongDollarsExchangeRate = Optional.of(createEuroHongKongDollars());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(buyingCurrency,
         hongKongDollars)).thenReturn(hongKongDollarsExchangeRate);
@@ -869,6 +902,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Optional<ExchangeRate> poundsSterlingExchangeRate = Optional.of(createEuroPoundsSterling());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(buyingCurrency,
         poundsSterling)).thenReturn(poundsSterlingExchangeRate);
+    Optional<ExchangeRate> serbianDinarsExchangeRate = Optional.of(createEuroSerbianDinars());
+    when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(buyingCurrency,
+        serbianDinars)).thenReturn(serbianDinarsExchangeRate);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         new HistoricalExchangeRates(buyingCurrency, sellingCurrencies, periods);
     expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, december, Optional.empty());
@@ -880,6 +916,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_END_DEC));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN));
+    expectedHistoricalExchangeRates.setExchangeRate(serbianDinars, december, Optional.empty());
+    expectedHistoricalExchangeRates.setExchangeRate(serbianDinars, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_SERBIAN_DINARS));
     Currency lira = createLira();
     expectedHistoricalExchangeRates.setExchangeRate(lira, december, Optional.empty());
     expectedHistoricalExchangeRates.setExchangeRate(lira, january, Optional.empty());
@@ -890,8 +929,11 @@ public class ExchangeRateServiceTest extends AbstractTest {
       List<Currency> sellingCurrencies, List<Period> periods,
       HistoricalExchangeRates expectedHistoricalExchangeRates,
       HistoricalExchangeRates actualHistoricalExchangeRates) {
+    assertEquals(ATTRIBUTE_HISTORICAL_EXCHANGE_RATES, expectedHistoricalExchangeRates.toString(),
+        actualHistoricalExchangeRates.toString());
     assertEquals(ATTRIBUTE_HISTORICAL_EXCHANGE_RATES, expectedHistoricalExchangeRates,
         actualHistoricalExchangeRates);
+
     Date fromRangeDateTime = periods.get(0).getStartDateTime();
     Date toRangeDateTime = periods.get(periods.size() - 1).getEndDateTime();
     for (Currency sellingCurrency : sellingCurrencies) {
@@ -908,6 +950,7 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Currency hongKongDollars = createHongKongDollars();
     Currency usDollars = createUsDollars();
     Currency poundsSterling = createPoundsSterling();
+    Currency serbianDinars = createSerbianDinars();
     Period december = createDecember();
     Period january = createJanuary();
     Date fromRangeDateTime = december.getStartDateTime();
@@ -931,9 +974,15 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Optional<ExchangeRate> usDollarsExchangeRate = Optional.of(createUsDollarsEuro());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(usDollars,
         sellingCurrency)).thenReturn(usDollarsExchangeRate);
+
     Optional<ExchangeRate> poundsSterlingExchangeRate = Optional.of(createPoundsSterlingEuro());
     when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(poundsSterling,
         sellingCurrency)).thenReturn(poundsSterlingExchangeRate);
+
+    Optional<ExchangeRate> serbianDinarsExchangeRate = Optional.of(createSerbianDinarsEuro());
+    when(mockExchangeRateRepository.findByBuyingCurrencyAndSellingCurrency(serbianDinars,
+        sellingCurrency)).thenReturn(serbianDinarsExchangeRate);
+
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         new HistoricalExchangeRates(sellingCurrency, buyingCurrencies, periods);
     expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, december, Optional.empty());
@@ -945,6 +994,11 @@ public class ExchangeRateServiceTest extends AbstractTest {
         Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_END_DEC));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
         Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_REST_JAN));
+
+    expectedHistoricalExchangeRates.setExchangeRate(serbianDinars, december, Optional.empty());
+    expectedHistoricalExchangeRates.setExchangeRate(serbianDinars, january,
+        Optional.of(EXCHANGE_RATE_BUY_SERBIAN_DINARS_SELL_EUROS));
+
     Currency lira = createLira();
     expectedHistoricalExchangeRates.setExchangeRate(lira, december, Optional.empty());
     expectedHistoricalExchangeRates.setExchangeRate(lira, january, Optional.empty());
