@@ -78,12 +78,54 @@ public class TestData {
       new BigDecimal("1.425170");
   public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN =
       new BigDecimal("1.612260");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_HIGH_DEC =
+      new BigDecimal("1.52");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_HIGH_JAN =
+      new BigDecimal("1.63");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LOW_DEC =
+      new BigDecimal("1.30");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LOW_JAN =
+      new BigDecimal("1.52");
+  
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_START_DEC =
+      new BigDecimal("0.77");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_MIDDLE_DEC =
+      new BigDecimal("0.71");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_END_DEC =
+      new BigDecimal("0.66");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_REST_JAN =
+      new BigDecimal("0.61");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_DEC =
+      new BigDecimal("0.66");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_JAN =
+      new BigDecimal("0.61");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_DEC =
+      new BigDecimal("0.77");
+  public static final BigDecimal EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_JAN =
+      new BigDecimal("0.66");
+  
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_START_JAN =
+      new BigDecimal("7.500000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_HIGH_JAN =
+      new BigDecimal("8.500000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_LOW_JAN =
+      new BigDecimal("7.500000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_AVERAGE_JAN =
+      new BigDecimal("8.338710");
+  
+  public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS_START_JAN =
+      new BigDecimal("0.130000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS_HIGH_JAN =
+      new BigDecimal("0.120000");
+  public static final BigDecimal EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS_LOW_JAN =
+      new BigDecimal("0.130000");
 
   public static final Date DATE_20191128_000000 = getDate("2019-11-28T00:00:00Z");
   public static final Date DATE_20191205_235959 = getDate("2019-12-05T23:59:59Z");
   public static final Date DATE_20191208_000000 = getDate("2019-12-08T00:00:00Z");
   public static final Date DATE_20191222_235959 = getDate("2019-12-22T23:59:59Z");
   public static final Date DATE_20191223_000000 = getDate("2019-12-23T00:00:00Z");
+  public static final Date DATE_20200101_000000 = getDate("2020-01-01T00:00:00Z");
   public static final Date DATE_20200105_235959 = getDate("2020-01-05T23:59:59Z");
   public static final Date DATE_20200106_000000 = getDate("2020-01-06T00:00:00Z");
   public static final Date DATE_20200205_235959 = getDate("2020-02-05T23:59:59Z");
@@ -190,7 +232,7 @@ public class TestData {
     ExchangeRate exchangeRate = new ExchangeRate();
     exchangeRate.setBuyingCurrency(createPoundsSterling());
     exchangeRate.setSellingCurrency(createEuro());
-    exchangeRate.setStartDateTime(DATE_20191128_000000);
+    exchangeRate.setStartDateTime(DATE_20200206_000000);
     exchangeRate.setRate(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS);
     return exchangeRate;
   }
@@ -304,7 +346,16 @@ public class TestData {
     exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN);
     return exchangeRateHistory;
   }
-
+  
+  public static ExchangeRateHistory createEuroHongKongDollarsStartJan() {
+    ExchangeRateHistory exchangeRateHistory = new ExchangeRateHistory();
+    exchangeRateHistory.setBuyingCurrency(createEuro());
+    exchangeRateHistory.setSellingCurrency(createHongKongDollars());
+    exchangeRateHistory.setStartDateTime(DATE_20200101_000000);
+    exchangeRateHistory.setEndDateTime(DATE_20200105_235959);
+    exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_START_JAN);
+    return exchangeRateHistory;
+  }
 
   public static List<ExchangeRateHistory> createEuroPoundsSterlingHistory() {
     List<ExchangeRateHistory> exchangeRateHistories = new ArrayList<>();
@@ -312,6 +363,77 @@ public class TestData {
     exchangeRateHistories.add(createEuroPoundsSterlingMiddleDec());
     exchangeRateHistories.add(createEuroPoundsSterlingEndDec());
     exchangeRateHistories.add(createEuroPoundsSterlingRestJan());
+    return exchangeRateHistories;
+  }
+  
+  public static List<ExchangeRateHistory> createEuroHongKongDollarsHistory() {
+    List<ExchangeRateHistory> exchangeRateHistories = new ArrayList<>();
+    exchangeRateHistories.add(createEuroHongKongDollarsStartJan());
+    return exchangeRateHistories;
+  }
+  
+  public static ExchangeRateHistory createPoundsSterlingEuroStartDec() {
+    ExchangeRateHistory exchangeRateHistory = new ExchangeRateHistory();
+    exchangeRateHistory.setBuyingCurrency(createPoundsSterling());
+    exchangeRateHistory.setSellingCurrency(createEuro());
+    exchangeRateHistory.setStartDateTime(DATE_20191128_000000);
+    exchangeRateHistory.setEndDateTime(DATE_20191205_235959);
+    exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_START_DEC);
+    return exchangeRateHistory;
+  }
+
+  public static ExchangeRateHistory createPoundsSterlingEuroMiddleDec() {
+    ExchangeRateHistory exchangeRateHistory = new ExchangeRateHistory();
+    exchangeRateHistory.setBuyingCurrency(createPoundsSterling());
+    exchangeRateHistory.setSellingCurrency(createEuro());
+    exchangeRateHistory.setStartDateTime(DATE_20191208_000000);
+    exchangeRateHistory.setEndDateTime(DATE_20191222_235959);
+    exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_MIDDLE_DEC);
+    return exchangeRateHistory;
+  }
+
+  public static ExchangeRateHistory createPoundsSterlingEuroEndDec() {
+    ExchangeRateHistory exchangeRateHistory = new ExchangeRateHistory();
+    exchangeRateHistory.setBuyingCurrency(createPoundsSterling());
+    exchangeRateHistory.setSellingCurrency(createEuro());
+    exchangeRateHistory.setStartDateTime(DATE_20191223_000000);
+    exchangeRateHistory.setEndDateTime(DATE_20200105_235959);
+    exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_END_DEC);
+    return exchangeRateHistory;
+  }
+
+  public static ExchangeRateHistory createPoundsSterlingEuroRestJan() {
+    ExchangeRateHistory exchangeRateHistory = new ExchangeRateHistory();
+    exchangeRateHistory.setBuyingCurrency(createPoundsSterling());
+    exchangeRateHistory.setSellingCurrency(createEuro());
+    exchangeRateHistory.setStartDateTime(DATE_20200106_000000);
+    exchangeRateHistory.setEndDateTime(DATE_20200205_235959);
+    exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_REST_JAN);
+    return exchangeRateHistory;
+  }
+  
+  public static ExchangeRateHistory createHongKongDollarsEuroStartJan() {
+    ExchangeRateHistory exchangeRateHistory = new ExchangeRateHistory();
+    exchangeRateHistory.setBuyingCurrency(createHongKongDollars());
+    exchangeRateHistory.setSellingCurrency(createEuro());
+    exchangeRateHistory.setStartDateTime(DATE_20200101_000000);
+    exchangeRateHistory.setEndDateTime(DATE_20200105_235959);
+    exchangeRateHistory.setRate(EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS_START_JAN);
+    return exchangeRateHistory;
+  }
+  
+  public static List<ExchangeRateHistory> createPoundsSterlingEuroHistory() {
+    List<ExchangeRateHistory> exchangeRateHistories = new ArrayList<>();
+    exchangeRateHistories.add(createPoundsSterlingEuroStartDec());
+    exchangeRateHistories.add(createPoundsSterlingEuroMiddleDec());
+    exchangeRateHistories.add(createPoundsSterlingEuroEndDec());
+    exchangeRateHistories.add(createPoundsSterlingEuroRestJan());
+    return exchangeRateHistories;
+  }
+  
+  public static List<ExchangeRateHistory> createHongKongDollarsEuroHistory() {
+    List<ExchangeRateHistory> exchangeRateHistories = new ArrayList<>();
+    exchangeRateHistories.add(createHongKongDollarsEuroStartJan());
     return exchangeRateHistories;
   }
 

@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.PostConstruct;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +60,21 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
   @Value("${exchange.rate.period.match.type}")
   private ExchangeRatePeriodMatchType exchangeRatePeriodMatchType;
 
+  @Value("${exchange.rate.calculation.precision}")
   private int precision = 6;
 
+  @Value("${exchange.rate.calculation.rounding.mode}")
   private RoundingMode roundingMode = RoundingMode.HALF_EVEN;
 
-  private MathContext mathsContext = new MathContext(precision, roundingMode);
-
+  @Value("${exchange.rate.calculation.scale}")
   private int scale = 6;
+
+  private MathContext mathsContext;
+
+  @PostConstruct
+  public void setUp() {
+    mathsContext = new MathContext(precision, roundingMode);
+  }
 
   @Override
   public CurrentExchangeRates getCurrentBuyingExchangeRates(Currency buyingCurrency,
@@ -307,8 +316,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     Optional<ExchangeRate> optionalCurrentExchangeRate = exchangeRateRepository
         .findByBuyingCurrencyAndSellingCurrency(buyingCurrency, sellingCurrency);
     for (Period period : periods) {
-      Optional<BigDecimal> rateForPeriod =
-          getRateForPeriod(period, exchangeRateHistories, optionalCurrentExchangeRate);
+      Optional<BigDecimal> rateForPeriod = getRateForPeriod(period, exchangeRateHistories,
+          optionalCurrentExchangeRate, ExchangeRateRole.BUYING);
       historicalExchangeRates.setExchangeRate(sellingCurrency, period, rateForPeriod);
     }
   }
@@ -335,19 +344,25 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     Optional<ExchangeRate> optionalCurrentExchangeRate = exchangeRateRepository
         .findByBuyingCurrencyAndSellingCurrency(buyingCurrency, sellingCurrency);
     for (Period period : periods) {
-      Optional<BigDecimal> rateForPeriod =
-          getRateForPeriod(period, exchangeRateHistories, optionalCurrentExchangeRate);
+      Optional<BigDecimal> rateForPeriod = getRateForPeriod(period, exchangeRateHistories,
+          optionalCurrentExchangeRate, ExchangeRateRole.SELLING);
       historicalExchangeRates.setExchangeRate(buyingCurrency, period, rateForPeriod);
     }
   }
 
   private Optional<BigDecimal> getRateForPeriod(Period period,
       List<ExchangeRateHistory> exchangeRateHistories,
-      Optional<ExchangeRate> optionalCurrentExchangeRate) {
+      Optional<ExchangeRate> optionalCurrentExchangeRate, ExchangeRateRole exchangeRateRole) {
     Optional<BigDecimal> rateForPeriod;
     if (exchangeRatePeriodMatchType == ExchangeRatePeriodMatchType.AVERAGE) {
       rateForPeriod =
           getRateForPeriodAverage(period, exchangeRateHistories, optionalCurrentExchangeRate);
+    } else if (exchangeRatePeriodMatchType == ExchangeRatePeriodMatchType.HIGH) {
+      rateForPeriod = getRateForPeriodHighLow(period, exchangeRateHistories,
+          optionalCurrentExchangeRate, ExchangeRatePeriodMatchType.HIGH, exchangeRateRole);
+    } else if (exchangeRatePeriodMatchType == ExchangeRatePeriodMatchType.LOW) {
+      rateForPeriod = getRateForPeriodHighLow(period, exchangeRateHistories,
+          optionalCurrentExchangeRate, ExchangeRatePeriodMatchType.LOW, exchangeRateRole);
     } else {
       rateForPeriod =
           getRateForPeriodDate(period, exchangeRateHistories, optionalCurrentExchangeRate);
@@ -399,6 +414,76 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
           totalRateTimesSeconds.divide(new BigDecimal(totalSecondsForAllRates), mathsContext)
               .setScale(scale, roundingMode);
       optionalRate = Optional.of(averageRate);
+    }
+    return optionalRate;
+  }
+
+  private Optional<BigDecimal> getRateForPeriodHighLow(Period period,
+      List<ExchangeRateHistory> exchangeRateHistories,
+      Optional<ExchangeRate> optionalCurrentExchangeRate,
+      ExchangeRatePeriodMatchType exchangeRatePeriodMatchType, ExchangeRateRole exchangeRateRole) {
+    BigDecimal highestRate = null;
+    BigDecimal lowestRate = null;
+    for (ExchangeRateHistory exchangeRateHistory : exchangeRateHistories) {
+      Date startDateTime =
+          DateUtil.getLaterDate(period.getStartDateTime(), exchangeRateHistory.getStartDateTime());
+      Date endDateTime =
+          DateUtil.getEarlierDate(period.getEndDateTime(), exchangeRateHistory.getEndDateTime());
+      long secondsRateUsed =
+          Duration.between(startDateTime.toInstant(), endDateTime.toInstant()).getSeconds();
+      if (secondsRateUsed > 0) {
+        if (highestRate == null) {
+          highestRate = exchangeRateHistory.getRate();
+        }
+        highestRate = highestRate.max(exchangeRateHistory.getRate());
+        if (lowestRate == null) {
+          lowestRate = exchangeRateHistory.getRate();
+        }
+        lowestRate = lowestRate.min(exchangeRateHistory.getRate());
+      }
+    }
+    if (optionalCurrentExchangeRate.isPresent()) {
+      ExchangeRate currentExchangeRate = optionalCurrentExchangeRate.get();
+      Date startDateTime =
+          DateUtil.getLaterDate(period.getStartDateTime(), currentExchangeRate.getStartDateTime());
+      Date endDateTime = period.getEndDateTime();
+      long secondsRateUsed =
+          Duration.between(startDateTime.toInstant(), endDateTime.toInstant()).getSeconds();
+      if (secondsRateUsed > 0) {
+        if (highestRate == null) {
+          highestRate = currentExchangeRate.getRate();
+        }
+        highestRate = highestRate.max(currentExchangeRate.getRate());
+        if (lowestRate == null) {
+          lowestRate = currentExchangeRate.getRate();
+        }
+        lowestRate = lowestRate.min(currentExchangeRate.getRate());
+      }
+    }
+    Optional<BigDecimal> optionalRate = Optional.empty();
+    if (exchangeRatePeriodMatchType == ExchangeRatePeriodMatchType.HIGH) {
+      if (exchangeRateRole == ExchangeRateRole.BUYING) {
+        if (highestRate != null) {
+          optionalRate = Optional.of(highestRate);
+        }
+      } else {
+        // ExchangeRateRole.SELLING
+        if (lowestRate != null) {
+          optionalRate = Optional.of(lowestRate);
+        }
+      }
+    } else {
+      // ExchangeRatePeriodMatchType.LOW
+      if (exchangeRateRole == ExchangeRateRole.BUYING) {
+        if (lowestRate != null) {
+          optionalRate = Optional.of(lowestRate);
+        }
+      } else {
+        // ExchangeRateRole.SELLING
+        if (highestRate != null) {
+          optionalRate = Optional.of(highestRate);
+        }
+      }
     }
     return optionalRate;
   }
@@ -470,6 +555,16 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     this.exchangeRatePeriodMatchType = exchangeRatePeriodMatchType;
   }
 
+  void setPrecision(int precision) {
+    this.precision = precision;
+  }
 
+  void setRoundingMode(RoundingMode roundingMode) {
+    this.roundingMode = roundingMode;
+  }
+
+  void setScale(int scale) {
+    this.scale = scale;
+  }
 
 }

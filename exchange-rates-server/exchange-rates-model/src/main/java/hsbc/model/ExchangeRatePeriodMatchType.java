@@ -17,8 +17,16 @@ package hsbc.model;
  * <tr>
  * <td>AVERAGE</td>
  * <td>The average exchange rate for the period will be used.</td>
+ * <tr>
+ * <td>HIGH</td>
+ * <td>The highest exchange rate (based on the value of the subject currency) in use during the
+ * period will be used.</td>
+ * <tr>
+ * <td>LOW</td>
+ * <td>The lowest exchange rate (based on the value of the subject currency) in use during the
+ * period will be used.</td>
  * </table>
  */
 public enum ExchangeRatePeriodMatchType {
-  START, END, MIDDLE, AVERAGE
+  START, END, MIDDLE, AVERAGE, HIGH, LOW
 }

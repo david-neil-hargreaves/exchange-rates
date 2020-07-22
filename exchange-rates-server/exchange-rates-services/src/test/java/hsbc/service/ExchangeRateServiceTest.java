@@ -3,10 +3,20 @@ package hsbc.service;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_END_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_HIGH_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_HIGH_JAN;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LOW_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LOW_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_MIDDLE_DEC;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_REST_JAN;
 import static hsbc.test.TestData.EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_START_DEC;
-import static hsbc.test.TestData.createComparisonCurrencies;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_END_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_JAN;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_DEC;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_JAN;
+import static hsbc.test.TestData.EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_REST_JAN;
+import static hsbc.test.TestData.*;
 import static hsbc.test.TestData.createDecember;
 import static hsbc.test.TestData.createEuro;
 import static hsbc.test.TestData.createEuroHongKongDollars;
@@ -20,6 +30,7 @@ import static hsbc.test.TestData.createLira;
 import static hsbc.test.TestData.createPeriods;
 import static hsbc.test.TestData.createPoundsSterling;
 import static hsbc.test.TestData.createPoundsSterlingEuro;
+import static hsbc.test.TestData.createPoundsSterlingEuroHistory;
 import static hsbc.test.TestData.createUsDollars;
 import static hsbc.test.TestData.createUsDollarsEuro;
 import static hsbc.util.exception.InvalidConfigurationException.MESSAGE_INVALID_CONFIGURATION_ONLY_ONE_CURRENCY;
@@ -44,6 +55,7 @@ import hsbc.test.AbstractTest;
 import hsbc.util.exception.InvalidConfigurationException;
 import hsbc.util.exception.ServiceException;
 import hsbc.util.exception.ValidationException;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,14 +69,16 @@ import org.mockito.Mock;
 
 public class ExchangeRateServiceTest extends AbstractTest {
 
-  private static final PeriodType DEFAULT_PERIOD_TYPE = PeriodType.CALENDAR_MONTH;
-
-  private static final int DEFAULT_NUMBER_HISTORICAL_PERIODS = 6;
-  private static final String ATTRIBUTE_CURRENT_EXCHANGE_RATES = "Current exchange rates";
-  private static final String ATTRIBUTE_HISTORICAL_EXCHANGE_RATES = "Historical exchange rates";
-
+  private static final PeriodType PERIOD_TYPE = PeriodType.CALENDAR_MONTH;
+  private static final int NUMBER_HISTORICAL_PERIODS = 6;
   private static final ExchangeRatePeriodMatchType EXCHANGE_RATE_PERIOD_MATCH_TYPE =
       ExchangeRatePeriodMatchType.END;
+  private static final int PRECISION = 6;
+  private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
+  private static final int SCALE = 6;
+
+  private static final String ATTRIBUTE_CURRENT_EXCHANGE_RATES = "Current exchange rates";
+  private static final String ATTRIBUTE_HISTORICAL_EXCHANGE_RATES = "Historical exchange rates";
 
   @Mock
   private ExchangeRateRepository mockExchangeRateRepository;
@@ -85,13 +99,17 @@ public class ExchangeRateServiceTest extends AbstractTest {
   private ExchangeRateService exchangeRateService = new ExchangeRateServiceImpl();
 
   @Before
-  public void setup() {
+  public void setUp() {
     initMocks(this);
-    ((ExchangeRateServiceImpl) exchangeRateService).setDefaultPeriodType(DEFAULT_PERIOD_TYPE);
+    ((ExchangeRateServiceImpl) exchangeRateService).setDefaultPeriodType(PERIOD_TYPE);
     ((ExchangeRateServiceImpl) exchangeRateService)
-        .setDefaultNumberHistoricalPeriods(DEFAULT_NUMBER_HISTORICAL_PERIODS);
+        .setDefaultNumberHistoricalPeriods(NUMBER_HISTORICAL_PERIODS);
     ((ExchangeRateServiceImpl) exchangeRateService)
         .setExchangeRatePeriodMatchType(EXCHANGE_RATE_PERIOD_MATCH_TYPE);
+    ((ExchangeRateServiceImpl) exchangeRateService).setPrecision(PRECISION);
+    ((ExchangeRateServiceImpl) exchangeRateService).setRoundingMode(ROUNDING_MODE);
+    ((ExchangeRateServiceImpl) exchangeRateService).setScale(SCALE);
+    ((ExchangeRateServiceImpl) exchangeRateService).setUp();
   }
 
   @Test
@@ -346,8 +364,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findById(buyingCurrencyId)).thenReturn(buyingCurrency);
     when(mockCurrencyService.findByIds(sellingCurrencyIds)).thenReturn(sellingCurrencies);
-    when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
+    when(mockPeriodService.getLatestHistoricalPeriods(PERIOD_TYPE, NUMBER_HISTORICAL_PERIODS))
+        .thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
             periods);
@@ -357,8 +375,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findById(buyingCurrencyId);
     verify(mockCurrencyService, times(1)).findByIds(sellingCurrencyIds);
-    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS);
+    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(PERIOD_TYPE,
+        NUMBER_HISTORICAL_PERIODS);
   }
 
   @Test
@@ -372,8 +390,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findByCode(buyingCurrencyCode)).thenReturn(buyingCurrency);
     when(mockCurrencyService.findByCodes(sellingCurrencyCodes)).thenReturn(sellingCurrencies);
-    when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
+    when(mockPeriodService.getLatestHistoricalPeriods(PERIOD_TYPE, NUMBER_HISTORICAL_PERIODS))
+        .thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
             periods);
@@ -383,8 +401,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findByCode(buyingCurrencyCode);
     verify(mockCurrencyService, times(1)).findByCodes(sellingCurrencyCodes);
-    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS);
+    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(PERIOD_TYPE,
+        NUMBER_HISTORICAL_PERIODS);
   }
 
   @Test
@@ -395,8 +413,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(buyingCurrency);
     when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(sellingCurrencies);
-    when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
+    when(mockPeriodService.getLatestHistoricalPeriods(PERIOD_TYPE, NUMBER_HISTORICAL_PERIODS))
+        .thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
             periods);
@@ -406,8 +424,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findDefaultSubjectCurrency();
     verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
-    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS);
+    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(PERIOD_TYPE,
+        NUMBER_HISTORICAL_PERIODS);
   }
 
   @Test
@@ -425,7 +443,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Currency poundsSterling = createPoundsSterling();
     Period december = createDecember();
     Period january = createJanuary();
-    expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january, Optional.empty());
+    expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_START_JAN));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_START_DEC));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
@@ -472,12 +491,71 @@ public class ExchangeRateServiceTest extends AbstractTest {
         getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
             periods);
     Currency poundsSterling = createPoundsSterling();
+    Currency hongKongDollars = createHongKongDollars();
     Period december = createDecember();
     Period january = createJanuary();
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_DEC));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
         Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_AVERAGE_JAN));
+    expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_AVERAGE_JAN));
+    HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
+        .getHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods);
+    verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
+        expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
+  }
+
+  @Test
+  public void testGetHistoricalBuyingExchangeRatesExchangeRatePeriodMatchTypeHigh()
+      throws ValidationException, ServiceException {
+    ((ExchangeRateServiceImpl) exchangeRateService)
+        .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.HIGH);
+    Currency buyingCurrency = createEuro();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
+    List<Period> periods = createPeriods();
+    HistoricalExchangeRates expectedHistoricalExchangeRates =
+        getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
+            periods);
+    Currency poundsSterling = createPoundsSterling();
+    Currency hongKongDollars = createHongKongDollars();
+    Period december = createDecember();
+    Period january = createJanuary();
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_HIGH_DEC));
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_HIGH_JAN));
+    expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_HIGH_JAN));
+    HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
+        .getHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods);
+    verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
+        expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
+  }
+
+  // TODO Need test EUR HKD with first half of Jan covered by history, second half by current.
+
+  @Test
+  public void testGetHistoricalBuyingExchangeRatesExchangeRatePeriodMatchTypeLow()
+      throws ValidationException, ServiceException {
+    ((ExchangeRateServiceImpl) exchangeRateService)
+        .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.LOW);
+    Currency buyingCurrency = createEuro();
+    List<Currency> sellingCurrencies = createComparisonCurrencies();
+    List<Period> periods = createPeriods();
+    HistoricalExchangeRates expectedHistoricalExchangeRates =
+        getExpectedResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies,
+            periods);
+    Currency poundsSterling = createPoundsSterling();
+    Currency hongKongDollars = createHongKongDollars();
+    Period december = createDecember();
+    Period january = createJanuary();
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LOW_DEC));
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_POUNDS_STERLING_LOW_JAN));
+    expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
+        Optional.of(EXCHANGE_RATE_BUY_EUROS_SELL_HONG_KONG_DOLLARS_LOW_JAN));
     HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
         .getHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods);
     verifyResultGetHistoricalBuyingExchangeRates(buyingCurrency, sellingCurrencies, periods,
@@ -567,8 +645,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findById(sellingCurrencyId)).thenReturn(sellingCurrency);
     when(mockCurrencyService.findByIds(buyingCurrencyIds)).thenReturn(buyingCurrencies);
-    when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
+    when(mockPeriodService.getLatestHistoricalPeriods(PERIOD_TYPE, NUMBER_HISTORICAL_PERIODS))
+        .thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies,
             periods);
@@ -578,8 +656,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findById(sellingCurrencyId);
     verify(mockCurrencyService, times(1)).findByIds(buyingCurrencyIds);
-    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS);
+    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(PERIOD_TYPE,
+        NUMBER_HISTORICAL_PERIODS);
   }
 
   @Test
@@ -593,8 +671,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findByCode(sellingCurrencyCode)).thenReturn(sellingCurrency);
     when(mockCurrencyService.findByCodes(buyingCurrencyCodes)).thenReturn(buyingCurrencies);
-    when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
+    when(mockPeriodService.getLatestHistoricalPeriods(PERIOD_TYPE, NUMBER_HISTORICAL_PERIODS))
+        .thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies,
             periods);
@@ -604,8 +682,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findByCode(sellingCurrencyCode);
     verify(mockCurrencyService, times(1)).findByCodes(buyingCurrencyCodes);
-    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS);
+    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(PERIOD_TYPE,
+        NUMBER_HISTORICAL_PERIODS);
   }
 
   @Test
@@ -616,8 +694,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     List<Period> periods = createPeriods();
     when(mockCurrencyService.findDefaultSubjectCurrency()).thenReturn(sellingCurrency);
     when(mockCurrencyService.findDefaultComparisonCurrencies()).thenReturn(buyingCurrencies);
-    when(mockPeriodService.getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS)).thenReturn(periods);
+    when(mockPeriodService.getLatestHistoricalPeriods(PERIOD_TYPE, NUMBER_HISTORICAL_PERIODS))
+        .thenReturn(periods);
     HistoricalExchangeRates expectedHistoricalExchangeRates =
         getExpectedResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies,
             periods);
@@ -627,8 +705,59 @@ public class ExchangeRateServiceTest extends AbstractTest {
         expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
     verify(mockCurrencyService, times(1)).findDefaultSubjectCurrency();
     verify(mockCurrencyService, times(1)).findDefaultComparisonCurrencies();
-    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(DEFAULT_PERIOD_TYPE,
-        DEFAULT_NUMBER_HISTORICAL_PERIODS);
+    verify(mockPeriodService, times(1)).getLatestHistoricalPeriods(PERIOD_TYPE,
+        NUMBER_HISTORICAL_PERIODS);
+  }
+
+  @Test
+  public void testGetHistoricalSellingExchangeRatesExchangeRatePeriodMatchTypeHigh()
+      throws ValidationException, ServiceException {
+    ((ExchangeRateServiceImpl) exchangeRateService)
+        .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.HIGH);
+    Currency sellingCurrency = createEuro();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
+    List<Period> periods = createPeriods();
+    HistoricalExchangeRates expectedHistoricalExchangeRates =
+        getExpectedResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies,
+            periods);
+    Currency poundsSterling = createPoundsSterling();
+    Period december = createDecember();
+    Period january = createJanuary();
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
+        Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_DEC));
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
+        Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_HIGH_JAN));
+    HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
+        .getHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies, periods);
+    verifyResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies, periods,
+        expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
+  }
+
+  @Test
+  public void testGetHistoricalSellingExchangeRatesExchangeRatePeriodMatchTypeLow()
+      throws ValidationException, ServiceException {
+    ((ExchangeRateServiceImpl) exchangeRateService)
+        .setExchangeRatePeriodMatchType(ExchangeRatePeriodMatchType.LOW);
+    Currency sellingCurrency = createEuro();
+    List<Currency> buyingCurrencies = createComparisonCurrencies();
+    List<Period> periods = createPeriods();
+    HistoricalExchangeRates expectedHistoricalExchangeRates =
+        getExpectedResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies,
+            periods);
+    Currency poundsSterling = createPoundsSterling();
+    Currency hongKongDollars = createHongKongDollars();
+    Period december = createDecember();
+    Period january = createJanuary();
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
+        Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_DEC));
+    expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
+        Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_LOW_JAN));
+    expectedHistoricalExchangeRates.setExchangeRate(hongKongDollars, january,
+        Optional.of(EXCHANGE_RATE_BUY_HONG_KONG_DOLLARS_SELL_EUROS_LOW_JAN));
+    HistoricalExchangeRates actualHistoricalExchangeRates = exchangeRateService
+        .getHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies, periods);
+    verifyResultGetHistoricalSellingExchangeRates(sellingCurrency, buyingCurrencies, periods,
+        expectedHistoricalExchangeRates, actualHistoricalExchangeRates);
   }
 
   private CurrentExchangeRates getExpectedResultGetCurrentBuyingExchangeRates(
@@ -719,7 +848,8 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Period january = createJanuary();
     Date fromRangeDateTime = december.getStartDateTime();
     Date toRangeDateTime = january.getEndDateTime();
-    List<ExchangeRateHistory> exchangeRateHistoriesHongKongDollars = new ArrayList<>();
+    List<ExchangeRateHistory> exchangeRateHistoriesHongKongDollars =
+        createEuroHongKongDollarsHistory();
     when(mockExchangeRateHistoryRepository.findExchangeRateHistories(buyingCurrency,
         hongKongDollars, fromRangeDateTime, toRangeDateTime))
             .thenReturn(exchangeRateHistoriesHongKongDollars);
@@ -782,14 +912,16 @@ public class ExchangeRateServiceTest extends AbstractTest {
     Period january = createJanuary();
     Date fromRangeDateTime = december.getStartDateTime();
     Date toRangeDateTime = january.getEndDateTime();
-    List<ExchangeRateHistory> exchangeRateHistoriesHongKongDollars = new ArrayList<>();
+    List<ExchangeRateHistory> exchangeRateHistoriesHongKongDollars =
+        createHongKongDollarsEuroHistory();
     when(mockExchangeRateHistoryRepository.findExchangeRateHistories(hongKongDollars,
         sellingCurrency, fromRangeDateTime, toRangeDateTime))
             .thenReturn(exchangeRateHistoriesHongKongDollars);
     List<ExchangeRateHistory> exchangeRateHistoriesUsDollars = new ArrayList<>();
     when(mockExchangeRateHistoryRepository.findExchangeRateHistories(usDollars, sellingCurrency,
         fromRangeDateTime, toRangeDateTime)).thenReturn(exchangeRateHistoriesUsDollars);
-    List<ExchangeRateHistory> exchangeRateHistoriesPoundsSterling = new ArrayList<>();
+    List<ExchangeRateHistory> exchangeRateHistoriesPoundsSterling =
+        createPoundsSterlingEuroHistory();
     when(mockExchangeRateHistoryRepository.findExchangeRateHistories(poundsSterling,
         sellingCurrency, fromRangeDateTime, toRangeDateTime))
             .thenReturn(exchangeRateHistoriesPoundsSterling);
@@ -810,9 +942,9 @@ public class ExchangeRateServiceTest extends AbstractTest {
     expectedHistoricalExchangeRates.setExchangeRate(usDollars, december, Optional.empty());
     expectedHistoricalExchangeRates.setExchangeRate(usDollars, january, Optional.empty());
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, december,
-        Optional.of(poundsSterlingExchangeRate.get().getRate()));
+        Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_END_DEC));
     expectedHistoricalExchangeRates.setExchangeRate(poundsSterling, january,
-        Optional.of(poundsSterlingExchangeRate.get().getRate()));
+        Optional.of(EXCHANGE_RATE_BUY_POUNDS_STERLING_SELL_EUROS_REST_JAN));
     Currency lira = createLira();
     expectedHistoricalExchangeRates.setExchangeRate(lira, december, Optional.empty());
     expectedHistoricalExchangeRates.setExchangeRate(lira, january, Optional.empty());
