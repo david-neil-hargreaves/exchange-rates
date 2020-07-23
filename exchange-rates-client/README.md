@@ -1,27 +1,71 @@
-# ExchangeRatesClient
+# exchange-rates-client
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+This application displays exchange rates in a Web browser.  It consumes the exchange-rates-server RESTful services for currencies and exchange rates.
 
-## Development server
+## Getting Started
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### Quick Start
+To build and run the application:
 
-## Code scaffolding
+* Start the exchange-rates-server application.
+* ng serve
+* Navigate to http://localhost:4200/.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Prerequisites
 
-## Build
+Ensure that your environment has the following software installed.
+| Item | Details | Download U.R.L. / Installation |
+| ------------ | ------------- | ------------ |
+| Node.js |  JavaScript runtime environment (framework) that executes JavaScript code outside a Web browser. | [nodejs.org](https://nodejs.org/en/download/) |
+| npm | Node Package Manager, default package manager for Node.js. | Should be installed as part of installing Node.js. |
+| Angular CLI | JavaScript framework for developing single-page Web applications. | Open a terminal and run 'npm install -g @angular/cli'. |
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+### Installing
+To build and install the application navigate to the top-level project directory (i.e. the one containing this README.md file) and then issue the following command:
+* ng build
 
-## Running unit tests
+The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Running the tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Unit tests
+To execute the unit tests navigate to the top-level project directory (i.e. the one containing this README.md file) and then issue the following command:
+* ng test --watch=false
 
-## Further help
+### End-to-end tests
+To execute the end-to-end tests navigate to the top-level project directory (i.e. the one containing this README.md file) and then issue the following command:
+* ng e2e 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Integration tests
+The integration tests are in the companion exchange-rates-server project. 
+
+### Test coverage checks
+To produce the code coverage report navigate to the top-level project directory (i.e. the one containing this README.md file) and then issue the following command:
+* ng test --watch=false --code-coverage=true
+
+This will have produced an index.html file in the coverage directory.
+
+Open this in a Web browser.
+
+
+## Running the Application
+Start the companion exchange-rates-server application.
+
+To run the application navigate to the top-level project directory (i.e. the one containing this README.md file) and then issue the following commands:
+* ng serve
+
+In a Web browser navigate to http://localhost:4200/.
+
+
+## Further Development
+* Productionising of the system e.g. configuration of the host, port etc.
+* Testing in multiple devices.
+* Performance testing and tuning.
+
+## Built With
+[Angular CLI](https://github.com/angular/angular-cli)
+
+## Authors
+David Hargreaves
+

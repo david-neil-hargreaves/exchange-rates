@@ -9,7 +9,8 @@ To build and run the application:
 
 * mvn clean install -DskipITs
 * cd exchange-rates-application 
-* ../mvnw spring-boot:run                                                                                                               
+* ../mvnw spring-boot:run 			(Linux)
+* ..\mvnw spring-boot:run           (Windows)                                                                                                              
 
 ### Prerequisites
 
@@ -65,8 +66,7 @@ After building the application execute the following commands in order to produc
 
 Within the coverage directory this has produced the target/site/jacoco-aggregate sub-directory to hold the Jacoco reports.
 
-This, in turn, has five separate sub-directories for each of the four Java modules:
-* exchange-rates-application
+This, in turn, has four separate sub-directories for each of the four Java modules:
 * exchange-rates-model
 * exchange-rates-services
 * exchange-rates-utilities
@@ -76,9 +76,9 @@ Each of these contains an index.html file which can be opened in a Web browser t
 
 
 ## Configuration
-Source configuration files are stored in online-shop-application/src/main/resources.
+Source configuration files are stored in exchange-rates-application/src/main/resources.
 
-In the built application these can be found in online-shop-application/target/classes.
+In the built application these can be found in exchange-rates-application/target/classes.
 
 There are two configuration files:
 
@@ -87,10 +87,26 @@ There are two configuration files:
 |log4j2.xml|This configures logging for the application using the Log4j2 framework (note that this is substantially different from Log4j version 1). Logging can be configured to a file, the console, e-mail, database.  For details on how to configure Log4j2 for logging see [logging.apache.org]( https://logging.apache.org/log4j/2.x/manual/configuration.html).|
 |exchange-rates.properties|This is a Java properties file allowing configuration of certain application details in 'key-value' format.|
 
+### Properties
+|Property|Possible Values|
+|---|---|
+exchange.rates.report.default.period.type|CALENDAR_MONTH, WEEK|
+exchange.rates.report.default.number.historical.periods|1 or higher.|
+exchange.rate.period.match.type|START, END, MIDDLE, AVERAGE, HIGH, LOW|
+exchange.rate.calculation.precision|1 to 6.|
+exchange.rate.calculation.rounding.mode|See [RoundingMode](https://docs.oracle.com/javase/8/docs/api/java/math/RoundingMode.html).|
+exchange.rate.calculation.scale|0 to 6.|
+spring.h2.console.enabled|true, false|
+spring.jpa.show-sql|true, false|
+spring.jpa.properties.hibernate.show_sql|true, false|
+spring.jpa.properties.hibernate.use_sql_comments|true, false|
+spring.jpa.properties.hibernate.format_sql|true, false|
+
 ## Running the Application
 To run the application navigate to the top-level project directory (i.e. the one containing this README.md file) and then issue the following commands:
 * cd exchange-rates-application 
-* ../mvnw spring-boot:run    
+* ../mvnw spring-boot:run 			(Linux)
+* ..\mvnw spring-boot:run           (Windows)         
 
 ## I.D.E. Settings
 If developing the application in an IDE (integrated development environment) then some settings are advisory.
@@ -107,7 +123,7 @@ The exact settings will vary by IDE.  These are applicable to Eclipse:
 ### Installing Lombok in Eclipse
 Lombok is a framework used to reduce boilerplate code with respect to getters, setters, constructors etc.
 
-It should be installed in Eclipse so that the I.D.E. can recognise getters, setters etc. even when they are not explicitly defined in the code.
+It should be installed in Eclipse so that the IDE can recognise getters, setters etc. even when they are not explicitly defined in the code.
 
 In order to do this from the command line execute the following command to displays the Maven repository directory for the current user:
 * mvn help:evaluate -Dexpression=settings.localRepository -q -DforceStdout
@@ -128,14 +144,16 @@ Something like the following will be shown in the text:
 * Lombok v1.18.12 "Envious Ferret" is installed. https://projectlombok.org/
 
 ### Installing Lombok in Other IDEs
-Lombok can be installed in ther IDEs.  However, the installation process varies by IDE.
+Lombok can be installed in other IDEs.  However, the installation process varies by IDE.
 
 ## Further Development
-Productionising of the system e.g. configuration of the host, port etc.
+* Productionising of the system e.g. configuration of the host, port etc.
+* Testing in multiple devices.
+* Performance testing and tuning.
 
 ## Built With
 [Maven](https://maven.apache.org/) - Dependency Management
 
 ## Authors
-David Hargreaves# exchange-rates-server
+David Hargreaves
 
