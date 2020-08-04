@@ -4,16 +4,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>hsbc</groupId>
+	<parent>
+		<groupId>hsbc</groupId>
+		<artifactId>exchange-rates</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
 	<artifactId>coverage</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<!-- Jacoco, unit test coverage check. -->
 		<jacoco.maven.plugin.version>0.8.1</jacoco.maven.plugin.version>
 		<jacoco.coverage.ratio>1.00</jacoco.coverage.ratio>
 		<maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
@@ -24,31 +23,26 @@
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-utilities</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-services</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-web</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-application</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>

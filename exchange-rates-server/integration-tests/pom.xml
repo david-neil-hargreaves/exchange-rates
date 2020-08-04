@@ -17,6 +17,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
+		<exchange.rates.application.version>0.0.1-SNAPSHOT</exchange.rates.application.version>
 		<webdrivermanager.version>2.2.5</webdrivermanager.version>
 	</properties>
 
@@ -25,7 +26,7 @@
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-application</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${exchange.rates.application.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -64,6 +65,11 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-firefox-driver</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 	</dependencies>

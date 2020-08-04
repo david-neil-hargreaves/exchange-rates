@@ -10,12 +10,19 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<!-- Testing -->
+		<exchange.rates.utilities.version>0.0.1-SNAPSHOT</exchange.rates.utilities.version>
+		<exchange.rates.model.version>0.0.1-SNAPSHOT</exchange.rates.model.version>
+		<exchange.rates.services.version>0.0.1-SNAPSHOT</exchange.rates.services.version>
+		<exchange.rates.web.version>0.0.1-SNAPSHOT</exchange.rates.web.version>
+		<exchange.rates.application.version>0.0.1-SNAPSHOT</exchange.rates.application.version>
+		<spring.boot.version>2.3.0.RELEASE</spring.boot.version>
+		<javax.validation.version>2.0.1.Final</javax.validation.version>
+		<lombok.version>1.18.12</lombok.version>
+		<jackson.version>2.11.0</jackson.version>
+		<swagger.version>2.8.0</swagger.version>
+		<h2.version>1.4.200</h2.version>
+		<assertj.guava.version>3.3.0</assertj.guava.version>
 		<maven-surefire-plugin-version>2.22.2</maven-surefire-plugin-version>
-		<!-- Automated code review tools -->
-		<!-- Checkstyle, code formatting check. -->
 		<maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
 		<maven.sevntu.checkstyle.plugin.version>1.27.0</maven.sevntu.checkstyle.plugin.version>
 		<maven.sevntu-checkstyle-check.checkstyle.version>8.32</maven.sevntu-checkstyle-check.checkstyle.version>
@@ -30,6 +37,139 @@
 		<module>coverage</module>
 		<module>integration-tests</module>
 	</modules>
+
+	<dependencyManagement>
+
+		<dependencies>
+
+			<dependency>
+				<groupId>hsbc</groupId>
+				<artifactId>exchange-rates-utilities</artifactId>
+				<version>${exchange.rates.utilities.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hsbc</groupId>
+				<artifactId>exchange-rates-model</artifactId>
+				<version>${exchange.rates.model.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hsbc</groupId>
+				<artifactId>exchange-rates-services</artifactId>
+				<version>${exchange.rates.services.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hsbc</groupId>
+				<artifactId>exchange-rates-web</artifactId>
+				<version>${exchange.rates.web.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hsbc</groupId>
+				<artifactId>exchange-rates-application</artifactId>
+				<version>${exchange.rates.application.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring.boot.version}</version>
+				<exclusions>
+					<!-- Spring Boot uses Logback by default - this application is using 
+						Log4J. -->
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-log4j2</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-hateoas</artifactId>
+				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${javax.validation.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-test</artifactId>
+				<version>${spring.boot.version}</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.seleniumhq.selenium</groupId>
+						<artifactId>selenium-chrome-driver</artifactId>
+					</exclusion>
+					<!-- Spring Boot uses Logback by default - this application is using 
+						Log4J. -->
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-guava</artifactId>
+				<version>${assertj.guava.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+
+	</dependencyManagement>
 
 	<build>
 

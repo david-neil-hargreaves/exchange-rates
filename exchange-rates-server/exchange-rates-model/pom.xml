@@ -4,26 +4,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>hsbc</groupId>
+	<parent>
+		<groupId>hsbc</groupId>
+		<artifactId>exchange-rates</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
 	<artifactId>exchange-rates-model</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<jdk.version>1.8</jdk.version>
 		<java.version>1.8</java.version>
-		<spring.boot.starter.data.jpa.version>2.3.0.RELEASE</spring.boot.starter.data.jpa.version>
-		<javax.validation.version>2.0.1.Final</javax.validation.version>
-		<hibernate.validator.version>6.1.5.Final</hibernate.validator.version>
-		<h2.version>1.4.200</h2.version>
-		<lombok.version>1.18.12</lombok.version>
-		<jackson.version>2.11.0</jackson.version>
-		<junit.version>4.12</junit.version>
-		<org.mockito.version>2.22.0</org.mockito.version>
-		<org.assertj.version>3.13.2</org.assertj.version>
-		<!-- Jacoco, unit test coverage check. -->
 		<jacoco.maven.plugin.version>0.8.1</jacoco.maven.plugin.version>
 		<jacoco.coverage.ratio>1.00</jacoco.coverage.ratio>
 	</properties>
@@ -33,76 +28,48 @@
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-utilities</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>${spring.boot.starter.data.jpa.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium</groupId>
+					<artifactId>selenium-chrome-driver</artifactId>
+				</exclusion>
+				<!-- Spring Boot uses Logback by default - this application is using 
+					Log4J. -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>${javax.validation.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate.validator.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator-annotation-processor</artifactId>
-			<version>${hibernate.validator.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>${h2.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>${org.mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>${org.assertj.version}</version>
-			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

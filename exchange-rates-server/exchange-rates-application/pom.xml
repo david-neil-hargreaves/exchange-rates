@@ -16,7 +16,17 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<!-- Jacoco, unit test coverage check. -->
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<jdk.version>1.8</jdk.version>
+		<java.version>1.8</java.version>
+		<exchange.rates.utilities.version>0.0.1-SNAPSHOT</exchange.rates.utilities.version>
+		<exchange.rates.model.version>0.0.1-SNAPSHOT</exchange.rates.model.version>
+		<exchange.rates.services.version>0.0.1-SNAPSHOT</exchange.rates.services.version>
+		<exchange.rates.web.version>0.0.1-SNAPSHOT</exchange.rates.web.version>
+		<exchange.rates.application.version>0.0.1-SNAPSHOT</exchange.rates.application.version>
 		<jacoco.maven.plugin.version>0.8.1</jacoco.maven.plugin.version>
 		<jacoco.coverage.ratio>1.00</jacoco.coverage.ratio>
 	</properties>
@@ -26,25 +36,25 @@
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-utilities</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${exchange.rates.utilities.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${exchange.rates.model.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-services</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${exchange.rates.services.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>hsbc</groupId>
 			<artifactId>exchange-rates-web</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${exchange.rates.web.version}</version>
 		</dependency>
 
 		<dependency>
@@ -79,24 +89,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 
